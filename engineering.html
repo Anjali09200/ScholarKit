@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Tools – ScholarKit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style4.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR (same as index.html) -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="scholarNav">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo.svg" alt="ScholarKit" width="160" height="55">
+            </a>
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+                    <!-- Coding Tools -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-code"></i> Coding Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://onecompiler.com"><i class="fa-solid fa-terminal"></i> Online Compiler</a></li>
+                            <li><a class="dropdown-item" href="https://prettier.io/playground"><i class="fa-solid fa-wand-magic-sparkles"></i> Code Formatter</a></li>
+                            <li><a class="dropdown-item" href="https://regex101.com"><i class="fa-solid fa-filter"></i> RegEx Tester</a></li>
+                            <li><a class="dropdown-item" href="https://devdocs.io"><i class="fa-solid fa-file-code"></i> DevDocs</a></li>
+                            <li><a class="dropdown-item" href="https://stackoverflow.com"><i class="fa-brands fa-stack-overflow"></i> Stack Overflow</a></li>
+                        </ul>
+                    </li>
+                    <!-- Research -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-book-open"></i> Research
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://arxiv.org"><i class="fa-solid fa-scroll"></i> arXiv Papers</a></li>
+                            <li><a class="dropdown-item" href="https://ieeexplore.ieee.org"><i class="fa-solid fa-microchip"></i> IEEE Xplore</a></li>
+                            <li><a class="dropdown-item" href="https://scholar.google.com"><i class="fa-brands fa-google"></i> Google Scholar</a></li>
+                            <li><a class="dropdown-item" href="https://www.researchgate.net"><i class="fa-solid fa-flask"></i> ResearchGate</a></li>
+                        </ul>
+                    </li>
+                    <!-- Engineering (active) -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-gears"></i> Engineering
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://www.wolframalpha.com"><i class="fa-solid fa-calculator"></i> Wolfram Alpha</a></li>
+                            <li><a class="dropdown-item" href="https://www.desmos.com/calculator"><i class="fa-solid fa-chart-line"></i> Desmos Graphing</a></li>
+                            <li><a class="dropdown-item" href="https://falstad.com/circuit"><i class="fa-solid fa-bolt"></i> Circuit Simulator</a></li>
+                            <li><a class="dropdown-item" href="https://www.unitconverters.net"><i class="fa-solid fa-ruler-combined"></i> Unit Converter</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link profile-nav-btn" href="profile.html">
+                            <span class="profile-nav-avatar"><i class="fa-solid fa-circle-user"></i></span>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="eng-hero">
+        <div class="eng-hero-bg">
+            <div class="eng-grid-overlay"></div>
+            <div class="eng-orb eng-orb-1"></div>
+            <div class="eng-orb eng-orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-gears"></i>
+                        Engineering Toolbox
+                    </div>
+                    <h1 class="eng-hero-title">
+                        Powerful Tools for <br><span>Engineering Students</span>
+                    </h1>
+                    <p class="eng-hero-subtitle">
+                        Calculators, simulators, graphing tools and references — everything you need to solve, design and build.
+                    </p>
+                    <!-- Search -->
+                    <div class="eng-search-bar">
+                        <input type="text" id="engSearch" placeholder="Search engineering tools..." oninput="filterTools()">
+                        <button><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                    </div>
+                    <!-- Filter Chips -->
+                    <div class="eng-filter-chips" id="filterChips">
+                        <button class="chip active" onclick="filterByCategory('all', this)">All</button>
+                        <button class="chip" onclick="filterByCategory('math', this)"><i class="fa-solid fa-square-root-variable"></i> Math</button>
+                        <button class="chip" onclick="filterByCategory('electronics', this)"><i class="fa-solid fa-bolt"></i> Electronics</button>
+                        <button class="chip" onclick="filterByCategory('simulation', this)"><i class="fa-solid fa-cube"></i> Simulation</button>
+                        <button class="chip" onclick="filterByCategory('reference', this)"><i class="fa-solid fa-book"></i> Reference</button>
+                        <button class="chip" onclick="filterByCategory('converter', this)"><i class="fa-solid fa-arrows-rotate"></i> Converters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOOLS GRID -->
+    <section class="eng-tools-section">
+        <div class="container">
+
+            <!-- FEATURED / TOP PICKS -->
+            <div class="eng-section-label">
+                <i class="fa-solid fa-star"></i> Featured Tools
+            </div>
+            <div class="row g-4 mb-5" id="featuredRow">
+
+                <div class="col-lg-4 col-md-6 tool-card-wrap" data-category="math" data-name="wolfram alpha">
+                    <a href="https://www.wolframalpha.com" class="eng-card eng-card-featured">
+                        <div class="eng-card-icon" style="--ic:#f97316;"><i class="fa-solid fa-calculator"></i></div>
+                        <div class="eng-card-body">
+                            <h3>Wolfram Alpha</h3>
+                            <p>The world's most powerful computational knowledge engine. Solve equations, integrals, and get step-by-step answers instantly.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                        <div class="eng-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 tool-card-wrap" data-category="math" data-name="desmos graphing calculator">
+                    <a href="https://www.desmos.com/calculator" class="eng-card eng-card-featured">
+                        <div class="eng-card-icon" style="--ic:#6366f1;"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="eng-card-body">
+                            <h3>Desmos Graphing</h3>
+                            <p>Interactive online graphing calculator. Plot functions, investigate equations and explore transformations in real time.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                        <div class="eng-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 tool-card-wrap" data-category="electronics" data-name="falstad circuit simulator">
+                    <a href="https://falstad.com/circuit" class="eng-card eng-card-featured">
+                        <div class="eng-card-icon" style="--ic:#22c55e;"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="eng-card-body">
+                            <h3>Circuit Simulator</h3>
+                            <p>Build and simulate electronic circuits in your browser. Visualise current flow, voltages and signal waveforms live.</p>
+                            <span class="eng-tag">Electronics</span>
+                        </div>
+                        <div class="eng-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- ALL TOOLS -->
+            <div class="eng-section-label">
+                <i class="fa-solid fa-toolbox"></i> All Engineering Tools
+            </div>
+            <div class="row g-3" id="allToolsGrid">
+
+                <!-- Math -->
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="math" data-name="matlab online">
+                    <a href="https://www.mathworks.com/products/matlab-online.html" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#f97316;"><i class="fa-solid fa-calculator"></i></div>
+                        <div>
+                            <h4>MATLAB Online</h4>
+                            <p>Full MATLAB environment in the browser — matrices, plotting, signal processing.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="math" data-name="symbolab step by step math solver">
+                    <a href="https://www.symbolab.com" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#6366f1;"><i class="fa-solid fa-square-root-variable"></i></div>
+                        <div>
+                            <h4>Symbolab</h4>
+                            <p>Step-by-step solutions for algebra, calculus, trigonometry, and more.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="math" data-name="geogebra geometry algebra">
+                    <a href="https://www.geogebra.org" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#ec4899;"><i class="fa-solid fa-shapes"></i></div>
+                        <div>
+                            <h4>GeoGebra</h4>
+                            <p>Interactive maths for geometry, algebra, statistics and calculus.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="math" data-name="numpy scientific computing python">
+                    <a href="https://numpy.org/" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#06b6d4;"><i class="fa-solid fa-chart-line"></i></div>
+                        <div>
+                            <h4>NumPy</h4>
+                            <p>The fundamental package for scientific computing in Python — arrays, linear algebra.</p>
+                            <span class="eng-tag">Math</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Electronics -->
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="electronics" data-name="tinkercad 3d design electronics">
+                    <a href="https://www.tinkercad.com/" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#22c55e;"><i class="fa-solid fa-microchip"></i></div>
+                        <div>
+                            <h4>Tinkercad</h4>
+                            <p>3D design and circuit simulation for beginners and rapid prototyping.</p>
+                            <span class="eng-tag">Electronics</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="electronics" data-name="ptc creo cad design">
+                    <a href="https://www.ptc.com/en/products/creo" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#f43f5e;"><i class="fa-solid fa-drafting-compass"></i></div>
+                        <div>
+                            <h4>PTC Creo</h4>
+                            <p>Industry-leading 3D CAD software for mechanical product design.</p>
+                            <span class="eng-tag">Simulation</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Simulation -->
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="simulation" data-name="ptc creo mechanical cad">
+                    <a href="https://www.ptc.com/en/products/creo" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#a855f7;"><i class="fa-solid fa-cube"></i></div>
+                        <div>
+                            <h4>PTC Creo (CAD)</h4>
+                            <p>Parametric 3D solid modelling for precision mechanical parts and assemblies.</p>
+                            <span class="eng-tag">Simulation</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Reference -->
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="reference" data-name="engineering toolbox formulas">
+                    <a href="https://www.engineeringtoolbox.com" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#f97316;"><i class="fa-solid fa-wrench"></i></div>
+                        <div>
+                            <h4>Engineering Toolbox</h4>
+                            <p>Comprehensive database of engineering data, formulas and reference tables.</p>
+                            <span class="eng-tag">Reference</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="reference" data-name="rapidtables conversions electrical">
+                    <a href="https://www.rapidtables.com" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#06b6d4;"><i class="fa-solid fa-table"></i></div>
+                        <div>
+                            <h4>RapidTables</h4>
+                            <p>Quick reference tables for math, electrical, and unit conversion calculations.</p>
+                            <span class="eng-tag">Reference</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Converters -->
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="converter" data-name="unit converters measurement">
+                    <a href="https://www.unitconverters.net" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#22c55e;"><i class="fa-solid fa-ruler-combined"></i></div>
+                        <div>
+                            <h4>Unit Converter</h4>
+                            <p>Convert between thousands of units across length, mass, temperature, pressure and more.</p>
+                            <span class="eng-tag">Converter</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="converter" data-name="google unit conversion">
+                    <a href="https://www.google.com/search?q=unit+converter" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#f43f5e;"><i class="fa-brands fa-google"></i></div>
+                        <div>
+                            <h4>Google Converter</h4>
+                            <p>Fast in-browser unit conversion — just type and get the answer instantly.</p>
+                            <span class="eng-tag">Converter</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 tool-card-wrap" data-category="reference" data-name="nist data standards physics">
+                    <a href="https://www.nist.gov/pml/productsservices/physical-reference-data" class="eng-card eng-card-sm">
+                        <div class="eng-card-icon-sm" style="--ic:#a855f7;"><i class="fa-solid fa-atom"></i></div>
+                        <div>
+                            <h4>NIST Physical Data</h4>
+                            <p>Official physical constants, atomic spectra and material property data from NIST.</p>
+                            <span class="eng-tag">Reference</span>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- No results message -->
+            <div id="noResults" class="eng-no-results" style="display:none;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <p>No tools found for "<span id="noResultsQuery"></span>"</p>
+                <small>Try a different keyword or browse all categories.</small>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BACK TO HOME -->
+    <div class="eng-back-home">
+        <div class="container text-center">
+            <a href="index.html" class="eng-back-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back to ScholarKit Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        /* ── Filter by category chips ── */
+        function filterByCategory(cat, btn) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('engSearch').value = '';
+
+            document.querySelectorAll('.tool-card-wrap').forEach(card => {
+                const match = cat === 'all' || card.dataset.category === cat;
+                card.style.display = match ? '' : 'none';
+            });
+            checkNoResults();
+        }
+
+        /* ── Filter by search input ── */
+        function filterTools() {
+            const q = document.getElementById('engSearch').value.toLowerCase().trim();
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('.chip').classList.add('active'); // reset to 'All'
+
+            document.querySelectorAll('.tool-card-wrap').forEach(card => {
+                const name = card.dataset.name || '';
+                card.style.display = name.includes(q) ? '' : 'none';
+            });
+            document.getElementById('noResultsQuery').textContent = q;
+            checkNoResults();
+        }
+
+        function checkNoResults() {
+            const visible = [...document.querySelectorAll('.tool-card-wrap')].filter(c => c.style.display !== 'none');
+            document.getElementById('noResults').style.display = visible.length === 0 ? 'block' : 'none';
+        }
+
+        /* ── Navbar scroll effect ── */
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('scholarNav');
+            nav.classList.toggle('scrolled', window.scrollY > 30);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="engg.js"></script>
+</body>
+</html>

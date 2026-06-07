@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — ScholarKit</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    :root {
+      --primary: #185FA5;
+      --primary-glow: rgba(24,95,165,0.35);
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.12);
+      --blue-muted: #93c5fd;
+      --surface: rgba(255,255,255,0.05);
+      --surface-2: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.09);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --dark-muted: #64748b;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; }
+ 
+    body {
+      background: #060f1e;
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+ 
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(24,95,165,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 75%, rgba(74,222,128,0.08) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+ 
+    .profile-wrapper {
+      position: relative;
+      z-index: 1;
+      padding: 100px 16px 70px;
+    }
+ 
+    /* BACK BUTTON */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.83rem;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.25s ease;
+      margin-bottom: 24px;
+    }
+    .back-btn:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
+ 
+    /* PROFILE CARD */
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 28px 32px;
+      text-align: center;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(24,95,165,0.25), transparent 70%);
+      pointer-events: none;
+    }
+ 
+    /* AVATAR */
+    .avatar-wrap {
+      position: relative;
+      width: 96px; height: 96px;
+      margin: 0 auto 18px;
+    }
+    .avatar-circle {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #185FA5 0%, #4ade80 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; color: #fff;
+      position: relative; z-index: 1;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.08), 0 0 24px var(--primary-glow);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .avatar-circle:hover { transform: scale(1.06); }
+    .avatar-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(#185FA5, #4ade80, #185FA5);
+      z-index: 0;
+      animation: spinRing 6s linear infinite;
+    }
+    @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+ 
+    .profile-name { font-size: 1.45rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+    .profile-email { font-size: 0.83rem; color: var(--muted); margin-bottom: 8px; }
+    .profile-college-display { font-size: 0.8rem; color: var(--blue-muted); margin-bottom: 16px; }
+ 
+    .profile-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 0.78rem; font-weight: 600;
+    }
+ 
+    /* XP BAR */
+    .xp-bar-wrap { margin: 20px 0 0; text-align: left; }
+    .xp-bar-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 6px;
+    }
+    .xp-bar-track {
+      height: 8px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 99px; overflow: hidden;
+    }
+    .xp-bar-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #185FA5, #4ade80);
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+      width: 0%;
+    }
+ 
+    /* ── PROFILE COMPLETION METER ── */
+    .completion-wrap {
+      margin-top: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+    .completion-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .completion-header span { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+    .completion-pct { font-size: 0.85rem; font-weight: 700; color: var(--green); }
+    .completion-track {
+      height: 6px; background: rgba(255,255,255,0.07);
+      border-radius: 99px; overflow: hidden; margin-bottom: 10px;
+    }
+    .completion-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #185FA5, #4ade80);
+      transition: width 1s ease;
+    }
+    .completion-steps {
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .completion-step {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 0.68rem; color: var(--dark-muted);
+      padding: 3px 8px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      transition: all 0.2s;
+    }
+    .completion-step.done { color: var(--green); border-color: rgba(74,222,128,0.2); background: rgba(74,222,128,0.06); }
+    .completion-step i { font-size: 0.6rem; }
+ 
+    /* STATS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 20px;
+    }
+    .stat-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 10px; text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .stat-box:hover { transform: translateY(-3px); border-color: rgba(147,197,253,0.25); }
+    .stat-num { font-size: 1.7rem; font-weight: 700; color: var(--blue-muted); line-height: 1; }
+    .stat-label { font-size: 0.72rem; color: var(--dark-muted); margin-top: 5px; }
+ 
+    /* ── SKILL TAGS ── */
+    .skills-section {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-top: 20px;
+    }
+    .skill-tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .skill-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(147,197,253,0.08);
+      border: 1px solid rgba(147,197,253,0.18);
+      color: var(--blue-muted);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.76rem; font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .skill-tag:hover { background: rgba(147,197,253,0.15); border-color: rgba(147,197,253,0.35); }
+    .skill-tag .remove-tag { color: var(--muted); font-size: 0.65rem; margin-left: 2px; }
+    .skill-tag .remove-tag:hover { color: #f87171; }
+    .skill-input-row { display: flex; gap: 8px; }
+    .skill-input-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.11);
+      color: var(--text);
+      border-radius: 10px;
+      font-size: 0.83rem; padding: 9px 14px;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: 'Poppins', sans-serif;
+      min-width: 0;
+    }
+    .skill-input-row input:focus { box-shadow: 0 0 0 3px var(--primary-glow); border-color: var(--primary); }
+    .skill-input-row input::placeholder { color: #334155; }
+    .skill-add-btn {
+      padding: 9px 16px;
+      background: rgba(147,197,253,0.1);
+      border: 1px solid rgba(147,197,253,0.2);
+      color: var(--blue-muted);
+      border-radius: 10px;
+      font-size: 0.83rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .skill-add-btn:hover { background: rgba(147,197,253,0.18); }
+ 
+    /* ── SOCIAL LINKS ── */
+    .social-section {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-top: 20px;
+    }
+    .social-grid { display: flex; flex-direction: column; gap: 10px; }
+    .social-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .social-icon-wrap {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .social-icon-wrap.github  { background: rgba(255,255,255,0.07); color: #e2e8f0; }
+    .social-icon-wrap.linkedin{ background: rgba(10,102,194,0.15); color: #5ba4d4; }
+    .social-icon-wrap.twitter { background: rgba(29,161,242,0.1); color: #38bdf8; }
+    .social-icon-wrap.website { background: rgba(74,222,128,0.1); color: #4ade80; }
+    .social-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.11);
+      color: var(--text);
+      border-radius: 10px;
+      font-size: 0.83rem; padding: 9px 14px;
+      outline: none; transition: border-color 0.2s;
+      font-family: 'Poppins', sans-serif;
+      min-width: 0;
+    }
+    .social-row input:focus { box-shadow: 0 0 0 3px var(--primary-glow); border-color: var(--primary); }
+    .social-row input::placeholder { color: #334155; }
+    .save-social-btn {
+      width: 100%; padding: 11px;
+      background: rgba(147,197,253,0.1);
+      border: 1px solid rgba(147,197,253,0.2);
+      color: var(--blue-muted);
+      border-radius: 11px;
+      font-size: 0.86rem; font-weight: 600;
+      cursor: pointer; margin-top: 8px;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .save-social-btn:hover { background: rgba(147,197,253,0.18); }
+ 
+    /* SECTION CARD */
+    .profile-section {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-top: 20px;
+    }
+    .section-title {
+      font-size: 0.95rem; font-weight: 600;
+      color: var(--blue-muted); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .section-title i {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(147,197,253,0.12);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+    }
+ 
+    /* FORM */
+    .form-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    .form-control, .form-control:focus {
+      background: rgba(255,255,255,0.055) !important;
+      border: 1px solid rgba(255,255,255,0.11) !important;
+      color: var(--text) !important;
+      border-radius: 12px;
+      font-size: 0.87rem; padding: 11px 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus { box-shadow: 0 0 0 3px var(--primary-glow) !important; border-color: var(--primary) !important; }
+    .form-control::placeholder { color: #334155 !important; }
+    textarea.form-control { resize: none; }
+ 
+    /* SAVE BUTTON */
+    .save-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #185FA5 0%, #1e7fc0 100%);
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; margin-top: 10px;
+      transition: all 0.25s ease;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .save-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--primary-glow); }
+ 
+    /* ── ACHIEVEMENTS ── */
+    .ach-filters {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .ach-filter-btn {
+      padding: 4px 12px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted); font-size: 0.73rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+    .ach-filter-btn.active {
+      background: rgba(147,197,253,0.12); border-color: rgba(147,197,253,0.3); color: var(--blue-muted);
+    }
+    .ach-progress-summary {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(74,222,128,0.05);
+      border: 1px solid rgba(74,222,128,0.15);
+      border-radius: 12px; padding: 10px 14px;
+      margin-bottom: 14px; font-size: 0.78rem; color: var(--muted);
+    }
+    .ach-progress-summary strong { color: var(--green); }
+    .achievement-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .ach-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 16px 14px;
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.25s ease;
+      position: relative; overflow: hidden;
+    }
+    .ach-card.locked { opacity: 0.38; filter: grayscale(0.6); }
+    .ach-card.unlocked { border-color: rgba(74,222,128,0.2); background: rgba(74,222,128,0.05); }
+    .ach-card.unlocked:hover { transform: translateY(-2px); border-color: rgba(74,222,128,0.4); box-shadow: 0 6px 20px rgba(74,222,128,0.1); }
+    .ach-card.unlocked::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 40px; height: 40px;
+      background: radial-gradient(circle at top right, rgba(74,222,128,0.15), transparent 70%);
+    }
+    /* Rarity borders */
+    .ach-card.rarity-rare.unlocked    { border-color: rgba(147,197,253,0.35); background: rgba(147,197,253,0.06); box-shadow: 0 0 14px rgba(147,197,253,0.07); }
+    .ach-card.rarity-epic.unlocked    { border-color: rgba(167,139,250,0.4);  background: rgba(167,139,250,0.07); box-shadow: 0 0 14px rgba(167,139,250,0.1); }
+    .ach-card.rarity-legendary.unlocked { border-color: rgba(250,204,21,0.45); background: rgba(250,204,21,0.07); box-shadow: 0 0 18px rgba(250,204,21,0.12); }
+    .rarity-pip {
+      position: absolute; top: 8px; left: 8px;
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+    .rarity-common .rarity-pip    { background: var(--muted); }
+    .rarity-rare .rarity-pip      { background: #93c5fd; box-shadow: 0 0 5px #93c5fd; }
+    .rarity-epic .rarity-pip      { background: #a78bfa; box-shadow: 0 0 5px #a78bfa; }
+    .rarity-legendary .rarity-pip { background: #facc15; box-shadow: 0 0 7px #facc15; }
+    .ach-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .ach-icon.gold   { background: rgba(250,204,21,0.15); color: #facc15; }
+    .ach-icon.blue   { background: rgba(147,197,253,0.12); color: #93c5fd; }
+    .ach-icon.green  { background: rgba(74,222,128,0.12); color: #4ade80; }
+    .ach-icon.purple { background: rgba(167,139,250,0.12); color: #a78bfa; }
+    .ach-icon.orange { background: rgba(251,146,60,0.12); color: #fb923c; }
+    .ach-icon.pink   { background: rgba(244,114,182,0.12); color: #f472b6; }
+    .ach-icon.red    { background: rgba(248,113,113,0.12); color: #f87171; }
+    .ach-icon.cyan   { background: rgba(34,211,238,0.12); color: #22d3ee; }
+    .ach-text strong { font-size: 0.82rem; font-weight: 600; display: block; color: var(--text); }
+    .ach-text span   { font-size: 0.72rem; color: var(--muted); }
+    .ach-badge-new {
+      position: absolute; top: 8px; right: 8px;
+      background: #4ade80; color: #060f1e;
+      font-size: 0.6rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+ 
+    /* ── LEVEL UP NOTIFICATION ── */
+    .levelup-banner {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-120px);
+      background: linear-gradient(135deg, #185FA5, #4ade80);
+      color: #fff; padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 0.88rem; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 9997; transition: transform 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+      box-shadow: 0 8px 30px rgba(24,95,165,0.4);
+      white-space: nowrap;
+    }
+    .levelup-banner.show { transform: translateX(-50%) translateY(0); }
+ 
+    /* ── ACTIVITY HEATMAP ── */
+    .heatmap-grid { display: flex; gap: 3px; flex-wrap: wrap; }
+    .heatmap-cell {
+      width: 14px; height: 14px; border-radius: 3px;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.2s; cursor: default;
+    }
+    .heatmap-cell.active-1 { background: rgba(24,95,165,0.35); }
+    .heatmap-cell.active-2 { background: rgba(24,95,165,0.6); }
+    .heatmap-cell.active-3 { background: rgba(74,222,128,0.5); }
+    .heatmap-cell.active-4 { background: #4ade80; }
+    .heatmap-legend {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; color: var(--dark-muted); margin-top: 10px;
+    }
+    .heatmap-legend-cell { width: 12px; height: 12px; border-radius: 2px; }
+ 
+    /* ── THEME PICKER ── */
+    .theme-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+    .theme-swatch {
+      width: 42px; height: 42px; border-radius: 50%;
+      cursor: pointer; border: 2px solid transparent;
+      transition: all 0.2s ease; position: relative;
+    }
+    .theme-swatch:hover { transform: scale(1.12); }
+    .theme-swatch.active { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.2); }
+    .theme-swatch::after {
+      content: '✓'; position: absolute; inset: 0;
+      display: none; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem; font-weight: 700;
+    }
+    .theme-swatch.active::after { display: flex; }
+ 
+    /* ── STREAK BANNER ── */
+    .streak-banner {
+      display: flex; align-items: center; gap: 14px;
+      background: linear-gradient(135deg, rgba(251,146,60,0.12), rgba(250,204,21,0.08));
+      border: 1px solid rgba(251,146,60,0.25);
+      border-radius: 16px; padding: 16px 20px; margin-top: 20px;
+    }
+    .streak-fire { font-size: 2rem; animation: fireFlicker 1.5s infinite alternate; }
+    @keyframes fireFlicker {
+      from { transform: scale(1) rotate(-3deg); }
+      to   { transform: scale(1.1) rotate(3deg); }
+    }
+    .streak-info strong { display: block; font-size: 1rem; font-weight: 700; color: #fb923c; }
+    .streak-info span { font-size: 0.78rem; color: var(--muted); }
+ 
+    /* ── SESSION SUMMARY (logout panel) ── */
+    .session-summary {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 16px;
+      margin-bottom: 16px; display: none;
+    }
+    .session-summary.visible { display: block; }
+    .session-summary-title {
+      font-size: 0.78rem; color: var(--muted); font-weight: 600;
+      margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .session-stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .session-stat {
+      text-align: center; padding: 10px 6px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+    }
+    .session-stat strong { display: block; font-size: 1.1rem; font-weight: 700; color: var(--blue-muted); }
+    .session-stat span { font-size: 0.68rem; color: var(--dark-muted); }
+ 
+    /* ── LOGOUT SECTION ── */
+    .logout-section {
+      background: rgba(239,68,68,0.04);
+      border: 1px solid rgba(239,68,68,0.12);
+      border-radius: 20px; padding: 24px; margin-top: 20px;
+    }
+    .logout-section .section-title { color: #f87171; }
+    .logout-section .section-title i { background: rgba(239,68,68,0.1); }
+    .danger-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .danger-row:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .danger-label strong { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .danger-label span { font-size: 0.75rem; color: var(--muted); }
+    .btn-danger-soft {
+      padding: 8px 18px; border-radius: 10px;
+      border: 1px solid rgba(239,68,68,0.3);
+      background: rgba(239,68,68,0.08); color: #f87171;
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease;
+      white-space: nowrap; flex-shrink: 0; font-family: 'Poppins', sans-serif;
+    }
+    .btn-danger-soft:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+    .btn-logout-full {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; margin-top: 16px;
+      transition: all 0.25s ease;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .btn-logout-full:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(220,38,38,0.35); }
+ 
+    /* CONFIRM MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9998; display: none;
+      align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: #0d1f35;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 32px 28px;
+      max-width: 380px; width: 100%; text-align: center;
+      animation: modalPop 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .modal-icon { font-size: 2.5rem; margin-bottom: 14px; }
+    .modal-box h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .modal-box p  { font-size: 0.83rem; color: var(--muted); margin-bottom: 24px; }
+    .modal-btns   { display: flex; gap: 10px; }
+    .modal-btn-cancel {
+      flex: 1; padding: 11px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text); border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s; font-family: 'Poppins', sans-serif;
+    }
+    .modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
+    .modal-btn-confirm {
+      flex: 1; padding: 11px;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      border: none; color: #fff; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif;
+    }
+    .modal-btn-confirm:hover { box-shadow: 0 4px 14px rgba(220,38,38,0.4); }
+ 
+    /* TOAST */
+    #profileToast {
+      position: fixed; bottom: 28px; right: 20px;
+      background: rgba(8,24,44,0.97);
+      border: 1px solid rgba(74,222,128,0.3);
+      color: var(--text); padding: 13px 22px;
+      border-radius: 14px; font-size: 0.84rem;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateY(16px);
+      transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.2);
+      pointer-events: none; z-index: 9999;
+      backdrop-filter: blur(14px);
+      max-width: calc(100vw - 40px);
+    }
+    #profileToast.show { opacity: 1; transform: translateY(0); }
+    #profileToast.danger { border-color: rgba(239,68,68,0.4); }
+    #profileToast.danger i { color: #f87171 !important; }
+ 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .profile-wrapper { padding: 88px 12px 60px; }
+      .profile-card { padding: 32px 20px 26px; border-radius: 20px; }
+      .profile-name { font-size: 1.25rem; }
+      .stat-num { font-size: 1.45rem; }
+      .profile-section, .logout-section, .skills-section, .social-section { padding: 22px 18px; border-radius: 18px; }
+      .achievement-grid { grid-template-columns: repeat(2, 1fr); }
+      .session-stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .completion-steps { gap: 4px; }
+      .completion-step { font-size: 0.65rem; padding: 2px 7px; }
+    }
+ 
+    @media (max-width: 576px) {
+      .profile-wrapper { padding: 80px 10px 50px; }
+      .profile-card { padding: 28px 16px 22px; border-radius: 18px; }
+      .avatar-circle { width: 82px; height: 82px; font-size: 2rem; }
+      .avatar-wrap { width: 82px; height: 82px; }
+      .profile-name { font-size: 1.15rem; }
+      .stats-row { gap: 8px; }
+      .stat-box { padding: 14px 6px; border-radius: 12px; }
+      .stat-num { font-size: 1.25rem; }
+      .stat-label { font-size: 0.68rem; }
+      .profile-section, .logout-section, .skills-section, .social-section { padding: 18px 14px; border-radius: 16px; }
+      .achievement-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .ach-card { padding: 12px 10px; gap: 8px; }
+      .ach-icon { width: 36px; height: 36px; font-size: 0.9rem; border-radius: 10px; }
+      .danger-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .btn-danger-soft { width: 100%; text-align: center; }
+      #profileToast { bottom: 16px; right: 10px; left: 10px; justify-content: center; }
+      .heatmap-cell { width: 11px; height: 11px; }
+      .session-stats-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .session-stat strong { font-size: 0.95rem; }
+      .session-stat span { font-size: 0.62rem; }
+      .streak-banner { padding: 14px 16px; gap: 10px; }
+      .streak-fire { font-size: 1.6rem; }
+      .streak-info strong { font-size: 0.9rem; }
+      .levelup-banner { font-size: 0.8rem; padding: 12px 20px; white-space: nowrap; max-width: 90vw; }
+      .skill-input-row { flex-direction: column; }
+      .skill-add-btn { width: 100%; }
+      .social-row { flex-wrap: nowrap; }
+      .social-row input { font-size: 0.78rem; padding: 8px 11px; }
+      .ach-filters { gap: 4px; }
+      .ach-filter-btn { font-size: 0.68rem; padding: 3px 9px; }
+      .completion-steps { display: none; }
+    }
+ 
+    @media (max-width: 400px) {
+      .achievement-grid { grid-template-columns: 1fr; }
+      .stat-num { font-size: 1.1rem; }
+      .stat-label { font-size: 0.63rem; }
+      .profile-name { font-size: 1rem; }
+      .stats-row { grid-template-columns: repeat(3,1fr); }
+      .session-stats-grid { grid-template-columns: repeat(3,1fr); gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top" id="scholarNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="logo.svg" alt="ScholarKit" width="160" height="55">
+      </a>
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="coding.html"><i class="fa-solid fa-code"></i> Coding Tools</a></li>
+          <li class="nav-item"><a class="nav-link" href="research.html"><i class="fa-solid fa-book-open"></i> Research</a></li>
+          <li class="nav-item"><a class="nav-link" href="engineering.html"><i class="fa-solid fa-gears"></i> Engineering</a></li>
+          <li class="nav-item"><a class="nav-link" href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a></li>
+          <li class="nav-item"><a class="nav-link" href="codegame.html"><i class="fa-solid fa-gamepad"></i> Code Game</a></li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html"><i class="fa-solid fa-circle-user"></i> Profile</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+ 
+  <!-- LEVEL UP BANNER -->
+  <div class="levelup-banner" id="levelupBanner">
+    <i class="fa-solid fa-bolt"></i>
+    <span id="levelupText">Level Up! You're now Level 2</span>
+    <i class="fa-solid fa-star"></i>
+  </div>
+ 
+  <div class="profile-wrapper">
+    <div class="container" style="max-width:660px;">
+ 
+      <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </a>
+ 
+      <!-- AVATAR CARD -->
+      <div class="profile-card">
+        <div class="avatar-wrap">
+          <div class="avatar-circle" id="avatarIcon" title="Your avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="avatar-ring"></div>
+        </div>
+        <div class="profile-name" id="displayName">Your Name</div>
+        <div class="profile-email" id="displayEmail">your@email.com</div>
+        <div class="profile-college-display" id="displayCollege" style="display:none;">
+          <i class="fa-solid fa-building-columns" style="margin-right:5px;opacity:.7;"></i>
+          <span id="displayCollegeText"></span>
+        </div>
+        <!-- SOCIAL LINKS DISPLAY -->
+        <div id="socialLinksDisplay" style="display:none;margin-bottom:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"></div>
+        <span class="profile-badge" id="rankBadge">
+          <i class="fa-solid fa-star"></i> Scholar Member
+        </span>
+        <!-- XP BAR -->
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-label">
+            <span id="xpLevelLabel">Level 1 — Newcomer</span>
+            <span id="xpAmountLabel">0 / 30 XP</span>
+          </div>
+          <div class="xp-bar-track">
+            <div class="xp-bar-fill" id="xpBarFill"></div>
+          </div>
+        </div>
+        <!-- PROFILE COMPLETION METER -->
+        <div class="completion-wrap">
+          <div class="completion-header">
+            <span><i class="fa-solid fa-chart-simple" style="margin-right:5px;"></i>Profile Completion</span>
+            <span class="completion-pct" id="completionPct">0%</span>
+          </div>
+          <div class="completion-track">
+            <div class="completion-fill" id="completionFill" style="width:0%"></div>
+          </div>
+          <div class="completion-steps" id="completionSteps"></div>
+        </div>
+      </div>
+ 
+      <!-- STREAK BANNER -->
+      <div class="streak-banner">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-info">
+          <strong id="streakCount">1 Day Streak!</strong>
+          <span>Keep visiting ScholarKit every day to grow your streak</span>
+        </div>
+      </div>
+ 
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="statTools">0</div>
+          <div class="stat-label">Tools Used</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statDays">1</div>
+          <div class="stat-label">Days Active</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statScore">—</div>
+          <div class="stat-label">Game Score</div>
+        </div>
+      </div>
+
+      <!-- INSIGHTS LINK -->
+      <a href="nova_insights.html" style="
+        display:flex;align-items:center;justify-content:space-between;
+        background:linear-gradient(135deg,rgba(45,212,191,0.07),rgba(147,197,253,0.07));
+        border:1px solid rgba(45,212,191,0.25);
+        border-radius:16px;padding:18px 22px;
+        text-decoration:none;
+        transition:border-color 0.2s,background 0.2s;
+        margin-bottom:4px;
+      " onmouseover="this.style.borderColor='rgba(45,212,191,0.45)';this.style.background='linear-gradient(135deg,rgba(45,212,191,0.13),rgba(147,197,253,0.11))'" onmouseout="this.style.borderColor='rgba(45,212,191,0.25)';this.style.background='linear-gradient(135deg,rgba(45,212,191,0.07),rgba(147,197,253,0.07))'">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(45,212,191,0.12);border:1px solid rgba(45,212,191,0.25);display:flex;align-items:center;justify-content:center;color:#2dd4bf;font-size:1rem;flex-shrink:0;">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <div style="font-size:0.9rem;font-weight:600;color:#e2e8f0;margin-bottom:2px;">View your learning analytics</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">Topics covered · streak · AI-generated study advice</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-arrow-right" style="color:rgba(45,212,191,0.6);font-size:0.85rem;flex-shrink:0;"></i>
+      </a>
+ 
+      <!-- EDIT PROFILE -->
+      <div class="profile-section">
+        <div class="section-title">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Edit Profile
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="inputName" placeholder="Enter your name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">College / School</label>
+          <input type="text" class="form-control" id="inputCollege" placeholder="e.g. IIT Delhi">
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Bio</label>
+          <textarea class="form-control" id="inputBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+        </div>
+        <button class="save-btn" onclick="saveProfile()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Profile
+        </button>
+      </div>
+ 
+      <!-- SKILL TAGS -->
+      <div class="skills-section">
+        <div class="section-title">
+          <i class="fa-solid fa-tags"></i>
+          My Skills
+        </div>
+        <div class="skill-tags-wrap" id="skillTagsWrap">
+          <!-- populated by JS -->
+        </div>
+        <div class="skill-input-row">
+          <input type="text" id="skillInput" placeholder="Add a skill (e.g. Python, ML, Design...)" maxlength="30"
+            onkeydown="if(event.key==='Enter') addSkillTag()">
+          <button class="skill-add-btn" onclick="addSkillTag()">
+            <i class="fa-solid fa-plus"></i> Add
+          </button>
+        </div>
+      </div>
+ 
+      <!-- SOCIAL LINKS -->
+      <div class="social-section">
+        <div class="section-title">
+          <i class="fa-solid fa-share-nodes"></i>
+          Social Links
+        </div>
+        <div class="social-grid">
+          <div class="social-row">
+            <div class="social-icon-wrap github"><i class="fa-brands fa-github"></i></div>
+            <input type="url" id="socialGithub" placeholder="https://github.com/username">
+          </div>
+          <div class="social-row">
+            <div class="social-icon-wrap linkedin"><i class="fa-brands fa-linkedin"></i></div>
+            <input type="url" id="socialLinkedin" placeholder="https://linkedin.com/in/username">
+          </div>
+          <div class="social-row">
+            <div class="social-icon-wrap twitter"><i class="fa-brands fa-x-twitter"></i></div>
+            <input type="url" id="socialTwitter" placeholder="https://x.com/username">
+          </div>
+          <div class="social-row">
+            <div class="social-icon-wrap website"><i class="fa-solid fa-globe"></i></div>
+            <input type="url" id="socialWebsite" placeholder="https://yourwebsite.com">
+          </div>
+        </div>
+        <button class="save-social-btn" onclick="saveSocial()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Social Links
+        </button>
+      </div>
+ 
+      <!-- ACHIEVEMENTS -->
+      <div class="profile-section">
+        <div class="section-title">
+          <i class="fa-solid fa-trophy"></i>
+          Achievements
+        </div>
+        <div class="ach-progress-summary" id="achProgressSummary">
+          <i class="fa-solid fa-medal" style="color:var(--green);"></i>
+          <span>You've unlocked <strong id="achUnlockedCount">0</strong> of <strong id="achTotalCount">0</strong> achievements</span>
+        </div>
+        <div class="ach-filters" id="achFilters">
+          <button class="ach-filter-btn active" onclick="filterAch('all',this)">All</button>
+          <button class="ach-filter-btn" onclick="filterAch('unlocked',this)">Unlocked</button>
+          <button class="ach-filter-btn" onclick="filterAch('locked',this)">Locked</button>
+          <button class="ach-filter-btn" onclick="filterAch('legendary',this)">⭐ Legendary</button>
+        </div>
+        <div class="achievement-grid" id="achievementGrid"></div>
+      </div>
+ 
+      <!-- ACTIVITY HEATMAP -->
+      <div class="profile-section">
+        <div class="section-title">
+          <i class="fa-solid fa-calendar-days"></i>
+          Activity — Last 10 Weeks
+        </div>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="heatmap-legend-cell" style="background:rgba(255,255,255,0.06);"></div>
+          <div class="heatmap-legend-cell" style="background:rgba(24,95,165,0.35);"></div>
+          <div class="heatmap-legend-cell" style="background:rgba(24,95,165,0.6);"></div>
+          <div class="heatmap-legend-cell" style="background:rgba(74,222,128,0.5);"></div>
+          <div class="heatmap-legend-cell" style="background:#4ade80;"></div>
+          <span>More</span>
+        </div>
+      </div>
+ 
+      <!-- PROFILE THEME -->
+      <div class="profile-section">
+        <div class="section-title">
+          <i class="fa-solid fa-palette"></i>
+          Profile Theme
+        </div>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+ 
+      <!-- ACCOUNT / LOGOUT -->
+      <div class="logout-section">
+        <div class="section-title">
+          <i class="fa-solid fa-shield-halved"></i>
+          Account
+        </div>
+ 
+        <!-- SESSION SUMMARY (shown before logout) -->
+        <div class="session-summary" id="sessionSummary">
+          <div class="session-summary-title">📊 Your Session Summary</div>
+          <div class="session-stats-grid">
+            <div class="session-stat">
+              <strong id="ss-streak">—</strong>
+              <span>Day Streak</span>
+            </div>
+            <div class="session-stat">
+              <strong id="ss-xp">—</strong>
+              <span>Total XP</span>
+            </div>
+            <div class="session-stat">
+              <strong id="ss-ach">—</strong>
+              <span>Achievements</span>
+            </div>
+          </div>
+        </div>
+ 
+        <div class="danger-row">
+          <div class="danger-label">
+            <strong>Export My Data</strong>
+            <span>Download all your profile data as JSON</span>
+          </div>
+          <button class="btn-danger-soft" style="border-color:rgba(147,197,253,0.3);background:rgba(147,197,253,0.06);color:#93c5fd;" onclick="exportData()">
+            <i class="fa-solid fa-download"></i> Export
+          </button>
+        </div>
+ 
+        <div class="danger-row">
+          <div class="danger-label">
+            <strong>Clear Game Score</strong>
+            <span>Reset your Code Game leaderboard score</span>
+          </div>
+          <button class="btn-danger-soft" onclick="confirmAction('score')">
+            <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+          </button>
+        </div>
+ 
+        <div class="danger-row">
+          <div class="danger-label">
+            <strong>Delete All Data</strong>
+            <span>Permanently erase your profile and stats</span>
+          </div>
+          <button class="btn-danger-soft" onclick="confirmAction('delete')">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+ 
+        <button class="btn-logout-full" onclick="showSessionSummary()">
+          <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </button>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+      <div class="modal-icon" id="modalIcon">⚠️</div>
+      <h4 id="modalTitle">Are you sure?</h4>
+      <p id="modalDesc">This action cannot be undone.</p>
+      <div class="modal-btns">
+        <button class="modal-btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="modal-btn-confirm" id="modalConfirmBtn" onclick="executeAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- TOAST -->
+  <div id="profileToast">
+    <i class="fa-solid fa-circle-check" style="color:#4ade80;" id="toastIcon"></i>
+    <span id="toastMsg">Profile saved successfully!</span>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+ 
+    // ── ACHIEVEMENTS DATA (extended with rarity tiers) ──
+    const ACHIEVEMENTS = [
+      // COMMON
+      { id: 'profile_created', icon: 'fa-solid fa-user-check', color: 'green', rarity: 'common', title: 'First Steps', desc: 'Created your profile', xp: 10, key: 'sk_name' },
+      { id: 'first_search', icon: 'fa-solid fa-magnifying-glass', color: 'blue', rarity: 'common', title: 'Curious Mind', desc: 'Made your first search', xp: 15, key: 'sk_first_search' },
+      { id: 'bio_added',       icon: 'fa-solid fa-feather',            color: 'gold',   rarity: 'common',    title: 'Storyteller',       desc: 'Wrote a bio',                     xp: 10,  key: 'sk_bio' },
+      { id: 'college_added',   icon: 'fa-solid fa-building-columns',   color: 'blue',   rarity: 'common',    title: 'Campus Life',       desc: 'Added your college',              xp: 10,  key: 'sk_college' },
+      { id: 'theme_changed',   icon: 'fa-solid fa-palette',            color: 'pink',   rarity: 'common',    title: 'Artist',            desc: 'Changed your profile theme',      xp: 10,  key: 'sk_theme_changed' },
+      { id: 'skill_added',     icon: 'fa-solid fa-tags',               color: 'cyan',   rarity: 'common',    title: 'Skilled',           desc: 'Added a skill tag',               xp: 10,  key: 'sk_skills' },
+      { id: 'social_linked',   icon: 'fa-solid fa-share-nodes',        color: 'blue',   rarity: 'common',    title: 'Connected',         desc: 'Added a social link',             xp: 10,  key: 'sk_social_github' },
+      { id: 'data_exported',   icon: 'fa-solid fa-database',           color: 'purple', rarity: 'common',    title: 'Data Keeper',       desc: 'Exported your profile data',      xp: 15,  key: 'sk_exported' },
+      // RARE
+      { id: 'game_played',     icon: 'fa-solid fa-gamepad',            color: 'purple', rarity: 'rare',      title: 'Gamer',             desc: 'Played the Code Game',            xp: 20,  key: 'sk_score' },
+      { id: 'streak_3',        icon: 'fa-solid fa-fire',               color: 'orange', rarity: 'rare',      title: 'On Fire',           desc: '3-day visit streak',              xp: 30,  key: '_streak3' },
+      { id: 'profile_complete',icon: 'fa-solid fa-circle-check',       color: 'green',  rarity: 'rare',      title: 'Fully Loaded',      desc: '100% profile completion',         xp: 25,  key: '_profile100' },
+      { id: 'skills_5',        icon: 'fa-solid fa-layer-group',        color: 'cyan',   rarity: 'rare',      title: 'Multi-Talented',    desc: 'Added 5 skill tags',              xp: 20,  key: '_skills5' },
+      // EPIC
+      { id: 'streak_7',        icon: 'fa-solid fa-crown',              color: 'gold',   rarity: 'epic',      title: 'Scholar King',      desc: '7-day visit streak',              xp: 75,  key: '_streak7' },
+      { id: 'score_100',       icon: 'fa-solid fa-star',               color: 'gold',   rarity: 'epic',      title: 'Century',           desc: 'Scored 100+ in Code Game',        xp: 50,  key: '_score100' },
+      { id: 'all_social',      icon: 'fa-solid fa-network-wired',      color: 'blue',   rarity: 'epic',      title: 'Social Butterfly',  desc: 'Filled all 4 social links',       xp: 40,  key: '_all_social' },
+      // LEGENDARY
+      { id: 'streak_30',       icon: 'fa-solid fa-infinity',           color: 'gold',   rarity: 'legendary', title: 'Eternal Scholar',   desc: '30-day visit streak',             xp: 200, key: '_streak30' },
+      { id: 'score_500',       icon: 'fa-solid fa-rocket',             color: 'red',    rarity: 'legendary', title: 'Code Legend',       desc: 'Scored 500+ in Code Game',        xp: 150, key: '_score500' },
+      { id: 'max_level',       icon: 'fa-solid fa-dragon',             color: 'purple', rarity: 'legendary', title: 'Transcendent',      desc: 'Reached maximum level',           xp: 0,   key: '_maxlevel' },
+    ];
+ 
+    // ── THEMES ──
+    const THEMES = [
+      { id: 'blue',   gradient: 'linear-gradient(135deg,#185FA5,#4ade80)', label: 'Ocean' },
+      { id: 'purple', gradient: 'linear-gradient(135deg,#7c3aed,#a78bfa)', label: 'Violet' },
+      { id: 'sunset', gradient: 'linear-gradient(135deg,#ea580c,#facc15)', label: 'Sunset' },
+      { id: 'rose',   gradient: 'linear-gradient(135deg,#be123c,#f472b6)', label: 'Rose' },
+      { id: 'teal',   gradient: 'linear-gradient(135deg,#0d9488,#22d3ee)', label: 'Teal' },
+      { id: 'mono',   gradient: 'linear-gradient(135deg,#334155,#94a3b8)', label: 'Mono' },
+    ];
+ 
+    // COMPLETION STEPS
+    const COMPLETION_STEPS = [
+      { key: 'sk_name',    label: 'Name',    icon: 'fa-solid fa-user' },
+      { key: 'sk_email',   label: 'Email',   icon: 'fa-solid fa-envelope' },
+      { key: 'sk_college', label: 'College', icon: 'fa-solid fa-building-columns' },
+      { key: 'sk_bio',     label: 'Bio',     icon: 'fa-solid fa-feather' },
+      { key: 'sk_skills',  label: 'Skills',  icon: 'fa-solid fa-tags' },
+      { key: 'sk_social_github', label: 'Social', icon: 'fa-solid fa-share-nodes' },
+    ];
+ 
+    let pendingAction = null;
+    let prevLevel = 1;
+    let currentAchFilter = 'all';
+ 
+    // ── AVATAR ──
+    function updateAvatar(name) {
+      const el = document.getElementById('avatarIcon');
+      const theme = localStorage.getItem('sk_theme') || 'blue';
+      const t = THEMES.find(t => t.id === theme) || THEMES[0];
+      el.style.background = t.gradient;
+      if (name && name.trim()) {
+        const initials = name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        el.innerHTML = `<span style="font-size:1.5rem;font-weight:700;">${initials}</span>`;
+      } else {
+        el.innerHTML = `<i class="fa-solid fa-user"></i>`;
+      }
+    }
+ 
+    // ── XP & LEVEL ──
+    function isUnlocked(a) {
+      if (a.key === null)          return true;
+      if (a.key === '_streak3')    return parseInt(localStorage.getItem('sk_streak') || '0') >= 3;
+      if (a.key === '_streak7')    return parseInt(localStorage.getItem('sk_streak') || '0') >= 7;
+      if (a.key === '_streak30')   return parseInt(localStorage.getItem('sk_streak') || '0') >= 30;
+      if (a.key === '_score100')   return parseInt(localStorage.getItem('sk_score') || '0') >= 100;
+      if (a.key === '_score500')   return parseInt(localStorage.getItem('sk_score') || '0') >= 500;
+      if (a.key === '_skills5')    { try { return JSON.parse(localStorage.getItem('sk_skills')||'[]').length >= 5; } catch(e){ return false; } }
+      if (a.key === '_profile100') return getCompletionPct() === 100;
+      if (a.key === '_all_social') {
+        return !!(localStorage.getItem('sk_social_github') && localStorage.getItem('sk_social_linkedin') &&
+                  localStorage.getItem('sk_social_twitter') && localStorage.getItem('sk_social_website'));
+      }
+      if (a.key === '_maxlevel')   return false;
+      return !!localStorage.getItem(a.key);
+    }
+ 
+    function computeXP() {
+      let xp = 0;
+      ACHIEVEMENTS.forEach(a => { if (isUnlocked(a)) xp += a.xp; });
+      return xp;
+    }
+ 
+    function getLevel(xp) {
+      if (xp >= 200) return { level: 5, title: 'Legend',      next: 999, prev: 200 };
+      if (xp >= 120) return { level: 4, title: 'Expert',      next: 200, prev: 120 };
+      if (xp >= 70)  return { level: 3, title: 'Advanced',    next: 120, prev: 70  };
+      if (xp >= 30)  return { level: 2, title: 'Rising Star', next: 70,  prev: 30  };
+      return                { level: 1, title: 'Newcomer',    next: 30,  prev: 0   };
+    }
+ 
+    function updateXPBar() {
+      const xp  = computeXP();
+      const lvl = getLevel(xp);
+      const pct = lvl.next === 999 ? 100 : Math.min(100, ((xp - lvl.prev) / (lvl.next - lvl.prev)) * 100);
+      document.getElementById('xpLevelLabel').textContent  = `Level ${lvl.level} — ${lvl.title}`;
+      document.getElementById('xpAmountLabel').textContent = lvl.next === 999 ? `${xp} XP — MAX` : `${xp} / ${lvl.next} XP`;
+      setTimeout(() => { document.getElementById('xpBarFill').style.width = pct + '%'; }, 300);
+ 
+      const icons = ['','fa-seedling','fa-bolt','fa-fire','fa-gem','fa-crown'];
+      document.getElementById('rankBadge').innerHTML = `<i class="fa-solid ${icons[lvl.level]}"></i> ${lvl.title}`;
+ 
+      // Level-up animation
+      if (lvl.level > prevLevel && prevLevel > 0) {
+        showLevelUp(lvl.level, lvl.title);
+      }
+      prevLevel = lvl.level;
+    }
+ 
+    function showLevelUp(level, title) {
+      const banner = document.getElementById('levelupBanner');
+      document.getElementById('levelupText').textContent = `Level Up! You're now Level ${level} — ${title}`;
+      banner.classList.add('show');
+      setTimeout(() => banner.classList.remove('show'), 3500);
+    }
+ 
+    // ── PROFILE COMPLETION ──
+    function getCompletionPct() {
+      let done = 0;
+      COMPLETION_STEPS.forEach(s => { if (localStorage.getItem(s.key)) done++; });
+      return Math.round((done / COMPLETION_STEPS.length) * 100);
+    }
+ 
+    function updateCompletion() {
+      const pct = getCompletionPct();
+      document.getElementById('completionPct').textContent = pct + '%';
+      document.getElementById('completionFill').style.width = pct + '%';
+      const wrap = document.getElementById('completionSteps');
+      wrap.innerHTML = '';
+      COMPLETION_STEPS.forEach(s => {
+        const done = !!localStorage.getItem(s.key);
+        const el = document.createElement('span');
+        el.className = `completion-step ${done ? 'done' : ''}`;
+        el.innerHTML = `<i class="fa-solid ${done ? 'fa-check' : 'fa-xmark'}"></i> ${s.label}`;
+        wrap.appendChild(el);
+      });
+    }
+ 
+    // ── STREAK ──
+    function updateStreak() {
+      const today = new Date().toDateString();
+      const last  = localStorage.getItem('sk_last_visit');
+      let streak  = parseInt(localStorage.getItem('sk_streak') || '1');
+      if (last !== today) {
+        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+        streak = (last === yesterday.toDateString()) ? streak + 1 : (!last ? 1 : 1);
+        localStorage.setItem('sk_streak', streak);
+        localStorage.setItem('sk_last_visit', today);
+      }
+      document.getElementById('streakCount').textContent = streak === 1 ? '1 Day Streak!' : `${streak} Day Streak! 🎉`;
+      document.getElementById('statDays').textContent = streak;
+    }
+ 
+    // ── ACHIEVEMENTS ──
+    let achievementFilter = 'all';
+    function filterAch(filter, btn) {
+      achievementFilter = filter;
+      document.querySelectorAll('.ach-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAchievements();
+    }
+ 
+    function renderAchievements() {
+      const grid = document.getElementById('achievementGrid');
+      grid.innerHTML = '';
+      let unlockCount = 0, shown = 0;
+      ACHIEVEMENTS.forEach(a => {
+        const unlocked = isUnlocked(a);
+        if (unlocked) unlockCount++;
+        if (achievementFilter === 'unlocked' && !unlocked) return;
+        if (achievementFilter === 'locked' && unlocked) return;
+        if (achievementFilter === 'legendary' && a.rarity !== 'legendary') return;
+        shown++;
+        const isNew = unlocked && !localStorage.getItem('sk_ach_seen_' + a.id);
+        const card = document.createElement('div');
+        card.className = `ach-card rarity-${a.rarity} ${unlocked ? 'unlocked' : 'locked'}`;
+        card.innerHTML = `
+          <div class="rarity-pip"></div>
+          ${isNew ? '<span class="ach-badge-new">New!</span>' : ''}
+          <div class="ach-icon ${a.color}"><i class="${a.icon}"></i></div>
+          <div class="ach-text">
+            <strong>${a.title}</strong>
+            <span>${a.desc}</span>
+            <span style="color:${unlocked ? '#facc15' : 'var(--dark-muted)'};font-size:0.7rem;margin-top:2px;display:block;">
+              ${a.xp > 0 ? `+${a.xp} XP` : 'MAX'} · <span style="text-transform:capitalize;opacity:.7;">${a.rarity}</span>
+            </span>
+          </div>`;
+        if (unlocked && isNew) {
+          card.addEventListener('click', () => {
+            localStorage.setItem('sk_ach_seen_' + a.id, '1');
+            card.querySelector('.ach-badge-new')?.remove();
+          });
+        }
+        grid.appendChild(card);
+      });
+      if (shown === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--muted);font-size:0.82rem;">No achievements in this filter yet.</div>`;
+      }
+      document.getElementById('achUnlockedCount').textContent = unlockCount;
+      document.getElementById('achTotalCount').textContent = ACHIEVEMENTS.length;
+    }
+ 
+    // ── HEATMAP ──
+    function renderHeatmap() {
+      const grid = document.getElementById('heatmapGrid');
+      grid.innerHTML = '';
+      const streak = parseInt(localStorage.getItem('sk_streak') || '1');
+      for (let i = 69; i >= 0; i--) {
+        const cell = document.createElement('div');
+        cell.className = 'heatmap-cell';
+        if (i < streak) {
+          cell.classList.add('active-' + (i === 0 ? 4 : i < 3 ? 3 : i < 7 ? 2 : 1));
+        } else if (Math.random() < 0.15) {
+          cell.classList.add('active-1');
+        }
+        grid.appendChild(cell);
+      }
+    }
+ 
+    // ── THEMES ──
+    function renderThemes() {
+      const grid = document.getElementById('themeGrid');
+      const current = localStorage.getItem('sk_theme') || 'blue';
+      grid.innerHTML = '';
+      THEMES.forEach(t => {
+        const sw = document.createElement('div');
+        sw.className = `theme-swatch ${t.id === current ? 'active' : ''}`;
+        sw.style.background = t.gradient;
+        sw.title = t.label;
+        sw.onclick = () => {
+          localStorage.setItem('sk_theme', t.id);
+          localStorage.setItem('sk_theme_changed', '1');
+          document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+          sw.classList.add('active');
+          updateAvatar(localStorage.getItem('sk_name') || '');
+          renderAchievements(); updateXPBar();
+          showToast('Theme updated! ✨', false);
+        };
+        grid.appendChild(sw);
+      });
+    }
+ 
+    // ── SKILL TAGS ──
+    function renderSkillTags() {
+      let skills = [];
+      try { skills = JSON.parse(localStorage.getItem('sk_skills') || '[]'); } catch(e) {}
+      const wrap = document.getElementById('skillTagsWrap');
+      wrap.innerHTML = '';
+      if (skills.length === 0) {
+        wrap.innerHTML = `<span style="font-size:0.76rem;color:var(--dark-muted);">No skills added yet. Add your first one below!</span>`;
+        return;
+      }
+      skills.forEach((s, i) => {
+        const tag = document.createElement('span');
+        tag.className = 'skill-tag';
+        tag.innerHTML = `<i class="fa-solid fa-hashtag" style="font-size:0.65rem;opacity:.6;"></i>${s}<span class="remove-tag" onclick="removeSkillTag(${i})"><i class="fa-solid fa-xmark"></i></span>`;
+        wrap.appendChild(tag);
+      });
+    }
+ 
+    function addSkillTag() {
+      const input = document.getElementById('skillInput');
+      const val   = input.value.trim();
+      if (!val) return;
+      let skills = [];
+      try { skills = JSON.parse(localStorage.getItem('sk_skills') || '[]'); } catch(e) {}
+      if (skills.includes(val) || skills.length >= 15) {
+        showToast(skills.length >= 15 ? 'Max 15 skills!' : 'Skill already added!', true);
+        return;
+      }
+      skills.push(val);
+      localStorage.setItem('sk_skills', JSON.stringify(skills));
+      input.value = '';
+      renderSkillTags();
+      renderAchievements();
+      updateXPBar();
+      updateCompletion();
+      showToast(`Skill "${val}" added! 🏷️`, false);
+    }
+ 
+    function removeSkillTag(index) {
+      let skills = [];
+      try { skills = JSON.parse(localStorage.getItem('sk_skills') || '[]'); } catch(e) {}
+      skills.splice(index, 1);
+      localStorage.setItem('sk_skills', JSON.stringify(skills));
+      renderSkillTags();
+      renderAchievements();
+      updateXPBar();
+      updateCompletion();
+    }
+ 
+    // ── SOCIAL LINKS ──
+    function loadSocial() {
+      document.getElementById('socialGithub').value   = localStorage.getItem('sk_social_github')   || '';
+      document.getElementById('socialLinkedin').value = localStorage.getItem('sk_social_linkedin') || '';
+      document.getElementById('socialTwitter').value  = localStorage.getItem('sk_social_twitter')  || '';
+      document.getElementById('socialWebsite').value  = localStorage.getItem('sk_social_website')  || '';
+      renderSocialDisplay();
+    }
+ 
+    function saveSocial() {
+      localStorage.setItem('sk_social_github',   document.getElementById('socialGithub').value.trim());
+      localStorage.setItem('sk_social_linkedin', document.getElementById('socialLinkedin').value.trim());
+      localStorage.setItem('sk_social_twitter',  document.getElementById('socialTwitter').value.trim());
+      localStorage.setItem('sk_social_website',  document.getElementById('socialWebsite').value.trim());
+      renderSocialDisplay();
+      renderAchievements();
+      updateXPBar();
+      updateCompletion();
+      showToast('Social links saved! 🔗', false);
+    }
+ 
+    function renderSocialDisplay() {
+      const wrap = document.getElementById('socialLinksDisplay');
+      const links = [
+        { key: 'sk_social_github',   icon: 'fa-brands fa-github',    color: '#e2e8f0' },
+        { key: 'sk_social_linkedin', icon: 'fa-brands fa-linkedin',  color: '#5ba4d4' },
+        { key: 'sk_social_twitter',  icon: 'fa-brands fa-x-twitter', color: '#38bdf8' },
+        { key: 'sk_social_website',  icon: 'fa-solid fa-globe',      color: '#4ade80' },
+      ];
+      wrap.innerHTML = '';
+      let hasAny = false;
+      links.forEach(l => {
+        const url = localStorage.getItem(l.key);
+        if (!url) return;
+        hasAny = true;
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank';
+        a.style.cssText = `color:${l.color};font-size:1.1rem;transition:transform 0.2s;`;
+        a.innerHTML = `<i class="${l.icon}"></i>`;
+        a.addEventListener('mouseenter', () => a.style.transform = 'scale(1.2)');
+        a.addEventListener('mouseleave', () => a.style.transform = 'scale(1)');
+        wrap.appendChild(a);
+      });
+      wrap.style.display = hasAny ? 'flex' : 'none';
+    }
+ 
+    // ── SESSION SUMMARY ──
+    function showSessionSummary() {
+      const streak = parseInt(localStorage.getItem('sk_streak') || '1');
+      const xp = computeXP();
+      const unlocked = ACHIEVEMENTS.filter(a => isUnlocked(a)).length;
+      document.getElementById('ss-streak').textContent = streak;
+      document.getElementById('ss-xp').textContent = xp;
+      document.getElementById('ss-ach').textContent = `${unlocked}/${ACHIEVEMENTS.length}`;
+      document.getElementById('sessionSummary').classList.add('visible');
+      // scroll to it
+      document.getElementById('sessionSummary').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      confirmAction('logout');
+    }
+ 
+    // ── LOAD PROFILE ──
+    function loadProfile() {
+      const name    = localStorage.getItem('sk_name')    || '';
+      const email   = localStorage.getItem('sk_email')   || '';
+      const college = localStorage.getItem('sk_college') || '';
+      const bio     = localStorage.getItem('sk_bio')     || '';
+ 
+      document.getElementById('inputName').value    = name;
+      document.getElementById('inputEmail').value   = email;
+      document.getElementById('inputCollege').value = college;
+      document.getElementById('inputBio').value     = bio;
+ 
+      document.getElementById('displayName').textContent  = name  || 'Your Name';
+      document.getElementById('displayEmail').textContent = email || 'your@email.com';
+ 
+      const collegeDisplay = document.getElementById('displayCollege');
+      if (college) {
+        document.getElementById('displayCollegeText').textContent = college;
+        collegeDisplay.style.display = 'block';
+      } else {
+        collegeDisplay.style.display = 'none';
+      }
+ 
+      updateAvatar(name);
+      const score = localStorage.getItem('sk_score');
+      document.getElementById('statScore').textContent = score || '—';
+ 
+      updateStreak();
+      prevLevel = getLevel(computeXP()).level;
+      renderAchievements();
+      renderHeatmap();
+      renderThemes();
+      updateXPBar();
+      updateCompletion();
+      renderSkillTags();
+      loadSocial();
+    }
+ 
+    // ── SAVE PROFILE ──
+    function saveProfile() {
+      const name    = document.getElementById('inputName').value.trim();
+      const email   = document.getElementById('inputEmail').value.trim();
+      const college = document.getElementById('inputCollege').value.trim();
+      const bio     = document.getElementById('inputBio').value.trim();
+ 
+      localStorage.setItem('sk_name',    name);
+      localStorage.setItem('sk_email',   email);
+      localStorage.setItem('sk_college', college);
+      localStorage.setItem('sk_bio',     bio);
+ 
+      document.getElementById('displayName').textContent  = name  || 'Your Name';
+      document.getElementById('displayEmail').textContent = email || 'your@email.com';
+ 
+      const collegeDisplay = document.getElementById('displayCollege');
+      if (college) {
+        document.getElementById('displayCollegeText').textContent = college;
+        collegeDisplay.style.display = 'block';
+      } else {
+        collegeDisplay.style.display = 'none';
+      }
+ 
+      updateAvatar(name);
+      renderAchievements();
+      updateXPBar();
+      updateCompletion();
+      showToast('Profile saved! 🎉', false);
+    }
+ 
+    // ── EXPORT ──
+    function exportData() {
+      let skills = [];
+      try { skills = JSON.parse(localStorage.getItem('sk_skills') || '[]'); } catch(e) {}
+      const data = {
+        name:      localStorage.getItem('sk_name')    || '',
+        email:     localStorage.getItem('sk_email')   || '',
+        college:   localStorage.getItem('sk_college') || '',
+        bio:       localStorage.getItem('sk_bio')     || '',
+        skills:    skills,
+        social: {
+          github:   localStorage.getItem('sk_social_github')   || '',
+          linkedin: localStorage.getItem('sk_social_linkedin') || '',
+          twitter:  localStorage.getItem('sk_social_twitter')  || '',
+          website:  localStorage.getItem('sk_social_website')  || '',
+        },
+        score:      localStorage.getItem('sk_score')  || 0,
+        streak:     localStorage.getItem('sk_streak') || 1,
+        theme:      localStorage.getItem('sk_theme')  || 'blue',
+        xp:         computeXP(),
+        level:      getLevel(computeXP()).level,
+        exportedAt: new Date().toISOString(),
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'scholarkit-profile.json';
+      a.click();
+      localStorage.setItem('sk_exported', '1');
+      renderAchievements();
+      updateXPBar();
+      showToast('Data exported! 📦', false);
+    }
+ 
+    // ── MODAL ──
+    const MODAL_CONFIG = {
+      logout: { icon: '👋', title: 'Log Out?',           desc: 'Your local data stays saved. You can return anytime.', btn: 'Log Out' },
+      score:  { icon: '🎮', title: 'Reset Game Score?',  desc: 'Your Code Game score will be cleared permanently.',    btn: 'Reset Score' },
+      delete: { icon: '🗑️', title: 'Delete Everything?', desc: 'All your profile data, stats and achievements will be permanently erased.', btn: 'Delete All' },
+    };
+ 
+    function confirmAction(type) {
+      pendingAction = type;
+      const cfg = MODAL_CONFIG[type];
+      document.getElementById('modalIcon').textContent       = cfg.icon;
+      document.getElementById('modalTitle').textContent      = cfg.title;
+      document.getElementById('modalDesc').textContent       = cfg.desc;
+      document.getElementById('modalConfirmBtn').textContent = cfg.btn;
+      document.getElementById('confirmModal').classList.add('show');
+    }
+ 
+    function closeModal() {
+      document.getElementById('confirmModal').classList.remove('show');
+      pendingAction = null;
+    }
+ 
+    function executeAction() {
+  const action = pendingAction;
+  closeModal();
+  if (action === 'logout') {
+    const keys = ['sk_name','sk_email','sk_college','sk_bio','sk_score','sk_streak','sk_last_visit',
+                  'sk_theme','sk_exported','sk_skills','sk_theme_changed',
+                  'sk_social_github','sk_social_linkedin','sk_social_twitter','sk_social_website'];
+    ACHIEVEMENTS.forEach(a => keys.push('sk_ach_seen_' + a.id));
+    keys.forEach(k => localStorage.removeItem(k));
+    showToast('Logged out. See you soon! 👋', false);
+    setTimeout(() => { window.location.href = 'index.html'; }, 1600);
+
+  } else if (action === 'score') {
+    localStorage.removeItem('sk_score');
+    document.getElementById('statScore').textContent = '—';
+    renderAchievements(); updateXPBar();
+    showToast('Game score cleared.', true);
+  } else if (action === 'delete') {
+    const keys = ['sk_name','sk_email','sk_college','sk_bio','sk_score','sk_streak','sk_last_visit',
+                  'sk_theme','sk_exported','sk_skills','sk_theme_changed',
+                  'sk_social_github','sk_social_linkedin','sk_social_twitter','sk_social_website'];
+    ACHIEVEMENTS.forEach(a => keys.push('sk_ach_seen_' + a.id));
+    keys.forEach(k => localStorage.removeItem(k));
+    showToast('All data deleted. Starting fresh!', true);
+    setTimeout(() => window.location.reload(), 1500);
+  }
+}
+ 
+    document.getElementById('confirmModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+ 
+    // ── TOAST ──
+    function showToast(msg, isDanger) {
+      const toast = document.getElementById('profileToast');
+      const icon  = document.getElementById('toastIcon');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.toggle('danger', isDanger);
+      icon.className = isDanger ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check';
+      icon.style.color = isDanger ? '#f87171' : '#4ade80';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+ 
+    // ── DEMO DATA SEED ──
+    // Runs once on first visit so judges see a fully populated profile.
+    // Judges can still edit/save anything — it's all localStorage.
+    function seedDemoData() {
+      if (localStorage.getItem('sk_demo_seeded')) return; // only once
+
+      localStorage.setItem('sk_name',    'Alex Sharma');
+      localStorage.setItem('sk_email',   'alex.sharma@iitd.ac.in');
+      localStorage.setItem('sk_college', 'IIT Delhi');
+      localStorage.setItem('sk_bio',     'Final-year CSE student passionate about ML, competitive programming and building tools that make studying less painful. Love coffee and clean code ☕');
+      localStorage.setItem('sk_score',   '420');
+      localStorage.setItem('sk_streak',  '5');
+      localStorage.setItem('sk_theme',   'blue');
+      localStorage.setItem('sk_theme_changed', '1');
+      localStorage.setItem('sk_exported', '1');
+      localStorage.setItem('sk_first_search', '1');
+
+      // Skills
+      localStorage.setItem('sk_skills', JSON.stringify([
+        'Python', 'Machine Learning', 'React', 'C++', 'Data Structures'
+      ]));
+
+      // Social links
+      localStorage.setItem('sk_social_github',   'https://github.com/alexsharma');
+      localStorage.setItem('sk_social_linkedin',  'https://linkedin.com/in/alexsharma');
+      localStorage.setItem('sk_social_twitter',   'https://x.com/alexsharma_dev');
+      localStorage.setItem('sk_social_website',   'https://alexsharma.dev');
+
+      // Streak tracking
+      const today = new Date().toDateString();
+      localStorage.setItem('sk_last_visit', today);
+
+      // Mark all common + rare achievements as "seen" (no "New!" badge spam)
+      ACHIEVEMENTS.forEach(a => {
+        localStorage.setItem('sk_ach_seen_' + a.id, '1');
+      });
+
+      localStorage.setItem('sk_demo_seeded', '1');
+    }
+
+    seedDemoData();
+    loadProfile();
+  </script>
+</body>
+</html>

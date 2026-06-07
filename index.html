@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarKit — Where Teams Learn, Plan, and Build Together with AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        a.footer-badge--azure {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        a.footer-badge--azure:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── DEMO BANNER ── -->
+    <div id="demoBanner" style="
+        position: relative;
+        z-index: 1100;
+        background: linear-gradient(90deg, rgba(124,58,237,0.18) 0%, rgba(45,212,191,0.14) 50%, rgba(59,130,246,0.18) 100%);
+        border-bottom: 1px solid rgba(167,139,250,0.25);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.85);
+    ">
+        <span style="display:flex;align-items:center;gap:6px;font-weight:600;white-space:nowrap;">
+            🚀 <span style="color:#c4b5fd;">New here?</span> Try the demo:
+        </span>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <a href="ai-assistant.html" style="
+                display:inline-flex;align-items:center;gap:6px;
+                background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.35);
+                color:#c4b5fd;border-radius:8px;padding:5px 13px;
+                font-weight:600;font-size:0.82rem;text-decoration:none;
+                transition:background 0.2s,border-color 0.2s;white-space:nowrap;
+            " onmouseover="this.style.background='rgba(167,139,250,0.28)'" onmouseout="this.style.background='rgba(167,139,250,0.15)'">
+                <i class="fa-solid fa-robot"></i> 1. Ask Nova
+            </a>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.9rem;">→</span>
+            <a href="#study-planner" style="
+                display:inline-flex;align-items:center;gap:6px;
+                background:rgba(45,212,191,0.12);border:1px solid rgba(45,212,191,0.32);
+                color:#2dd4bf;border-radius:8px;padding:5px 13px;
+                font-weight:600;font-size:0.82rem;text-decoration:none;
+                transition:background 0.2s,border-color 0.2s;white-space:nowrap;
+            " onmouseover="this.style.background='rgba(45,212,191,0.25)'" onmouseout="this.style.background='rgba(45,212,191,0.12)'">
+                <i class="fa-solid fa-users"></i> 2. Generate Team Plan
+            </a>
+            <span style="color:rgba(255,255,255,0.3);font-size:0.9rem;">→</span>
+            <a href="nova_insights.html" style="
+                display:inline-flex;align-items:center;gap:6px;
+                background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.32);
+                color:#93c5fd;border-radius:8px;padding:5px 13px;
+                font-weight:600;font-size:0.82rem;text-decoration:none;
+                transition:background 0.2s,border-color 0.2s;white-space:nowrap;
+            " onmouseover="this.style.background='rgba(96,165,250,0.25)'" onmouseout="this.style.background='rgba(96,165,250,0.12)'">
+                <i class="fa-solid fa-chart-line"></i> 3. View Insights
+            </a>
+        </div>
+        <button onclick="
+            document.getElementById('demoBanner').style.display='none';
+            localStorage.setItem('demoBannerDismissed','1');
+        " style="
+            background:none;border:none;color:rgba(255,255,255,0.3);
+            font-size:1rem;cursor:pointer;padding:4px 6px;margin-left:4px;
+            border-radius:6px;transition:color 0.2s;line-height:1;
+        " onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'" title="Dismiss">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <script>
+        // Hide banner if previously dismissed
+        if (localStorage.getItem('demoBannerDismissed') === '1') {
+            document.getElementById('demoBanner').style.display = 'none';
+        }
+    </script>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="scholarNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="brand-logo">Scholar<span class="brand-accent">Kit</span></span>
+            </a>
+
+            <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#main"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+
+                    <!-- Coding Tools -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-code"></i> Coding Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://onecompiler.com"><i class="fa-solid fa-terminal"></i> Online Compiler</a></li>
+                            <li><a class="dropdown-item" href="https://prettier.io/playground"><i class="fa-solid fa-wand-magic-sparkles"></i> Code Formatter</a></li>
+                            <li><a class="dropdown-item" href="https://regex101.com"><i class="fa-solid fa-filter"></i> RegEx Tester</a></li>
+                            <li><a class="dropdown-item" href="https://devdocs.io"><i class="fa-solid fa-file-code"></i> DevDocs</a></li>
+                            <li><a class="dropdown-item" href="https://stackoverflow.com"><i class="fa-brands fa-stack-overflow"></i> Stack Overflow</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropend">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">View All <i class="fa-solid fa-arrow-right"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="https://www.w3schools.com/"><i class="fa-solid fa-terminal"></i> W3Schools</a></li>
+                                    <li><a class="dropdown-item" href="https://developer.mozilla.org/en-US/"><i class="fa-solid fa-wand-magic-sparkles"></i> MDN Docs</a></li>
+                                    <li><a class="dropdown-item" href="https://blog.glitch.com/"><i class="fa-solid fa-filter"></i> Glitch</a></li>
+                                    <li><a class="dropdown-item" href="https://codeforces.com/"><i class="fa-solid fa-file-code"></i> CodeForces</a></li>
+                                    <li><a class="dropdown-item" href="https://codesandbox.io/"><i class="fa-brands fa-stack-overflow"></i> CodeSandBox</a></li>
+                                    <li><a class="dropdown-item" href="https://github.com"><i class="fa-brands fa-github"></i> GitHub</a></li>
+                                    <li><a class="dropdown-item" href="https://codepen.io"><i class="fa-solid fa-pen-nib"></i> CodePen</a></li>
+                                    <li><a class="dropdown-item" href="https://jsfiddle.net"><i class="fa-solid fa-js"></i> JSFiddle</a></li>
+                                    <li><a class="dropdown-item" href="https://leetcode.com"><i class="fa-solid fa-code"></i> LeetCode</a></li>
+                                    <li><a class="dropdown-item" href="https://www.hackerrank.com"><i class="fa-solid fa-ranking-star"></i> HackerRank</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Research -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-book-open"></i> Research
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://arxiv.org"><i class="fa-solid fa-scroll"></i> arXiv Papers</a></li>
+                            <li><a class="dropdown-item" href="https://ieeexplore.ieee.org"><i class="fa-solid fa-microchip"></i> IEEE Xplore</a></li>
+                            <li><a class="dropdown-item" href="https://scholar.google.com"><i class="fa-brands fa-google"></i> Google Scholar</a></li>
+                            <li><a class="dropdown-item" href="https://www.researchgate.net"><i class="fa-solid fa-flask"></i> ResearchGate</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropend">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">View All <i class="fa-solid fa-arrow-right"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="https://www.sci-hub.ren/"><i class="fa-solid fa-scroll"></i> Sci-Hub</a></li>
+                                    <li><a class="dropdown-item" href="https://openalex.org/"><i class="fa-solid fa-microchip"></i> OpenAlex</a></li>
+                                    <li><a class="dropdown-item" href="https://consensus.app/"><i class="fa-brands fa-google"></i> Consensus</a></li>
+                                    <li><a class="dropdown-item" href="https://link.springer.com/"><i class="fa-solid fa-flask"></i> Springer</a></li>
+                                    <li><a class="dropdown-item" href="https://pubmed.ncbi.nlm.nih.gov"><i class="fa-solid fa-dna"></i> PubMed</a></li>
+                                    <li><a class="dropdown-item" href="https://www.semanticscholar.org"><i class="fa-solid fa-brain"></i> Semantic Scholar</a></li>
+                                    <li><a class="dropdown-item" href="https://www.jstor.org"><i class="fa-solid fa-building-columns"></i> JSTOR</a></li>
+                                    <li><a class="dropdown-item" href="https://core.ac.uk"><i class="fa-solid fa-database"></i> CORE</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Engineering -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-gears"></i> Engineering
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="https://www.wolframalpha.com"><i class="fa-solid fa-calculator"></i> Wolfram Alpha</a></li>
+                            <li><a class="dropdown-item" href="https://www.desmos.com/calculator"><i class="fa-solid fa-chart-line"></i> Desmos Graphing</a></li>
+                            <li><a class="dropdown-item" href="https://falstad.com/circuit"><i class="fa-solid fa-bolt"></i> Circuit Simulator</a></li>
+                            <li><a class="dropdown-item" href="https://www.unitconverters.net"><i class="fa-solid fa-ruler-combined"></i> Unit Converter</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropend">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">View All <i class="fa-solid fa-arrow-right"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="https://www.mathworks.com/products/matlab-online.html"><i class="fa-solid fa-calculator"></i> MATLAB Online</a></li>
+                                    <li><a class="dropdown-item" href="https://numpy.org/"><i class="fa-solid fa-chart-line"></i> NumPy</a></li>
+                                    <li><a class="dropdown-item" href="https://www.ptc.com/en/products/creo"><i class="fa-solid fa-bolt"></i> PTC Creo</a></li>
+                                    <li><a class="dropdown-item" href="https://www.tinkercad.com/"><i class="fa-solid fa-ruler-combined"></i> Tinkercad</a></li>
+                                    <li><a class="dropdown-item" href="https://www.geogebra.org"><i class="fa-solid fa-shapes"></i> GeoGebra</a></li>
+                                    <li><a class="dropdown-item" href="https://www.engineeringtoolbox.com"><i class="fa-solid fa-wrench"></i> Engineering Toolbox</a></li>
+                                    <li><a class="dropdown-item" href="https://www.rapidtables.com"><i class="fa-solid fa-table"></i> RapidTables</a></li>
+                                    <li><a class="dropdown-item" href="https://www.symbolab.com"><i class="fa-solid fa-square-root-variable"></i> Symbolab</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Study Planner -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#study-planner"><i class="fa-solid fa-calendar-check"></i> Study Planner</a>
+                    </li>
+
+                    <!-- AI Assistant -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+                    </li>
+
+                    <!-- About -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+                    </li>
+
+                    <!-- Profile -->
+                    <li class="nav-item">
+                        <a class="nav-link profile-nav-btn" href="profile.html" id="profileNavBtn">
+                            <span class="profile-nav-avatar" id="profileNavAvatar">
+                                <i class="fa-solid fa-circle-user"></i>
+                            </span>
+                            <span id="profileNavName">Profile</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── HERO SECTION ── -->
+    <section id="main">
+
+        <!-- Animated background grid -->
+        <div class="hero-grid-bg" aria-hidden="true"></div>
+
+        <!-- Glow orbs -->
+        <div class="orb orb-1" aria-hidden="true"></div>
+        <div class="orb orb-2" aria-hidden="true"></div>
+        <div class="orb orb-3" aria-hidden="true"></div>
+
+        <div class="container hero-container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9 col-xl-8 text-center">
+
+                    <!-- Hero badge -->
+                    <div class="hero-badge" data-animate="fade-up" style="--delay:0s">
+                        <span class="badge-dot"></span>
+                        <i class="fa-solid fa-cloud"></i>&nbsp; Powered by Azure OpenAI
+                    </div>
+
+                    <!-- Main headline -->
+                    <h1 class="hero-title" data-animate="fade-up" style="--delay:0.1s">
+                        Where Teams Learn, Plan,<br>
+                        <span class="hero-title-gradient">and Build Together with AI</span>
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="hero-subtitle" data-animate="fade-up" style="--delay:0.2s">
+                        AI assistance, research, planning, and team collaboration — all in one workspace.
+                        Built for engineering teams and professionals who need to move fast and stay in sync.
+                    </p>
+
+                    <!-- Trust badges -->
+                    <div class="trust-badges" data-animate="fade-up" style="--delay:0.3s">
+                        <span class="trust-badge trust-green">
+                            <i class="fa-solid fa-shield-halved"></i> No keys in browser
+                        </span>
+                        <span class="trust-badge trust-blue">
+                            <i class="fa-solid fa-cloud"></i> Azure OpenAI powered
+                        </span>
+                        <span class="trust-badge trust-purple">
+                            <i class="fa-solid fa-users"></i> Built for teams &amp; professionals
+                        </span>
+                    </div>
+
+                    <!-- Search bar -->
+                    <div class="hero-search-wrap" data-animate="fade-up" style="--delay:0.35s">
+                        <div class="hero-search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="heroSearch" placeholder="Search tools, papers, calculators..." autocomplete="off">
+                            <button onclick="handleSearch()" class="search-btn">Search</button>
+                        </div>
+                        <p class="search-hint">Try: <span onclick="setSearch('circuit simulator')">circuit simulator</span> · <span onclick="setSearch('arxiv papers')">arxiv papers</span> · <span onclick="setSearch('code formatter')">code formatter</span></p>
+                    </div>
+
+                    <!-- Primary CTA -->
+                    <div class="hero-cta-wrap" data-animate="fade-up" style="--delay:0.45s">
+                        <a href="ai-assistant.html" class="btn-primary-cta">
+                            <i class="fa-solid fa-robot"></i> Open AI Assistant
+                            <span class="btn-arrow">→</span>
+                        </a>
+                        <a href="#features" class="btn-ghost-cta">
+                            See features <i class="fa-solid fa-chevron-down"></i>
+                        </a>
+                    </div>
+
+                    <!-- Quick nav tags -->
+                    <div class="hero-tags" data-animate="fade-up" style="--delay:0.55s">
+                        <a href="coding.html" class="tag-btn"><i class="fa-solid fa-code"></i> Coding</a>
+                        <a href="research.html" class="tag-btn"><i class="fa-solid fa-book-open"></i> Research</a>
+                        <a href="engineering.html" class="tag-btn"><i class="fa-solid fa-gears"></i> Engineering</a>
+                        <a href="ai-assistant.html" class="tag-btn"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+                        <a href="profile.html" class="tag-btn tag-btn-profile" id="profileTagBtn">
+                            <i class="fa-solid fa-circle-user"></i>
+                            <span id="profileTagName">My Profile</span>
+                        </a>
+                    </div>
+
+                    <!-- Cat AI Widget -->
+                    <div class="cat-ai-wrapper" id="catAiWrapper" style="display:none;">
+                        <div class="cat-container">
+                            <div class="cat" id="catAnimation">
+                                <div class="cat-ear left"></div>
+                                <div class="cat-ear right"></div>
+                                <div class="cat-head">
+                                    <div class="cat-eye left"></div>
+                                    <div class="cat-eye right"></div>
+                                    <div class="cat-nose"></div>
+                                    <div class="cat-mouth"></div>
+                                    <div class="cat-whiskers"><span></span><span></span><span></span><span></span></div>
+                                </div>
+                                <div class="cat-body">
+                                    <div class="cat-tail"></div>
+                                    <div class="cat-paw left"></div>
+                                    <div class="cat-paw right"></div>
+                                </div>
+                            </div>
+                            <p class="cat-name">Nova 🐱</p>
+                        </div>
+                        <div class="ai-response-box">
+                            <div class="ai-response-header">
+                                <div class="ai-status" id="aiStatus">
+                                    <span class="ai-status-dot"></span>
+                                    <span id="aiStatusText">Thinking...</span>
+                                </div>
+                                <div class="ai-voice-controls">
+                                    <button onclick="togglePause()" id="pauseResumeBtn" title="Pause"><i class="fa-solid fa-pause" id="pauseResumeIcon"></i></button>
+                                    <button onclick="closeAiBox()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+                            <p class="ai-response-text" id="aiResponseText">Meow! Hi, I am Nova! Ask me anything!</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator" aria-hidden="true">
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ── STATS BAR ── -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stats-inner">
+                <div class="stat-item">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label">Tools & Resources</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Core Modules</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Keys Exposed</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">1</span>
+                    <span class="stat-label">Tab Needed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FEATURES SECTION ── -->
+    <section id="features" class="section-features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">What ScholarKit Offers</span>
+                <h2 class="section-title">Everything you need,<br>in one place</h2>
+                <p class="section-desc">No more juggling 10 tabs. ScholarKit unifies your team's entire workflow — research, planning, AI assistance, and tools — in one shared workspace. Share sessions with your team in one click. Browse the live web for cited answers.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <a href="ai-assistant.html" class="feature-card-link">
+                        <div class="feature-card feature-card--purple">
+                            <div class="feature-card-icon"><i class="fa-solid fa-robot"></i></div>
+                            <h5 class="feature-card-title">AI Chat Assistant</h5>
+                            <p class="feature-card-desc">Powered by Azure OpenAI via a secure server-side proxy. Ask anything — code, math, circuits, research.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="coding.html" class="feature-card-link">
+                        <div class="feature-card feature-card--green">
+                            <div class="feature-card-icon"><i class="fa-solid fa-code"></i></div>
+                            <h5 class="feature-card-title">Coding Tools</h5>
+                            <p class="feature-card-desc">Compiler, formatter, RegEx tester, DevDocs, LeetCode, HackerRank and more — all one click away.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="research.html" class="feature-card-link">
+                        <div class="feature-card feature-card--amber">
+                            <div class="feature-card-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <h5 class="feature-card-title">Research Hub</h5>
+                            <p class="feature-card-desc">arXiv, IEEE, Google Scholar, PubMed, Semantic Scholar and 8+ more research databases in one dropdown.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="engineering.html" class="feature-card-link">
+                        <div class="feature-card feature-card--sky">
+                            <div class="feature-card-icon"><i class="fa-solid fa-gears"></i></div>
+                            <h5 class="feature-card-title">Engineering Tools</h5>
+                            <p class="feature-card-desc">Wolfram Alpha, Desmos, Circuit Simulator, MATLAB, Symbolab, GeoGebra — for every branch of engineering.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="ai-assistant.html" class="feature-card-link">
+                        <div class="feature-card feature-card--purple">
+                            <div class="feature-card-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                            <h5 class="feature-card-title">Share Team Sessions</h5>
+                            <p class="feature-card-desc">Share any Nova session with your team — one link, read-only view, no sign-up required. Real-time knowledge sharing.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="ai-assistant.html" class="feature-card-link">
+                        <div class="feature-card feature-card--green">
+                            <div class="feature-card-icon"><i class="fa-solid fa-globe"></i></div>
+                            <h5 class="feature-card-title">Live Web Browsing</h5>
+                            <p class="feature-card-desc">Nova browses the web in real time — ask about today's news, latest docs, or any live data and get cited answers instantly.</p>
+                            <span class="feature-card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── STUDY PLAN GENERATOR ── -->
+    <section id="study-planner" class="section-study-planner">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow section-eyebrow--teal"><i class="fa-solid fa-calendar-check"></i> AI-Powered</span>
+                <h2 class="section-title">Smart Plan Generator</h2>
+                <p class="section-desc">Tell us your team's schedule, goals and subjects — Nova builds a shared day-by-day plan with real resources, dates, and sessions assigned by member.</p>
+            </div>
+            <div class="sp-outer-card">
+                <!-- Mode toggle -->
+                <div class="sp-mode-toggle" id="spModeToggle">
+                    <button class="sp-mode-btn active" id="spModeSolo" onclick="spSetMode('solo')">
+                        <i class="fa-solid fa-user"></i> Solo Mode
+                    </button>
+                    <button class="sp-mode-btn" id="spModeTeam" onclick="spSetMode('team')">
+                        <i class="fa-solid fa-users"></i> Team Mode
+                        <span class="sp-mode-new">NEW</span>
+                    </button>
+                </div>
+                <!-- Team mode banner (shown in team mode) -->
+                <div class="sp-team-banner" id="spTeamBanner" style="display:none;">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Nova will coordinate a <strong>shared plan</strong> for your whole team — one schedule, everyone in sync.</span>
+                </div>
+                <div class="sp-stepper" id="spStepper">
+                    <div class="sp-stepper-item active" data-step="1"><div class="sp-stepper-circle"><i class="fa-solid fa-clock"></i></div><span>Schedule</span></div>
+                    <div class="sp-stepper-line"></div>
+                    <div class="sp-stepper-item" data-step="1.5" id="spStepperTeam" style="display:none;"><div class="sp-stepper-circle"><i class="fa-solid fa-users"></i></div><span>Team</span></div>
+                    <div class="sp-stepper-line sp-stepper-line-team" style="display:none;"></div>
+                    <div class="sp-stepper-item" data-step="2"><div class="sp-stepper-circle"><i class="fa-solid fa-book"></i></div><span>Subjects</span></div>
+                    <div class="sp-stepper-line"></div>
+                    <div class="sp-stepper-item" data-step="3"><div class="sp-stepper-circle"><i class="fa-solid fa-sliders"></i></div><span>Preferences</span></div>
+                    <div class="sp-stepper-line"></div>
+                    <div class="sp-stepper-item" data-step="4"><div class="sp-stepper-circle"><i class="fa-solid fa-calendar-days"></i></div><span>Your Plan</span></div>
+                </div>
+                <!-- STEP 1 -->
+                <div class="sp-step active" id="spStep1">
+                    <h5 class="sp-step-title">Your school / college schedule</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="sp-label">Institution type</label>
+                            <select class="sp-input" id="spInstType">
+                                <option value="school">School (Class 6–12)</option>
+                                <option value="college">College / University</option>
+                                <option value="competitive">Competitive exam prep (JEE / NEET / UPSC)</option>
+                                <option value="self">Self learning</option>
+                            </select></div>
+                        <div class="col-md-6"><label class="sp-label">Class / Year / Target</label>
+                            <input type="text" class="sp-input" id="spClassYear" placeholder="e.g. Class 11, 2nd Year B.Tech, JEE 2026"></div>
+                        <div class="col-md-6"><label class="sp-label">Classes start time</label>
+                            <input type="time" class="sp-input" id="spSchoolStart" value="08:00"></div>
+                        <div class="col-md-6"><label class="sp-label">Classes end time</label>
+                            <input type="time" class="sp-input" id="spSchoolEnd" value="14:00"></div>
+                        <div class="col-12"><label class="sp-label">Days you attend school / college</label>
+                            <div class="sp-day-picker" id="spDayPicker">
+                                <span class="sp-day-btn active" data-day="Mon">Mon</span>
+                                <span class="sp-day-btn active" data-day="Tue">Tue</span>
+                                <span class="sp-day-btn active" data-day="Wed">Wed</span>
+                                <span class="sp-day-btn active" data-day="Thu">Thu</span>
+                                <span class="sp-day-btn active" data-day="Fri">Fri</span>
+                                <span class="sp-day-btn" data-day="Sat">Sat</span>
+                                <span class="sp-day-btn" data-day="Sun">Sun</span>
+                            </div></div>
+                        <div class="col-md-6"><label class="sp-label">Free study time per day (hours)</label>
+                            <input type="number" class="sp-input" id="spFreeHrs" value="3" min="1" max="12"></div>
+                        <div class="col-md-6"><label class="sp-label">Plan duration</label>
+                            <select class="sp-input" id="spPlanDur">
+                                <option value="1 week">1 week</option>
+                                <option value="2 weeks" selected>2 weeks</option>
+                                <option value="1 month">1 month</option>
+                                <option value="3 months">3 months</option>
+                            </select></div>
+                        <div class="col-12"><label class="sp-label">Exam / goal date <span style="opacity:.5">(optional)</span></label>
+                            <input type="date" class="sp-input" id="spExamDate"></div>
+                    </div>
+                    <div class="sp-nav-row"><div></div><button class="sp-btn-next" onclick="spGoStep(2)">Next <i class="fa-solid fa-arrow-right"></i></button></div>
+                </div>
+                <!-- TEAM STEP (1.5) -->
+                <div class="sp-step" id="spStepTeam">
+                    <div class="sp-team-header-row">
+                        <div>
+                            <h5 class="sp-step-title"><i class="fa-solid fa-users" style="color:#2dd4bf;margin-right:8px;"></i>Add Team Members</h5>
+                            <p class="sp-step-sub">Each member enters their name — subjects are shared in the next step</p>
+                        </div>
+                        <span class="sp-team-count-badge" id="spTeamCountBadge">2 members</span>
+                    </div>
+                    <div id="spMembersList"></div>
+                    <button class="sp-add-subj-btn" onclick="spAddMember()" id="spAddMemberBtn"><i class="fa-solid fa-user-plus"></i> Add member</button>
+                    <div class="sp-team-collab-note">
+                        <i class="fa-solid fa-robot" style="color:#2dd4bf;flex-shrink:0"></i>
+                        <span>Nova will analyse each member's input and generate one <strong>coordinated shared plan</strong> — no conflicts, balanced sessions.</span>
+                    </div>
+                    <div class="sp-nav-row">
+                        <button class="sp-btn-back" onclick="spGoStep(1)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="sp-btn-next" onclick="spGoStep(2)">Next <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- STEP 2 -->
+                <div class="sp-step" id="spStep2">
+                    <h5 class="sp-step-title" id="spStep2Title">Your subjects</h5>
+                    <p class="sp-step-sub" id="spStep2Sub">Add each subject and rate how difficult it feels for you</p>
+                    <div id="spSubjectsList"></div>
+                    <button class="sp-add-subj-btn" onclick="spAddSubject()"><i class="fa-solid fa-plus"></i> Add subject</button>
+                    <div class="sp-nav-row">
+                        <button class="sp-btn-back" onclick="spGoStep(1)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="sp-btn-next" onclick="spGoStep(3)">Next <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <!-- STEP 3 -->
+                <div class="sp-step" id="spStep3">
+                    <h5 class="sp-step-title">Study preferences</h5>
+                    <p class="sp-step-sub">Help us personalise your roadmap</p>
+                    <div class="row g-3">
+                        <div class="col-12"><label class="sp-label">Learning style</label>
+                            <div class="sp-chip-group" id="spStyleGroup">
+                                <span class="sp-chip active" data-val="visual"><i class="fa-solid fa-eye"></i> Visual (videos, diagrams)</span>
+                                <span class="sp-chip" data-val="reading"><i class="fa-solid fa-book-open"></i> Reading (books, notes)</span>
+                                <span class="sp-chip" data-val="practice"><i class="fa-solid fa-pencil"></i> Practice (MCQs, problems)</span>
+                                <span class="sp-chip" data-val="mixed"><i class="fa-solid fa-shuffle"></i> Mixed</span>
+                            </div></div>
+                        <div class="col-12"><label class="sp-label">Preferred session length</label>
+                            <div class="sp-chip-group" id="spSessionGroup">
+                                <span class="sp-chip" data-val="25"><i class="fa-solid fa-stopwatch"></i> 25 min (Pomodoro)</span>
+                                <span class="sp-chip active" data-val="45"><i class="fa-solid fa-clock"></i> 45 min</span>
+                                <span class="sp-chip" data-val="60"><i class="fa-solid fa-hourglass-half"></i> 60 min</span>
+                                <span class="sp-chip" data-val="90"><i class="fa-solid fa-hourglass"></i> 90 min deep work</span>
+                            </div></div>
+                        <div class="col-12"><label class="sp-label">Best time to study</label>
+                            <div class="sp-chip-group" id="spTimeGroup">
+                                <span class="sp-chip active" data-val="morning"><i class="fa-solid fa-sun"></i> Morning</span>
+                                <span class="sp-chip" data-val="afternoon"><i class="fa-solid fa-cloud-sun"></i> Afternoon</span>
+                                <span class="sp-chip" data-val="evening"><i class="fa-solid fa-moon"></i> Evening</span>
+                                <span class="sp-chip" data-val="night"><i class="fa-solid fa-star"></i> Late night</span>
+                            </div></div>
+                        <div class="col-12"><label class="sp-label">Anything else to include? <span style="opacity:.5">(optional)</span></label>
+                            <textarea class="sp-input sp-textarea" id="spExtraNotes" rows="3" placeholder="e.g. weak in integration, cricket practice on Wed evening, revision needed for Chapter 5..."></textarea></div>
+                    </div>
+                    <div class="sp-nav-row">
+                        <button class="sp-btn-back" onclick="spGoStep(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="sp-btn-generate" id="spGenBtn" onclick="spGenerate()"><i class="fa-solid fa-wand-magic-sparkles"></i> <span id="spGenBtnLabel">Generate My Plan</span></button>
+                    </div>
+                </div>
+                <!-- LOADING -->
+                <div class="sp-step" id="spStepLoading">
+                    <div class="sp-loading-wrap">
+                        <div class="sp-loading-ring"></div>
+                        <p class="sp-loading-title">Building your study plan…</p>
+                        <p class="sp-loading-sub" id="spProgText">Analysing your schedule</p>
+                    </div>
+                </div>
+                <!-- RESULT -->
+                <div class="sp-step" id="spStepResult">
+                    <div id="spResultContent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section id="how-it-works" class="section-how">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">Simple by design</span>
+                <h2 class="section-title">How it works</h2>
+            </div>
+
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="step-number step-blue">1</div>
+                    <div class="step-connector"></div>
+                    <h6 class="step-title">Type your question</h6>
+                    <p class="step-desc">Ask anything — a coding problem, a circuit doubt, a research paper to summarise.</p>
+                </div>
+                <div class="how-step">
+                    <div class="step-number step-purple">2</div>
+                    <div class="step-connector"></div>
+                    <h6 class="step-title">Processes securely</h6>
+                    <p class="step-desc">Your request goes through a server-side proxy to Azure OpenAI. No API keys ever in your browser.</p>
+                </div>
+                <div class="how-step">
+                    <div class="step-number step-green">3</div>
+                    <div class="step-connector last"></div>
+                    <h6 class="step-title">Get instant help</h6>
+                    <p class="step-desc">Instant answers with explanations, code, or tool suggestions — pointed to exactly the right resource.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="ai-assistant.html" class="btn-primary-cta">
+                    <i class="fa-solid fa-robot"></i> Open AI Assistant
+                    <span class="btn-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── APP PREVIEW ── -->
+    <section id="preview" class="section-preview">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow section-eyebrow--green">See it in action</span>
+                <h2 class="section-title">Built for real teams doing real work</h2>
+                <p class="section-desc">A clean, distraction-free AI productivity workspace for engineering teams and professionals who mean business.</p>
+            </div>
+
+            <div class="app-mockup-wrap">
+                <div class="app-mockup-chrome">
+                    <span class="chrome-dot red"></span>
+                    <span class="chrome-dot yellow"></span>
+                    <span class="chrome-dot green"></span>
+                    <span class="chrome-url">scholarkit.app/ai-assistant</span>
+                </div>
+                <div class="app-mockup-body">
+                    <img src="ss.jpg" alt="ScholarKit AI Assistant Preview"
+                        onerror="this.parentElement.classList.add('no-preview'); this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend', '<div class=\'preview-placeholder\'><i class=\'fa-solid fa-image\'></i><p>Add your screenshot as preview.png</p></div>')">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <span class="brand-logo brand-logo--sm">Scholar<span class="brand-accent">Kit</span></span>
+                    <span class="footer-copy">© ScholarKit</span>
+                </div>
+                <div class="footer-badges">
+                    <span class="footer-badge"><i class="fa-brands fa-github"></i> Built on GitHub Models</span>
+                    <span class="footer-badge"><i class="fa-solid fa-cloud"></i> Powered by Azure OpenAI</span>
+                    <a href="https://ai.azure.com" target="_blank" rel="noopener" class="footer-badge footer-badge--azure" title="Microsoft Azure AI">
+                        <svg width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;"><path d="M0 9.015C0 4.033 4.034 0 9.015 0 13.997 0 18 4.034 18 9.015 18 13.997 13.966 18 8.985 18 4.003 18 0 13.966 0 9.015Z" fill="#50E6FF"/><path d="M9.42 2.25H5.25L2.115 12.735l3.15.015L9.42 2.25Z" fill="#fff"/><path d="M9.42 2.25l3.555 8.04-2.46 2.445H6.87l-1.605 2.52H15.9L9.42 2.25Z" fill="#fff" opacity=".7"/></svg>
+                        Microsoft Azure AI
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Nova Chat Widget -->
+    <button id="nova-launcher" aria-label="Open Nova AI chat">
+        <span class="launcher-icon">🐱</span>
+        <i class="fa-solid fa-xmark launcher-close"></i>
+        <span class="nova-badge-dot" id="novaBadge"></span>
+    </button>
+
+    <div id="nova-panel" role="dialog" aria-label="Nova AI Assistant">
+        <div class="nw-header">
+            <div class="nw-avatar">🐱<span class="nw-avatar-status" id="novaStatus"></span></div>
+            <div class="nw-info">
+                <p class="nw-name">Nova — ScholarKit AI</p>
+                <span class="nw-status-text" id="novaStatusText">Online</span>
+            </div>
+            <div class="nw-header-actions">
+                <button class="nw-header-btn nw-expand-btn" onclick="window.location='ai-assistant.html'" title="Open full page"><i class="fa-solid fa-expand"></i></button>
+                <button class="nw-header-btn" id="novaClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="nw-messages" id="novaMessages">
+            <div class="nw-welcome">
+                <div class="nw-welcome-emoji">🐱</div>
+                <h4>Hey! I'm Nova</h4>
+                <p>Your team's AI productivity assistant. Ask me anything about code, research, or engineering problems — then share it with your team.</p>
+                <div class="nw-quick-chips">
+                    <span class="nw-quick-chip" onclick="novaSend('Explain binary search')">Binary search</span>
+                    <span class="nw-quick-chip" onclick="novaSend('How does TCP/IP work?')">TCP/IP</span>
+                    <span class="nw-quick-chip" onclick="novaSend('Help me with Ohms law')">Ohm's law</span>
+                    <span class="nw-quick-chip" onclick="novaSend('Find recent AI papers')">AI papers</span>
+                </div>
+            </div>
+        </div>
+        <div class="nw-input-area">
+            <div class="nw-input-row">
+                <textarea id="novaInput" placeholder="Ask Nova anything..." rows="1"></textarea>
+                <button class="nw-send-btn" id="novaSendBtn" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+            <p class="nw-disclaimer">Powered by Azure OpenAI · Responses may vary</p>
+        </div>
+        <a href="ai-assistant.html" class="nw-expand-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open full AI Assistant</a>
+    </div>
+
+    <!-- ── STUDY PLANNER STYLES ── -->
+    <style>
+        /* ── Section wrapper ── */
+        .section-study-planner {
+            padding: 100px 0 80px;
+            position: relative;
+        }
+        .section-eyebrow--teal {
+            color: #2dd4bf;
+            border-color: rgba(45,212,191,.2);
+            background: rgba(45,212,191,.08);
+        }
+
+        /* ── Outer card ── */
+        .sp-outer-card {
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 20px;
+            padding: 2.5rem 2.5rem 2rem;
+            max-width: 820px;
+            margin: 0 auto;
+            backdrop-filter: blur(12px);
+        }
+
+        /* ── Stepper ── */
+        .sp-stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .sp-stepper-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+            transition: all .3s;
+        }
+        .sp-stepper-item span {
+            font-size: 11px;
+            color: rgba(255,255,255,.35);
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: .5px;
+            transition: color .3s;
+        }
+        .sp-stepper-item.active span,
+        .sp-stepper-item.done span { color: rgba(255,255,255,.75); }
+        .sp-stepper-circle {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,.15);
+            background: rgba(255,255,255,.04);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+            color: rgba(255,255,255,.3);
+            transition: all .3s;
+        }
+        .sp-stepper-item.active .sp-stepper-circle {
+            border-color: #2dd4bf;
+            background: rgba(45,212,191,.12);
+            color: #2dd4bf;
+            box-shadow: 0 0 18px rgba(45,212,191,.25);
+        }
+        .sp-stepper-item.done .sp-stepper-circle {
+            border-color: rgba(45,212,191,.5);
+            background: rgba(45,212,191,.08);
+            color: rgba(45,212,191,.7);
+        }
+        .sp-stepper-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,.1);
+            min-width: 32px;
+            max-width: 80px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Steps ── */
+        .sp-step { display: none; }
+        .sp-step.active { display: block; animation: spFadeIn .3s ease; }
+        @keyframes spFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sp-step-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: .35rem;
+        }
+        .sp-step-sub {
+            font-size: .88rem;
+            color: rgba(255,255,255,.45);
+            margin-bottom: 1.25rem;
+        }
+
+        /* ── Inputs ── */
+        .sp-label {
+            display: block;
+            font-size: 12px;
+            color: rgba(255,255,255,.45);
+            margin-bottom: 6px;
+            letter-spacing: .4px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .sp-input {
+            width: 100%;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .sp-input:focus {
+            border-color: rgba(45,212,191,.5);
+            box-shadow: 0 0 0 3px rgba(45,212,191,.1);
+        }
+        .sp-input option { background: #1a1a2e; color: #fff; }
+        .sp-textarea { resize: vertical; min-height: 80px; }
+
+        /* ── Day picker ── */
+        .sp-day-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+        .sp-day-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            color: rgba(255,255,255,.5);
+            transition: all .2s;
+            user-select: none;
+        }
+        .sp-day-btn.active {
+            background: rgba(45,212,191,.15);
+            border-color: rgba(45,212,191,.45);
+            color: #2dd4bf;
+        }
+        .sp-day-btn:hover { border-color: rgba(45,212,191,.3); color: rgba(45,212,191,.8); }
+
+        /* ── Chip groups ── */
+        .sp-chip-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .sp-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            color: rgba(255,255,255,.5);
+            transition: all .2s;
+            user-select: none;
+        }
+        .sp-chip.active {
+            background: rgba(45,212,191,.15);
+            border-color: rgba(45,212,191,.45);
+            color: #2dd4bf;
+        }
+        .sp-chip:hover { border-color: rgba(45,212,191,.3); color: rgba(45,212,191,.8); }
+
+        /* ── Subject rows ── */
+        .sp-subj-row {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+        .sp-subj-icon { font-size: 14px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+        .sp-subj-input {
+            flex: 1;
+            background: none; border: none; outline: none;
+            font-size: 14px; color: #fff;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .sp-subj-input::placeholder { color: rgba(255,255,255,.25); }
+        .sp-subj-select {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,.6);
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+        .sp-subj-select option { background: #1a1a2e; }
+        .sp-subj-rm {
+            background: none; border: none; cursor: pointer;
+            color: rgba(255,255,255,.25); font-size: 14px;
+            transition: color .2s; padding: 0;
+        }
+        .sp-subj-rm:hover { color: #f87171; }
+        .sp-add-subj-btn {
+            width: 100%;
+            background: none;
+            border: 1px dashed rgba(255,255,255,.15);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 13px;
+            color: rgba(255,255,255,.35);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .2s;
+            margin-top: 4px;
+        }
+        .sp-add-subj-btn:hover { border-color: rgba(45,212,191,.4); color: #2dd4bf; }
+
+        /* ── Nav row ── */
+        .sp-nav-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,.06);
+        }
+        .sp-btn-back {
+            background: none;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 14px;
+            color: rgba(255,255,255,.55);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .2s;
+        }
+        .sp-btn-back:hover { background: rgba(255,255,255,.06); color: #fff; }
+        .sp-btn-next {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 14px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            transition: all .2s;
+        }
+        .sp-btn-next:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.28); }
+        .sp-btn-generate {
+            background: linear-gradient(135deg, #2dd4bf, #7c3aed);
+            border: none;
+            border-radius: 10px;
+            padding: 11px 26px;
+            font-size: 14px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            transition: opacity .2s, transform .15s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .sp-btn-generate:hover { opacity: .9; transform: translateY(-1px); }
+        .sp-btn-generate:disabled { opacity: .45; cursor: not-allowed; }
+
+        /* ── Loading ── */
+        .sp-loading-wrap {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        .sp-loading-ring {
+            width: 44px; height: 44px;
+            border: 2px solid rgba(45,212,191,.15);
+            border-top-color: #2dd4bf;
+            border-radius: 50%;
+            animation: spSpin .75s linear infinite;
+            margin: 0 auto 1.25rem;
+        }
+        @keyframes spSpin { to { transform: rotate(360deg); } }
+        .sp-loading-title { font-size: 15px; font-weight: 500; color: #fff; margin: 0; font-family: 'DM Sans', sans-serif; }
+        .sp-loading-sub { font-size: 13px; color: rgba(255,255,255,.4); margin-top: 6px; font-family: 'DM Sans', sans-serif; }
+
+        /* ── Result ── */
+        .sp-result-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            flex-wrap: wrap; gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .sp-result-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: #fff; margin: 0; }
+        .sp-result-sub { font-size: 13px; color: rgba(255,255,255,.4); margin: 4px 0 0; }
+        .sp-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        .sp-metric {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 12px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .sp-metric-val { font-size: 22px; font-weight: 700; color: #2dd4bf; font-family: 'Syne', sans-serif; }
+        .sp-metric-lbl { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 4px; font-family: 'DM Sans', sans-serif; }
+
+        /* ── Week nav ── */
+        .sp-week-nav {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 1.25rem;
+        }
+        .sp-week-nav button {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,.6);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .2s;
+        }
+        .sp-week-nav button:hover:not(:disabled) { background: rgba(255,255,255,.1); color: #fff; }
+        .sp-week-nav button:disabled { opacity: .35; cursor: not-allowed; }
+        .sp-week-label { flex: 1; text-align: center; font-size: 14px; font-weight: 500; color: rgba(255,255,255,.7); font-family: 'DM Sans', sans-serif; }
+
+        /* ── Day blocks ── */
+        .sp-day-block {
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .sp-day-header {
+            padding: 10px 16px;
+            background: rgba(255,255,255,.04);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .sp-day-name { font-size: 14px; font-weight: 500; color: #fff; font-family: 'DM Sans', sans-serif; }
+        .sp-day-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .sp-day-badge.school { background: rgba(59,130,246,.15); color: #60a5fa; }
+        .sp-day-badge.holiday { background: rgba(251,191,36,.1); color: #fbbf24; }
+        .sp-day-badge.weekend { background: rgba(167,139,250,.12); color: #c4b5fd; }
+        .sp-session {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255,255,255,.05);
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 12px;
+            align-items: start;
+        }
+        .sp-stime { font-size: 12px; color: rgba(255,255,255,.35); padding-top: 2px; font-family: 'JetBrains Mono', monospace; }
+        .sp-stask { font-size: 14px; font-weight: 500; color: #fff; font-family: 'DM Sans', sans-serif; }
+        .sp-sdesc { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 3px; line-height: 1.55; font-family: 'DM Sans', sans-serif; }
+        .sp-res-wrap { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .sp-res-link {
+            font-size: 11px;
+            color: #2dd4bf;
+            text-decoration: none;
+            background: rgba(45,212,191,.08);
+            border: 1px solid rgba(45,212,191,.2);
+            border-radius: 6px;
+            padding: 2px 8px;
+            transition: background .2s;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .sp-res-link:hover { background: rgba(45,212,191,.18); color: #2dd4bf; }
+        .sp-diff-badge { font-size: 11px; padding: 3px 9px; border-radius: 20px; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+        .sp-diff-badge.hard { background: rgba(248,113,113,.12); color: #f87171; }
+        .sp-diff-badge.med { background: rgba(251,191,36,.1); color: #fbbf24; }
+        .sp-diff-badge.easy { background: rgba(52,211,153,.1); color: #34d399; }
+        .sp-rest-msg { padding: 12px 16px; font-size: 13px; color: rgba(255,255,255,.3); font-family: 'DM Sans', sans-serif; }
+
+        /* ── CTA footer buttons ── */
+        .sp-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
+        .sp-cta-btn {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 10px;
+            padding: 9px 18px;
+            font-size: 13px;
+            color: rgba(255,255,255,.6);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .2s;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 7px;
+        }
+        .sp-cta-btn:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.2); }
+        .sp-regen-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 13px;
+            color: rgba(255,255,255,.5);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .2s;
+        }
+        .sp-regen-btn:hover { background: rgba(255,255,255,.06); color: #fff; }
+
+        @media (max-width: 600px) {
+            .sp-outer-card { padding: 1.5rem 1.25rem 1.25rem; }
+            .sp-session { grid-template-columns: 1fr; gap: 6px; }
+            .sp-stime { font-size: 11px; }
+            .sp-stepper-line { min-width: 16px; }
+        }
+
+        /* ── Team Mode Toggle ── */
+        .sp-mode-toggle {
+            display: flex;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 1.75rem;
+            width: fit-content;
+        }
+        .sp-mode-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: rgba(255,255,255,.45);
+            transition: all .25s;
+            position: relative;
+        }
+        .sp-mode-btn.active {
+            background: rgba(45,212,191,.15);
+            color: #2dd4bf;
+            box-shadow: 0 0 0 1px rgba(45,212,191,.35);
+        }
+        .sp-mode-btn:hover:not(.active) { color: rgba(255,255,255,.75); }
+        .sp-mode-new {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            background: linear-gradient(135deg,#2dd4bf,#7c3aed);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 20px;
+        }
+
+        /* ── Team Banner ── */
+        .sp-team-banner {
+            display: flex; align-items: flex-start; gap: 10px;
+            background: rgba(45,212,191,.07);
+            border: 1px solid rgba(45,212,191,.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,.6);
+            margin-bottom: 1.75rem;
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.55;
+        }
+        .sp-team-banner i { color: #2dd4bf; margin-top: 1px; flex-shrink:0; }
+        .sp-team-banner strong { color: #2dd4bf; }
+
+        /* ── Team step ── */
+        .sp-team-header-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 1.25rem; gap: 12px; flex-wrap: wrap;
+        }
+        .sp-team-count-badge {
+            font-size: 12px;
+            background: rgba(45,212,191,.12);
+            border: 1px solid rgba(45,212,191,.25);
+            color: #2dd4bf;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+        }
+        .sp-member-row {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+        .sp-member-avatar {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            color: #fff; flex-shrink: 0;
+        }
+        .sp-member-input {
+            flex: 1;
+            background: none; border: none; outline: none;
+            font-size: 14px; color: #fff;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .sp-member-input::placeholder { color: rgba(255,255,255,.25); }
+        .sp-member-rm {
+            background: none; border: none; cursor: pointer;
+            color: rgba(255,255,255,.25); font-size: 14px;
+            transition: color .2s; padding: 0;
+        }
+        .sp-member-rm:hover { color: #f87171; }
+        .sp-team-collab-note {
+            display: flex; align-items: flex-start; gap: 10px;
+            background: rgba(124,58,237,.07);
+            border: 1px solid rgba(124,58,237,.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 12.5px;
+            color: rgba(255,255,255,.5);
+            margin-top: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.55;
+        }
+        .sp-team-collab-note strong { color: #c4b5fd; }
+
+        /* ── Team result header ── */
+        .sp-team-result-banner {
+            display: flex; align-items: center; gap: 14px;
+            background: linear-gradient(135deg, rgba(45,212,191,.1), rgba(124,58,237,.1));
+            border: 1px solid rgba(45,212,191,.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .sp-team-avatars { display: flex; }
+        .sp-team-avatar-sm {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: #fff;
+            border: 2px solid rgba(0,0,0,.3);
+            margin-left: -6px;
+        }
+        .sp-team-avatars .sp-team-avatar-sm:first-child { margin-left: 0; }
+        .sp-team-result-info { flex: 1; }
+        .sp-team-result-title { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Syne', sans-serif; margin: 0 0 2px; }
+        .sp-team-result-sub { font-size: 12px; color: rgba(255,255,255,.45); font-family: 'DM Sans', sans-serif; margin: 0; }
+
+        /* ── Member tag in sessions ── */
+        .sp-member-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; padding: 2px 8px;
+            border-radius: 20px; color: #fff;
+            margin-bottom: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+        }
+    </style>
+
+    <!-- ── STUDY PLANNER SCRIPT ── -->
+    <script>
+    (function() {
+        var spSubjects = [
+            { name: 'Mathematics', diff: 'hard' },
+            { name: 'Physics', diff: 'med' },
+            { name: 'Chemistry', diff: 'med' },
+            { name: 'English', diff: 'easy' }
+        ];
+        var spAllDays = [], spCurrentWeek = 0;
+        var spMode = 'solo'; // 'solo' or 'team'
+        var spMembers = [
+            { name: 'Student 1' },
+            { name: 'Student 2' }
+        ];
+        var MEMBER_COLORS = ['#2dd4bf','#7c3aed','#f59e0b','#f87171','#34d399','#60a5fa','#e879f9'];
+
+        /* ── Mode toggle ── */
+        window.spSetMode = function(mode) {
+            spMode = mode;
+            document.getElementById('spModeSolo').classList.toggle('active', mode === 'solo');
+            document.getElementById('spModeTeam').classList.toggle('active', mode === 'team');
+            document.getElementById('spTeamBanner').style.display = mode === 'team' ? 'flex' : 'none';
+            // Show/hide team stepper item
+            document.getElementById('spStepperTeam').style.display = mode === 'team' ? 'flex' : 'none';
+            document.querySelectorAll('.sp-stepper-line-team').forEach(function(l) { l.style.display = mode === 'team' ? 'block' : 'none'; });
+            // Update step 2 labels
+            if (mode === 'team') {
+                document.getElementById('spStep2Title').textContent = 'Team subjects';
+                document.getElementById('spStep2Sub').textContent = 'Add all subjects the team will study together';
+                document.getElementById('spGenBtnLabel').textContent = 'Generate Team Plan';
+            } else {
+                document.getElementById('spStep2Title').textContent = 'Your subjects';
+                document.getElementById('spStep2Sub').textContent = 'Add each subject and rate how difficult it feels for you';
+                document.getElementById('spGenBtnLabel').textContent = 'Generate My Plan';
+            }
+            // Update "Next" on step 1 to go to team step if team mode
+            var step1Next = document.querySelector('#spStep1 .sp-btn-next');
+            if (step1Next) {
+                step1Next.onclick = mode === 'team' ? function() { spGoStep('team'); } : function() { spGoStep(2); };
+            }
+        };
+
+        /* ── Members ── */
+        function spRenderMembers() {
+            var list = document.getElementById('spMembersList');
+            if (!list) return;
+            list.innerHTML = spMembers.map(function(m, i) {
+                var color = MEMBER_COLORS[i % MEMBER_COLORS.length];
+                var initials = m.name.trim() ? m.name.trim().split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2) : (i+1).toString();
+                return '<div class="sp-member-row">' +
+                    '<div class="sp-member-avatar" style="background:' + color + '22;border:1.5px solid ' + color + '55;color:' + color + '">' + initials + '</div>' +
+                    '<input class="sp-member-input" type="text" value="' + m.name + '" placeholder="Member ' + (i+1) + ' name" onchange="spMemberName(' + i + ', this.value)" oninput="spMemberName(' + i + ', this.value)">' +
+                    (spMembers.length > 2 ? '<button class="sp-member-rm" onclick="spRemoveMember(' + i + ')"><i class="fa-solid fa-xmark"></i></button>' : '') +
+                    '</div>';
+            }).join('');
+            document.getElementById('spTeamCountBadge').textContent = spMembers.length + ' member' + (spMembers.length !== 1 ? 's' : '');
+            document.getElementById('spAddMemberBtn').style.display = spMembers.length >= 6 ? 'none' : '';
+        }
+        window.spMemberName = function(i, v) { spMembers[i].name = v; spRenderMembers(); };
+        window.spAddMember = function() {
+            if (spMembers.length >= 6) return;
+            spMembers.push({ name: 'Student ' + (spMembers.length + 1) });
+            spRenderMembers();
+            var inputs = document.querySelectorAll('.sp-member-input');
+            if (inputs.length) inputs[inputs.length - 1].focus();
+        };
+        window.spRemoveMember = function(i) {
+            if (spMembers.length <= 2) return;
+            spMembers.splice(i, 1);
+            spRenderMembers();
+        };
+
+        /* ── Subjects ── */
+        function spRenderSubjects() {
+            var list = document.getElementById('spSubjectsList');
+            if (!list) return;
+            list.innerHTML = spSubjects.map(function(s, i) {
+                return '<div class="sp-subj-row">' +
+                    '<i class="fa-solid fa-book-open sp-subj-icon"></i>' +
+                    '<input class="sp-subj-input" type="text" value="' + s.name + '" placeholder="Subject name" onchange="spSubjectName(' + i + ', this.value)">' +
+                    '<select class="sp-subj-select" onchange="spSubjectDiff(' + i + ', this.value)">' +
+                    '<option value="easy"' + (s.diff==='easy'?' selected':'') + '>Easy</option>' +
+                    '<option value="med"' + (s.diff==='med'?' selected':'') + '>Medium</option>' +
+                    '<option value="hard"' + (s.diff==='hard'?' selected':'') + '>Hard</option>' +
+                    '</select>' +
+                    '<button class="sp-subj-rm" onclick="spRemoveSubject(' + i + ')"><i class="fa-solid fa-xmark"></i></button>' +
+                    '</div>';
+            }).join('');
+        }
+
+        window.spSubjectName = function(i, v) { spSubjects[i].name = v; };
+        window.spSubjectDiff = function(i, v) { spSubjects[i].diff = v; };
+        window.spAddSubject = function() {
+            spSubjects.push({ name: '', diff: 'med' });
+            spRenderSubjects();
+            var inputs = document.querySelectorAll('.sp-subj-input');
+            if (inputs.length) inputs[inputs.length - 1].focus();
+        };
+        window.spRemoveSubject = function(i) {
+            spSubjects.splice(i, 1);
+            spRenderSubjects();
+        };
+
+        // Day picker
+        document.querySelectorAll('#spDayPicker .sp-day-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { btn.classList.toggle('active'); });
+        });
+
+        // Single-select chip groups
+        function bindSingle(id) {
+            document.querySelectorAll('#' + id + ' .sp-chip').forEach(function(chip) {
+                chip.addEventListener('click', function() {
+                    document.querySelectorAll('#' + id + ' .sp-chip').forEach(function(c) { c.classList.remove('active'); });
+                    chip.classList.add('active');
+                });
+            });
+        }
+        bindSingle('spStyleGroup');
+        bindSingle('spSessionGroup');
+        bindSingle('spTimeGroup');
+
+        window.spGoStep = function(n) {
+            document.querySelectorAll('.sp-step').forEach(function(s) { s.classList.remove('active'); });
+            var el;
+            if (n === 'loading') el = document.getElementById('spStepLoading');
+            else if (n === 'result') el = document.getElementById('spStepResult');
+            else if (n === 'team') el = document.getElementById('spStepTeam');
+            else el = document.getElementById('spStep' + n);
+            if (el) el.classList.add('active');
+            // Update stepper
+            document.querySelectorAll('.sp-stepper-item').forEach(function(item) {
+                var step = parseFloat(item.dataset.step);
+                item.classList.remove('active', 'done');
+                var nNum = typeof n === 'number' ? n : (n === 'team' ? 1.5 : (n === 'result' ? 99 : 0));
+                if (step === nNum) item.classList.add('active');
+                else if (step < nNum) item.classList.add('done');
+            });
+            if (n === 'result') {
+                document.querySelectorAll('.sp-stepper-item').forEach(function(item){ item.classList.add('done'); item.classList.remove('active'); });
+            }
+        };
+
+        function spGetChip(id) {
+            var el = document.querySelector('#' + id + ' .sp-chip.active');
+            return el ? el.dataset.val : '';
+        }
+        function spGetDays() {
+            return Array.from(document.querySelectorAll('#spDayPicker .sp-day-btn.active')).map(function(e) { return e.dataset.day; });
+        }
+
+        window.spGenerate = async function() {
+            spGoStep('loading');
+            var progMsgs = spMode === 'team'
+                ? ['Analysing team schedules', 'Coordinating member subjects', 'Balancing sessions across the team', 'Building shared roadmap', 'Nova is syncing everyone…']
+                : ['Analysing your schedule', 'Calculating study sessions', 'Matching resources to subjects', 'Preparing daily roadmap', 'Almost ready…'];
+            var pi = 0;
+            var progEl = document.getElementById('spProgText');
+            if (progEl) progEl.textContent = progMsgs[0];
+            var progInt = setInterval(function() {
+                if (progEl) progEl.textContent = progMsgs[Math.min(pi++, progMsgs.length - 1)];
+            }, 1500);
+
+            var instType = document.getElementById('spInstType').value;
+            var classYear = document.getElementById('spClassYear').value || 'not specified';
+            var schoolStart = document.getElementById('spSchoolStart').value;
+            var schoolEnd = document.getElementById('spSchoolEnd').value;
+            var schoolDays = spGetDays();
+            var freeHrs = document.getElementById('spFreeHrs').value;
+            var planDur = document.getElementById('spPlanDur').value;
+            var examDate = document.getElementById('spExamDate').value;
+            var learningStyle = spGetChip('spStyleGroup');
+            var sessionLen = spGetChip('spSessionGroup');
+            var bestTime = spGetChip('spTimeGroup');
+            var extraNotes = document.getElementById('spExtraNotes').value;
+            var subjectList = spSubjects.filter(function(s) { return s.name.trim(); }).map(function(s) { return s.name + ' (difficulty: ' + s.diff + ')'; }).join(', ');
+
+            var today = new Date();
+            var todayStr = today.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            var dayCount = planDur === '1 week' ? 7 : planDur === '2 weeks' ? 14 : planDur === '1 month' ? 21 : 30;
+
+            var prompt;
+            if (spMode === 'team') {
+                var memberNames = spMembers.filter(function(m){return m.name.trim();}).map(function(m){return m.name.trim();});
+                prompt = 'You are an expert academic study planner. Generate a detailed shared team study plan for ' + memberNames.length + ' students studying together.\n\nTEAM MEMBERS: ' + memberNames.join(', ') + '\n\nSHARED SCHEDULE:\n- Institution: ' + instType + ', Class/Year: ' + classYear + '\n- School timing: ' + schoolStart + ' to ' + schoolEnd + ' on ' + schoolDays.join(', ') + '\n- Free study hours per day: ' + freeHrs + ' hours\n- Plan duration: ' + planDur + ' (' + dayCount + ' days)\n- Exam/goal date: ' + (examDate || 'not specified') + '\n- Subjects: ' + subjectList + '\n- Learning style: ' + learningStyle + '\n- Preferred session length: ' + sessionLen + ' minutes\n- Best study time: ' + bestTime + '\n- Extra notes: ' + (extraNotes || 'none') + '\n- Today\'s date: ' + todayStr + '\n\nRespond ONLY with valid JSON, no markdown:\n{\n  "teamMode": true,\n  "members": ["Name1","Name2"],\n  "summary": { "totalDays": 14, "totalStudyHours": 42, "subjectsCount": 4, "examCountdown": "21 days" },\n  "days": [\n    {\n      "date": "Monday, 2 June 2025",\n      "dayType": "school",\n      "sessions": [\n        {\n          "time": "4:00 PM – 4:45 PM",\n          "subject": "Mathematics",\n          "topic": "Quadratic equations – basics",\n          "description": "Group session: each member works the same problem set, then compare solutions",\n          "assignedTo": "All",\n          "difficulty": "hard",\n          "resources": [\n            {"label": "NCERT Ch 4", "url": "https://ncert.nic.in/textbook.php"}\n          ]\n        }\n      ]\n    }\n  ]\n}\n\nRules:\n- Include exactly ' + dayCount + ' days\n- Most sessions should be "All" (group study), but occasionally assign a specific member for individual practice or weak-area work\n- assignedTo is either "All" or one of: ' + memberNames.join(', ') + '\n- On school days schedule after ' + schoolEnd + '\n- Include group discussion sessions, peer review slots, and collaborative revision days\n- Resources must be real working URLs\n- dayType: school, holiday, or weekend';
+            } else {
+                prompt = 'You are an expert academic study planner for Indian students. Generate a detailed, realistic, day-by-day study plan.\n\nSTUDENT INFO:\n- Institution: ' + instType + ', Class/Year: ' + classYear + '\n- School timing: ' + schoolStart + ' to ' + schoolEnd + ' on ' + schoolDays.join(', ') + '\n- Free study hours per day: ' + freeHrs + ' hours\n- Plan duration: ' + planDur + ' (' + dayCount + ' days)\n- Exam/goal date: ' + (examDate || 'not specified') + '\n- Subjects: ' + subjectList + '\n- Learning style: ' + learningStyle + '\n- Preferred session length: ' + sessionLen + ' minutes\n- Best study time: ' + bestTime + '\n- Extra notes: ' + (extraNotes || 'none') + '\n- Today\'s date: ' + todayStr + '\n\nRespond ONLY with valid JSON, no markdown, no explanation:\n{\n  "summary": { "totalDays": 14, "totalStudyHours": 42, "subjectsCount": 4, "examCountdown": "21 days" },\n  "days": [\n    {\n      "date": "Monday, 2 June 2025",\n      "dayType": "school",\n      "sessions": [\n        {\n          "time": "4:00 PM – 4:45 PM",\n          "subject": "Mathematics",\n          "topic": "Quadratic equations – basics",\n          "description": "Revise theory, do 10 practice problems from NCERT Ex 4.1",\n          "difficulty": "hard",\n          "resources": [\n            {"label": "NCERT Ch 4", "url": "https://ncert.nic.in/textbook.php"},\n            {"label": "Khan Academy – Quadratics", "url": "https://www.khanacademy.org/math/algebra"}\n          ]\n        }\n      ]\n    }\n  ]\n}\n\nRules:\n- Include exactly ' + dayCount + ' days\n- On school days schedule sessions AFTER school ends (' + schoolEnd + '), in the ' + bestTime + ' if possible\n- On non-school days spread sessions across the day\n- Harder subjects get more weekly slots\n- Include revision days, not just new topics\n- Resources must be REAL working websites\n- Keep sessions realistic; dayType is school, holiday, or weekend';
+            }
+
+            try {
+                var response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        system: 'You are an expert academic study planner. You MUST respond with ONLY valid JSON — no explanation, no markdown, no code fences. Just raw JSON starting with { and ending with }.',
+                        messages: [{ role: 'user', content: prompt }],
+                        max_tokens: 4000
+                    })
+                });
+                var data = await response.json();
+                if (data.error) throw new Error(data.error.message || 'API error');
+                // Proxy returns { content: [{ type: 'text', text: '...' }] }
+                var raw = (data.content && data.content[0] && data.content[0].text) ||
+                          (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content);
+                if (!raw) throw new Error('Empty response');
+                var clean = raw.replace(/```json|```/g, '').trim();
+                var jsonMatch = clean.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) throw new Error('No JSON in response');
+                var plan = JSON.parse(jsonMatch[0]);
+                clearInterval(progInt);
+                spAllDays = plan.days || [];
+                spCurrentWeek = 0;
+                spRenderResult(plan);
+            } catch(e) {
+                clearInterval(progInt);
+                var errMsg = e.message || 'Unknown error';
+                document.getElementById('spResultContent').innerHTML = '<div style="text-align:center;padding:3rem 1rem;"><p style="color:rgba(255,255,255,.4);margin-bottom:0.5rem;">Could not generate plan.</p><p style="color:rgba(255,255,255,.25);font-size:12px;margin-bottom:1.5rem;">Error: ' + errMsg + '</p><button class="sp-regen-btn" onclick="spGoStep(3)"><i class="fa-solid fa-arrow-left"></i> Go back &amp; retry</button></div>';
+                spGoStep('result');
+            }
+        };
+
+        function spRenderResult(plan) {
+            var s = plan.summary || {};
+            var dpp = 7;
+            var totalWeeks = Math.ceil(spAllDays.length / dpp);
+            var isTeam = plan.teamMode === true;
+            var planMembers = isTeam ? (plan.members || spMembers.map(function(m){return m.name;})) : [];
+
+            function getMemberColor(name) {
+                if (name === 'All' || !name) return '#2dd4bf';
+                var idx = planMembers.indexOf(name);
+                return MEMBER_COLORS[idx >= 0 ? idx % MEMBER_COLORS.length : 0];
+            }
+
+            function render() {
+                var start = spCurrentWeek * dpp;
+                var weekDays = spAllDays.slice(start, start + dpp);
+                var weekLabel = totalWeeks > 1 ? ('Week ' + (spCurrentWeek + 1) + ' of ' + totalWeeks) : (isTeam ? 'Team study plan' : 'Your study plan');
+
+                var navHTML = totalWeeks > 1 ? '<div class="sp-week-nav">' +
+                    '<button onclick="spChangeWeek(-1)" ' + (spCurrentWeek === 0 ? 'disabled' : '') + '><i class="fa-solid fa-chevron-left"></i> Prev</button>' +
+                    '<span class="sp-week-label">' + weekLabel + '</span>' +
+                    '<button onclick="spChangeWeek(1)" ' + (spCurrentWeek >= totalWeeks - 1 ? 'disabled' : '') + '>Next <i class="fa-solid fa-chevron-right"></i></button>' +
+                    '</div>' : '';
+
+                var daysHTML = weekDays.map(function(day) {
+                    var sessions = (day.sessions || []).map(function(sess) {
+                        var diff = sess.difficulty === 'hard' ? 'hard' : sess.difficulty === 'med' ? 'med' : 'easy';
+                        var diffLabel = diff === 'hard' ? 'Challenging' : diff === 'med' ? 'Moderate' : 'Light';
+                        var resources = (sess.resources || []).map(function(r) {
+                            return '<a class="sp-res-link" href="' + r.url + '" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px"></i> ' + r.label + '</a>';
+                        }).join('');
+                        var memberTag = '';
+                        if (isTeam && sess.assignedTo) {
+                            var mc = getMemberColor(sess.assignedTo);
+                            var tagIcon = sess.assignedTo === 'All' ? '<i class="fa-solid fa-users" style="font-size:9px"></i>' : '<i class="fa-solid fa-user" style="font-size:9px"></i>';
+                            memberTag = '<div class="sp-member-tag" style="background:' + mc + '20;border:1px solid ' + mc + '40;color:' + mc + '">' + tagIcon + ' ' + sess.assignedTo + '</div>';
+                        }
+                        return '<div class="sp-session">' +
+                            '<div class="sp-stime">' + (sess.time || '') + '</div>' +
+                            '<div>' +
+                                memberTag +
+                                '<div class="sp-stask">' + sess.subject + ' — ' + sess.topic + '</div>' +
+                                '<div class="sp-sdesc">' + sess.description + '</div>' +
+                                (resources ? '<div class="sp-res-wrap">' + resources + '</div>' : '') +
+                            '</div>' +
+                            '<span class="sp-diff-badge ' + diff + '">' + diffLabel + '</span>' +
+                            '</div>';
+                    }).join('');
+
+                    var dtype = day.dayType || 'school';
+                    var dtypeIcon = dtype === 'school' ? 'fa-building-school' : dtype === 'holiday' ? 'fa-umbrella-beach' : 'fa-house';
+                    return '<div class="sp-day-block">' +
+                        '<div class="sp-day-header">' +
+                            '<span class="sp-day-name"><i class="fa-solid ' + dtypeIcon + '" style="margin-right:8px;opacity:.6"></i>' + day.date + '</span>' +
+                            '<span class="sp-day-badge ' + dtype + '">' + dtype + '</span>' +
+                        '</div>' +
+                        (sessions || '<div class="sp-rest-msg"><i class="fa-solid fa-moon" style="margin-right:6px"></i>Rest day — recharge!</div>') +
+                        '</div>';
+                }).join('');
+
+                // Team banner for result
+                var teamBannerHTML = '';
+                if (isTeam && planMembers.length > 0) {
+                    var avatarsHTML = planMembers.map(function(name, idx) {
+                        var color = MEMBER_COLORS[idx % MEMBER_COLORS.length];
+                        var initials = name.trim().split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2) || (idx+1).toString();
+                        return '<div class="sp-team-avatar-sm" style="background:' + color + '33;border-color:' + color + '55;color:' + color + '">' + initials + '</div>';
+                    }).join('');
+                    teamBannerHTML = '<div class="sp-team-result-banner">' +
+                        '<div class="sp-team-avatars">' + avatarsHTML + '</div>' +
+                        '<div class="sp-team-result-info">' +
+                            '<p class="sp-team-result-title"><i class="fa-solid fa-users-gear" style="margin-right:7px;color:#2dd4bf"></i>Team Plan — ' + planMembers.join(', ') + '</p>' +
+                            '<p class="sp-team-result-sub">Nova coordinated one shared schedule for the whole team · Sessions tagged by member</p>' +
+                        '</div>' +
+                    '</div>';
+                }
+
+                document.getElementById('spResultContent').innerHTML =
+                    '<div class="sp-result-header">' +
+                        '<div><p class="sp-result-title">' + (isTeam ? 'Team study plan' : 'Your personalised study plan') + '</p><p class="sp-result-sub">' + (isTeam ? 'AI-coordinated shared plan for ' + planMembers.length + ' students' : 'AI-generated, day-by-day roadmap with real resources') + '</p></div>' +
+                        '<button class="sp-regen-btn" onclick="spGoStep(1)"><i class="fa-solid fa-rotate-left"></i> Redo</button>' +
+                    '</div>' +
+                    teamBannerHTML +
+                    '<div class="sp-summary-grid">' +
+                        '<div class="sp-metric"><div class="sp-metric-val">' + (s.totalDays || spAllDays.length) + '</div><div class="sp-metric-lbl">Days planned</div></div>' +
+                        '<div class="sp-metric"><div class="sp-metric-val">' + (s.totalStudyHours || '—') + '</div><div class="sp-metric-lbl">Study hours</div></div>' +
+                        '<div class="sp-metric"><div class="sp-metric-val">' + (s.subjectsCount || spSubjects.length) + '</div><div class="sp-metric-lbl">Subjects</div></div>' +
+                        (isTeam
+                            ? '<div class="sp-metric"><div class="sp-metric-val">' + planMembers.length + '</div><div class="sp-metric-lbl">Team members</div></div>'
+                            : '<div class="sp-metric"><div class="sp-metric-val">' + (s.examCountdown || '—') + '</div><div class="sp-metric-lbl">To exam</div></div>') +
+                    '</div>' +
+                    navHTML +
+                    daysHTML +
+                    '<div class="sp-cta-row">' +
+                        '<a href="ai-assistant.html" class="sp-cta-btn"><i class="fa-solid fa-robot"></i> Ask Nova for study tips</a>' +
+                        '<a href="https://www.khanacademy.org" target="_blank" class="sp-cta-btn"><i class="fa-solid fa-graduation-cap"></i> Khan Academy</a>' +
+                        '<a href="https://ncert.nic.in/textbook.php" target="_blank" class="sp-cta-btn"><i class="fa-solid fa-book"></i> NCERT Textbooks</a>' +
+                    '</div>';
+
+                spGoStep('result');
+            }
+
+            window.spChangeWeek = function(dir) {
+                var totalWeeks2 = Math.ceil(spAllDays.length / dpp);
+                spCurrentWeek = Math.max(0, Math.min(totalWeeks2 - 1, spCurrentWeek + dir));
+                render();
+            };
+
+            render();
+        }
+
+        // Init
+        spRenderSubjects();
+        spRenderMembers();
+    })();
+    </script>
+
+    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        // Animate on scroll
+        function observeAnimations() {
+            const els = document.querySelectorAll('[data-animate]');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animated'); io.unobserve(e.target); } });
+            }, { threshold: 0.15 });
+            els.forEach(el => io.observe(el));
+        }
+        document.addEventListener('DOMContentLoaded', observeAnimations);
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('scholarNav').classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Search hint helper
+        function setSearch(val) { document.getElementById('heroSearch').value = val; document.getElementById('heroSearch').focus(); }
+
+        // Nova widget
+        const launcher = document.getElementById('nova-launcher');
+        const panel = document.getElementById('nova-panel');
+        launcher.addEventListener('click', () => {
+            const open = panel.classList.toggle('is-open');
+            launcher.classList.toggle('is-open', open);
+            document.getElementById('novaBadge').classList.remove('visible');
+        });
+        document.getElementById('novaClose').addEventListener('click', () => {
+            panel.classList.remove('is-open');
+            launcher.classList.remove('is-open');
+        });
+        function novaSend(msg) {
+            const input = document.getElementById('novaInput');
+            input.value = msg || input.value;
+            if (input.value.trim()) { /* handled by app.js */ }
+        }
+    </script>
+</body>
+</html>

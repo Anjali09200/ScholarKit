@@ -1,0 +1,379 @@
+/* ============================================================
+   style2.css — Coding Tools Page Styles
+   Extends style.css (variables from root are available)
+   ============================================================ */
+ 
+/* ── PAGE HERO ── */
+.page-hero {
+  padding: 60px 0 40px;
+  text-align: center;
+  position: relative;
+}
+ 
+.page-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(24, 95, 165, 0.15);
+  border: 1px solid rgba(24, 95, 165, 0.4);
+  color: #93c5fd;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+ 
+.page-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+ 
+.page-hero h1 span {
+  background: linear-gradient(135deg, #93c5fd, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+}
+ 
+.page-hero p {
+  color: #94a3b8;
+  font-size: 1rem;
+  max-width: 520px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
+}
+ 
+/* ── SEARCH BAR ── */
+.tools-search-wrap {
+  max-width: 480px;
+  margin: 0 auto 28px;
+  position: relative;
+}
+ 
+.tools-search-wrap input {
+  width: 100%;
+  padding: 13px 50px 13px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+ 
+.tools-search-wrap input::placeholder { color: #64748b; }
+ 
+.tools-search-wrap input:focus {
+  border-color: #93c5fd;
+  background: rgba(255,255,255,0.1);
+}
+ 
+.tools-search-wrap i {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+ 
+/* ── FILTER TABS ── */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+ 
+.filter-tab {
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  user-select: none;
+}
+ 
+.filter-tab:hover,
+.filter-tab.active {
+  background: rgba(24, 95, 165, 0.22);
+  border-color: #93c5fd;
+  color: #93c5fd;
+}
+ 
+/* ── TOOLS GRID ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding-bottom: 60px;
+}
+ 
+/* ── TOOL CARD ── */
+.tool-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 0.3s ease, border-color 0.3s ease,
+              transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+ 
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #185FA5, #a78bfa);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+ 
+.tool-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(147, 197, 253, 0.22);
+  transform: translateY(-5px);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.32);
+}
+ 
+.tool-card:hover::before { opacity: 1; }
+ 
+.tool-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+ 
+.tool-card-body { flex: 1; }
+ 
+.tool-card-body h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 6px;
+}
+ 
+.tool-card-body p {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.6;
+}
+ 
+.tool-card-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+ 
+.tool-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  font-size: 0.82rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  align-self: flex-start;
+}
+ 
+.tool-card-btn:hover {
+  background: rgba(24, 95, 165, 0.3);
+  border-color: #93c5fd;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+ 
+/* ── HIDDEN CARD ── */
+.tool-card.hidden { display: none; }
+ 
+/* ── EMPTY STATE ── */
+.tools-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+}
+ 
+.tools-empty i {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 16px;
+  color: #334155;
+}
+ 
+.tools-empty p {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #64748b;
+}
+ 
+.tools-empty small {
+  font-size: 0.8rem;
+  color: #475569;
+}
+ 
+/* ── CATEGORY HEADING ── */
+.category-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #93c5fd;
+  margin: 40px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
+.category-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+ 
+/* ── BACK BTN ── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-decoration: none;
+  margin-bottom: 30px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  transition: all 0.22s ease;
+}
+ 
+.back-btn:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+}
+ 
+/* ── GAME BANNER (links to codegame.html) ── */
+.game-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(24,95,165,0.18), rgba(167,139,250,0.12));
+  border: 1px solid rgba(147,197,253,0.2);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+ 
+.game-banner::before {
+  content: '🎮';
+  position: absolute;
+  right: 24px;
+  bottom: -10px;
+  font-size: 5rem;
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
+ 
+.game-banner-text h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+ 
+.game-banner-text p {
+  font-size: 0.83rem;
+  color: #94a3b8;
+  margin: 0;
+}
+ 
+.game-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #185FA5, #2c7ee8);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(24,95,165,0.4);
+  white-space: nowrap;
+}
+ 
+.game-banner-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(24,95,165,0.5);
+  color: #fff;
+  text-decoration: none;
+}
+ 
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .page-hero h1 { font-size: 2rem; }
+  .tools-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .filter-tabs { gap: 8px; }
+  .filter-tab  { font-size: 0.78rem; padding: 6px 14px; }
+  .game-banner { padding: 18px 20px; }
+}
+ 
+@media (max-width: 480px) {
+  .page-hero h1 { font-size: 1.6rem; }
+  .tools-grid   { grid-template-columns: 1fr; }
+  .filter-tabs  {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab { flex-shrink: 0; }
+  .game-banner-btn { width: 100%; justify-content: center; }
+}

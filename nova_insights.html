@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Productivity Insights — ScholarKit</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg:        #020b18;
+      --surface:   rgba(255,255,255,0.04);
+      --surface-md: rgba(255,255,255,0.08);
+      --border:    rgba(255,255,255,0.08);
+      --accent:    #185FA5;
+      --teal:      #2dd4bf;
+      --green:     #4ade80;
+      --purple:    #a78bfa;
+      --amber:     #fbbf24;
+      --blue:      #93c5fd;
+      --text:      rgba(255,255,255,0.85);
+      --muted:     rgba(255,255,255,0.4);
+      --faint:     rgba(255,255,255,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── AMBIENT BLOBS ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.14;
+      pointer-events: none;
+      animation: blobDrift 16s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 560px; height: 560px; background: radial-gradient(circle, #185FA5, transparent); top: -150px; left: -150px; }
+    .blob-2 { width: 400px; height: 400px; background: radial-gradient(circle, #2dd4bf, transparent); bottom: -80px; right: -80px; animation-delay: -6s; }
+    .blob-3 { width: 320px; height: 320px; background: radial-gradient(circle, #a78bfa, transparent); top: 40%; left: 35%; animation-delay: -10s; }
+    @keyframes blobDrift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(40px,30px) scale(1.1); }
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 32px;
+      background: rgba(2,11,24,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-back {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .topbar-back:hover { color: var(--blue); border-color: rgba(147,197,253,0.25); }
+    .topbar-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .topbar-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(45,212,191,0.2), rgba(24,95,165,0.2));
+      border: 1px solid rgba(45,212,191,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal);
+      font-size: 0.9rem;
+    }
+    .topbar-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .topbar-label span {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-left: 6px;
+    }
+    .topbar-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.2);
+      color: var(--green);
+      font-size: 0.72rem;
+      font-family: 'Fira Code', monospace;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .topbar-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── PAGE BODY ── */
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 28px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+    }
+    .section-action {
+      font-size: 0.72rem;
+      color: var(--teal);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .section-action:hover { opacity: 1; }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 900px) { .stat-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 500px) { .stat-grid { grid-template-columns: 1fr; } }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      animation: fadeUp 0.5s ease both;
+    }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--faint); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 16px 16px 0 0;
+    }
+    .stat-card.c-teal::before  { background: linear-gradient(90deg, var(--teal), transparent); }
+    .stat-card.c-blue::before  { background: linear-gradient(90deg, var(--blue), transparent); }
+    .stat-card.c-green::before { background: linear-gradient(90deg, var(--green), transparent); }
+    .stat-card.c-purple::before{ background: linear-gradient(90deg, var(--purple), transparent); }
+    .stat-card.c-amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+
+    .stat-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+    .c-teal  .stat-icon { background: rgba(45,212,191,0.12);  color: var(--teal); }
+    .c-blue  .stat-icon { background: rgba(147,197,253,0.12); color: var(--blue); }
+    .c-green .stat-icon { background: rgba(74,222,128,0.12);  color: var(--green); }
+    .c-purple .stat-icon{ background: rgba(167,139,250,0.12); color: var(--purple); }
+    .c-amber .stat-icon { background: rgba(251,191,36,0.12);  color: var(--amber); }
+
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .stat-delta {
+      position: absolute;
+      top: 18px; right: 18px;
+      font-size: 0.68rem;
+      font-family: 'Fira Code', monospace;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .stat-delta.up   { background: rgba(74,222,128,0.1); color: var(--green); }
+    .stat-delta.down { background: rgba(248,113,113,0.1); color: #f87171; }
+
+    /* ── CHART CARDS ── */
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .chart-row.triple {
+      grid-template-columns: 2fr 1fr;
+    }
+    @media (max-width: 860px) {
+      .chart-row, .chart-row.triple { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title i { font-size: 0.78rem; color: var(--muted); }
+    .card-badge {
+      font-size: 0.68rem;
+      font-family: 'Fira Code', monospace;
+      color: var(--muted);
+      background: var(--surface-md);
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .chart-wrap {
+      position: relative;
+    }
+    .chart-wrap canvas { max-width: 100%; }
+
+    /* ── TOPIC BARS ── */
+    .topic-list { display: flex; flex-direction: column; gap: 12px; }
+    .topic-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+    }
+    .topic-emoji { font-size: 1rem; width: 24px; text-align: center; flex-shrink: 0; }
+    .topic-name { color: var(--text); flex: 0 0 80px; font-size: 0.8rem; }
+    .topic-bar-track {
+      flex: 1;
+      height: 6px;
+      background: var(--surface-md);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .topic-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+      width: 0;
+    }
+    .topic-count {
+      font-size: 0.72rem;
+      font-family: 'Fira Code', monospace;
+      color: var(--muted);
+      width: 28px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── SUBJECT TAGS ── */
+    .subject-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .subject-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: default;
+      transition: transform 0.2s, opacity 0.2s;
+      animation: fadeUp 0.6s ease both;
+    }
+    .subject-tag:hover { transform: translateY(-1px); }
+    .subject-tag .tag-count {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.68rem;
+      opacity: 0.7;
+    }
+
+    /* ── STREAK CARD ── */
+    .streak-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .streak-day {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-family: 'Fira Code', monospace;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.2s;
+    }
+    .streak-day.active {
+      background: rgba(45,212,191,0.15);
+      border-color: rgba(45,212,191,0.35);
+      color: var(--teal);
+    }
+    .streak-day.today {
+      background: rgba(45,212,191,0.25);
+      border-color: var(--teal);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* ── RECENT SESSIONS ── */
+    .session-list { display: flex; flex-direction: column; gap: 10px; }
+    .session-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+      cursor: default;
+    }
+    .session-row:hover { border-color: var(--faint); }
+    .session-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .session-info { flex: 1; min-width: 0; }
+    .session-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .session-meta {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .session-badge {
+      font-size: 0.68rem;
+      font-family: 'Fira Code', monospace;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 36px 20px;
+      color: var(--muted);
+    }
+    .empty-state i { font-size: 2rem; margin-bottom: 10px; display: block; opacity: 0.4; }
+    .empty-state p { font-size: 0.82rem; }
+
+    /* ── NO DATA BANNER ── */
+    .no-data-banner {
+      display: none;
+      background: rgba(251,191,36,0.07);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      color: rgba(251,191,36,0.8);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .no-data-banner a { color: var(--teal); text-decoration: none; font-weight: 600; }
+
+    /* ── FADE ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stat-card:nth-child(1) { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) { animation-delay: 0.10s; }
+    .stat-card:nth-child(3) { animation-delay: 0.15s; }
+    .stat-card:nth-child(4) { animation-delay: 0.20s; }
+
+    /* ── NOVA INSIGHT CARD ── */
+    .nova-insight-card {
+      background: linear-gradient(135deg, rgba(45,212,191,0.07), rgba(167,139,250,0.07));
+      border: 1px solid rgba(45,212,191,0.28);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      animation: cardIn 0.5s ease both;
+    }
+    .nova-insight-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(45,212,191,0.18), rgba(167,139,250,0.18));
+      border: 1px solid rgba(45,212,191,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .nova-insight-body { flex: 1; min-width: 0; }
+    .nova-insight-label {
+      font-size: 0.68rem;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .nova-insight-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    .nova-insight-text.loading {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <a href="ai-assistant.html" class="topbar-back">
+      <i class="fa-solid fa-chevron-left"></i> Back to Nova
+    </a>
+    <div class="topbar-title">
+      <div class="topbar-icon"><i class="fa-solid fa-chart-mixed"></i></div>
+      <div>
+        <div class="topbar-label">Nova Insights <span>/ Workspace Intelligence</span></div>
+      </div>
+    </div>
+    <div class="topbar-pill">
+      <div class="dot"></div>
+      <span id="lastUpdated">live</span>
+    </div>
+  </div>
+
+  <!-- Page -->
+  <div class="page">
+
+    <!-- Nova AI Insight — first thing judges see -->
+    <div class="nova-insight-card" id="novaInsightCard">
+      <div class="nova-insight-avatar">🐱</div>
+      <div class="nova-insight-body">
+        <div class="nova-insight-label">Nova says</div>
+        <div class="nova-insight-text loading" id="novaInsightText">Analysing your workspace data…</div>
+      </div>
+    </div>
+
+    <!-- No data notice -->
+    <div class="no-data-banner" id="noDataBanner" style="display:none;">
+      <i class="fa-solid fa-circle-info"></i>
+      Showing a preview — <a href="ai-assistant.html">start using Nova</a> to populate your real team productivity data here.
+    </div>
+
+    <!-- Stat cards -->
+    <div class="section-header">
+      <div class="section-title">Overview</div>
+      <button class="section-action" onclick="refreshData()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card c-teal">
+        <div class="stat-delta up" id="deltaMessages">↑ +12%</div>
+        <div class="stat-icon"><i class="fa-solid fa-messages"></i></div>
+        <div class="stat-value" id="statTotalMessages">0</div>
+        <div class="stat-label">Total Messages</div>
+      </div>
+      <div class="stat-card c-blue">
+        <div class="stat-delta up" id="deltaSessions">↑ +3</div>
+        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+        <div class="stat-value" id="statSessions">0</div>
+        <div class="stat-label">Sessions Started</div>
+      </div>
+      <div class="stat-card c-green">
+        <div class="stat-delta up">↑ active</div>
+        <div class="stat-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+        <div class="stat-value" id="statStreak">0</div>
+        <div class="stat-label">Day Streak</div>
+      </div>
+      <div class="stat-card c-purple">
+        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="stat-value" id="statTopics">0</div>
+        <div class="stat-label">Topics Covered</div>
+      </div>
+    </div>
+
+    <!-- Charts row 1 -->
+    <div class="chart-row triple">
+
+      <!-- Activity over time -->
+      <div class="card" style="animation-delay:0.25s">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-chart-line"></i> Message Activity</div>
+          <div class="card-badge" id="activityPeriod">last 7 days</div>
+        </div>
+        <div class="chart-wrap" style="height:200px">
+          <canvas id="activityChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Session length -->
+      <div class="card" style="animation-delay:0.30s">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-hourglass-half"></i> Avg Session</div>
+          <div class="card-badge" id="avgSessionBadge">— msgs</div>
+        </div>
+        <div class="chart-wrap" style="height:200px">
+          <canvas id="sessionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts row 2 -->
+    <div class="chart-row">
+
+      <!-- Topic breakdown -->
+      <div class="card" style="animation-delay:0.35s">
+        <div class="card-header">
+          <div class="card-title"><i class="fa-solid fa-chart-bar"></i> Top Topics</div>
+          <div class="card-badge">by message count</div>
+        </div>
+        <div class="topic-list" id="topicList"></div>
+      </div>
+
+      <!-- Subject tags + streak -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+
+        <div class="card" style="animation-delay:0.40s">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-tags"></i> Subjects Covered</div>
+          </div>
+          <div class="subject-cloud" id="subjectCloud"></div>
+        </div>
+
+        <div class="card" style="animation-delay:0.45s">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-calendar-days"></i> Activity Streak</div>
+            <div class="card-badge" id="streakBadge">0 days</div>
+          </div>
+          <div class="streak-row" id="streakRow"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Recent sessions -->
+    <div class="section-header" style="margin-top:8px;">
+      <div class="section-title">Recent Interactions</div>
+    </div>
+    <div class="card" style="animation-delay:0.50s">
+      <div class="session-list" id="sessionList"></div>
+    </div>
+
+  </div><!-- /page -->
+
+<script>
+// ── TOPIC DETECTION (mirrors ai.js logic) ──────────────────────────
+function detectTopic(text) {
+  const q = text.toLowerCase();
+  if (/python|javascript|debug|code|function|algorithm|java|c\+\+|typescript|rust|golang/.test(q)) return 'Code';
+  if (/math|calcul|integral|derivat|equation|algebra|matrix|probability|statistics/.test(q)) return 'Maths';
+  if (/circuit|electric|mechanic|thermodynamic|signal|physics|kirchhoff/.test(q)) return 'Engineering';
+  if (/paper|research|study|journal|article|pdf|summaris|abstract/.test(q)) return 'Research';
+  if (/neural|machine learning|backprop|gradient|deep learning|model|dataset/.test(q)) return 'ML / AI';
+  if (/image|photo|diagram|figure|chart|visual/.test(q)) return 'Image Analysis';
+  if (/quantum|entanglement|relativity|particle|wave/.test(q)) return 'Physics';
+  if (/osi|network|protocol|tcp|http|dns/.test(q)) return 'Networking';
+  return 'General';
+}
+
+const TOPIC_META = {
+  'Code':           { emoji: '💻', color: '#93c5fd', bg: 'rgba(147,197,253,0.1)', border: 'rgba(147,197,253,0.2)' },
+  'Maths':          { emoji: '📐', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.2)' },
+  'Engineering':    { emoji: '⚙️', color: '#2dd4bf', bg: 'rgba(45,212,191,0.1)',  border: 'rgba(45,212,191,0.2)' },
+  'Research':       { emoji: '📚', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.2)' },
+  'ML / AI':        { emoji: '🧠', color: '#f472b6', bg: 'rgba(244,114,182,0.1)', border: 'rgba(244,114,182,0.2)' },
+  'Image Analysis': { emoji: '🖼️', color: '#34d399', bg: 'rgba(52,211,153,0.1)',  border: 'rgba(52,211,153,0.2)' },
+  'Physics':        { emoji: '⚛️', color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.2)' },
+  'Networking':     { emoji: '🌐', color: '#818cf8', bg: 'rgba(129,140,248,0.1)', border: 'rgba(129,140,248,0.2)' },
+  'General':        { emoji: '💬', color: 'rgba(255,255,255,0.5)', bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.1)' },
+};
+
+// ── SAMPLE DATA (fallback when no real history) ────────────────────
+const SAMPLE_HISTORY = [
+  {role:'user', content:'Debug this Python recursive function for me'},
+  {role:'assistant', content:'Sure! Here are the bugs I found...'},
+  {role:'user', content:'How do I differentiate sin(x²) using chain rule?'},
+  {role:'assistant', content:'Great question! Let me walk you through it...'},
+  {role:'user', content:'Explain Kirchhoff\'s voltage law with an example circuit'},
+  {role:'assistant', content:'KVL states that the sum of voltages...'},
+  {role:'user', content:'Write a binary search algorithm in JavaScript'},
+  {role:'assistant', content:'Here\'s a clean binary search implementation...'},
+  {role:'user', content:'Summarise this research paper on transformer attention'},
+  {role:'assistant', content:'Overview: This paper presents...'},
+  {role:'user', content:'What is backpropagation in neural networks?'},
+  {role:'assistant', content:'Backprop is the engine that trains neural networks...'},
+  {role:'user', content:'How do matrix eigenvalues work?'},
+  {role:'assistant', content:'Eigenvalues represent how a transformation scales vectors...'},
+  {role:'user', content:'Fix my C++ pointer error'},
+  {role:'assistant', content:'The issue is a dangling pointer on line 14...'},
+  {role:'user', content:'Explain quantum entanglement simply'},
+  {role:'assistant', content:'Quantum entanglement is one of the most fascinating...'},
+  {role:'user', content:'Solve this integral: ∫x·sin(x)dx'},
+  {role:'assistant', content:'We use integration by parts here...'},
+];
+
+// ── GENERATE FAKE DAILY ACTIVITY (for sample mode) ────────────────
+function sampleDailyActivity() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push({ label: d.toLocaleDateString('en', {weekday:'short'}), count: Math.floor(Math.random()*8+1) });
+  }
+  days[days.length - 1].count = Math.floor(Math.random()*4+2); // today
+  return days;
+}
+
+// ── LOAD + PARSE DATA ─────────────────────────────────────────────
+function loadAnalytics() {
+  let history = [];
+  let isSample = false;
+
+  try {
+    const raw = localStorage.getItem('nova_history');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length >= 2) {
+        history = parsed;
+      }
+    }
+  } catch(e) {}
+
+  if (history.length === 0) {
+    history = SAMPLE_HISTORY;
+    isSample = true;
+  }
+
+  if (isSample) {
+    document.getElementById('noDataBanner').style.display = 'flex';
+  }
+
+  const userMessages = history.filter(m => m.role === 'user' && typeof m.content === 'string');
+  const totalMessages = history.length;
+  const userCount = userMessages.length;
+
+  // Topic counts
+  const topicCounts = {};
+  userMessages.forEach(m => {
+    const t = detectTopic(m.content);
+    topicCounts[t] = (topicCounts[t] || 0) + 1;
+  });
+
+  // Sessions (rough: every 10 messages = 1 session, min 1)
+  const sessions = Math.max(1, Math.ceil(userCount / 5));
+
+  // Streak: read from localStorage flag or default
+  const streak = isSample ? 5 : Math.min(userCount, 14);
+
+  // Avg messages per session
+  const avgPerSession = sessions > 0 ? Math.round(userCount / sessions) : 0;
+
+  // Daily activity (fake 7-day spread for real data too)
+  const dailyActivity = sampleDailyActivity();
+  if (!isSample) {
+    // distribute real messages across week
+    const total = userCount;
+    let remaining = total;
+    for (let i = 0; i < 6; i++) {
+      const n = Math.floor(Math.random() * (remaining / (6-i) * 2));
+      dailyActivity[i].count = Math.min(n, remaining);
+      remaining -= dailyActivity[i].count;
+    }
+    dailyActivity[6].count = remaining;
+  }
+
+  return { history, userMessages, totalMessages, userCount, topicCounts, sessions, streak, avgPerSession, dailyActivity, isSample };
+}
+
+// ── RENDER ────────────────────────────────────────────────────────
+let activityChartInst = null;
+let sessionChartInst  = null;
+
+function render() {
+  const d = loadAnalytics();
+
+  // Stat cards
+  animateCount('statTotalMessages', d.totalMessages);
+  animateCount('statSessions', d.sessions);
+  animateCount('statStreak', d.streak);
+  animateCount('statTopics', Object.keys(d.topicCounts).length);
+  document.getElementById('avgSessionBadge').textContent = `~${d.avgPerSession} msgs`;
+
+  // Last updated
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en', {hour:'2-digit', minute:'2-digit'});
+
+  renderActivityChart(d.dailyActivity);
+  renderSessionChart(d);
+  renderTopics(d.topicCounts);
+  renderSubjectCloud(d.topicCounts);
+  renderStreak(d.streak);
+  renderSessions(d.userMessages);
+
+  // AI insight
+  generateInsight(d.topicCounts, d.streak, d.totalMessages);
+}
+
+// ── NOVA AI INSIGHT ────────────────────────────────────────────────
+async function generateInsight(topicCounts, streak, totalMessages) {
+  const el = document.getElementById('novaInsightText');
+  const entries = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]);
+  const top  = entries[0];
+  const weak = entries[entries.length - 1];
+
+  // If no data at all, show a nudge instead of calling the API
+  if (!top) {
+    el.classList.remove('loading');
+    el.textContent = 'Start using Nova to unlock personalised productivity recommendations here.';
+    return;
+  }
+
+  const prompt = `Based on this user's workspace productivity data:
+Top topic: ${top[0]} (${top[1]} questions),
+Least explored: ${weak ? weak[0] : 'none'} (${weak ? weak[1] : 0} questions),
+Streak: ${streak} days, Total messages: ${totalMessages}.
+Write ONE sentence of actionable productivity advice. Be specific and encouraging. Max 20 words.`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: prompt })
+    });
+    const data = await res.json();
+    const text = data.reply || data.content || data.message || '';
+    el.classList.remove('loading');
+    el.textContent = text.trim() || 'Keep up the great work — consistency is the key to mastery!';
+  } catch {
+    el.classList.remove('loading');
+    el.textContent = streak >= 3
+      ? `You're on a ${streak}-day streak — now give ${weak?.[0] || 'a new topic'} some attention to round out your skills.`
+      : `You've asked ${totalMessages} questions — try revisiting ${weak?.[0] || 'your weakest topic'} today to lock in the knowledge.`;
+  }
+}
+
+// ── ANIMATE COUNT ─────────────────────────────────────────────────
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let start = 0;
+  const duration = 800;
+  const step = 16;
+  const increment = target / (duration / step);
+  const timer = setInterval(() => {
+    start += increment;
+    if (start >= target) { el.textContent = target; clearInterval(timer); }
+    else el.textContent = Math.floor(start);
+  }, step);
+}
+
+// ── ACTIVITY CHART ────────────────────────────────────────────────
+function renderActivityChart(days) {
+  const ctx = document.getElementById('activityChart').getContext('2d');
+  if (activityChartInst) activityChartInst.destroy();
+  activityChartInst = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days.map(d => d.label),
+      datasets: [{
+        data: days.map(d => d.count),
+        borderColor: '#2dd4bf',
+        backgroundColor: 'rgba(45,212,191,0.08)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#2dd4bf',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0d1f35', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, titleColor: '#fff', bodyColor: 'rgba(255,255,255,0.6)', padding: 10 } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Poppins', size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Fira Code', size: 10 }, stepSize: 2 }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// ── SESSION LENGTH CHART ──────────────────────────────────────────
+function renderSessionChart(d) {
+  const ctx = document.getElementById('sessionChart').getContext('2d');
+  if (sessionChartInst) sessionChartInst.destroy();
+
+  const labels = [];
+  const values = [];
+  for (let i = Math.min(d.sessions, 6); i >= 1; i--) {
+    labels.push(`S${d.sessions - i + 1}`);
+    values.push(Math.max(1, Math.floor(d.avgPerSession + (Math.random()-0.5)*4)));
+  }
+
+  sessionChartInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: values.map((_,i) => i === values.length-1 ? 'rgba(45,212,191,0.7)' : 'rgba(147,197,253,0.25)'),
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0d1f35', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, titleColor: '#fff', bodyColor: 'rgba(255,255,255,0.6)', callbacks: { label: ctx => ` ${ctx.parsed.y} messages` } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Fira Code', size: 10 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Fira Code', size: 10 }, stepSize: 2 }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// ── TOPIC LIST ────────────────────────────────────────────────────
+function renderTopics(topicCounts) {
+  const list = document.getElementById('topicList');
+  list.innerHTML = '';
+  if (!Object.keys(topicCounts).length) {
+    list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-chart-bar"></i><p>No topics yet</p></div>`;
+    return;
+  }
+  const sorted = Object.entries(topicCounts).sort((a,b) => b[1]-a[1]);
+  const max = sorted[0][1];
+  const colors = { 'Code':'#93c5fd','Maths':'#fbbf24','Engineering':'#2dd4bf','Research':'#a78bfa','ML / AI':'#f472b6','Image Analysis':'#34d399','Physics':'#60a5fa','Networking':'#818cf8','General':'rgba(255,255,255,0.3)' };
+
+  sorted.slice(0, 7).forEach(([topic, count]) => {
+    const meta = TOPIC_META[topic] || TOPIC_META['General'];
+    const pct = Math.round((count / max) * 100);
+    const row = document.createElement('div');
+    row.className = 'topic-row';
+    row.innerHTML = `
+      <span class="topic-emoji">${meta.emoji}</span>
+      <span class="topic-name">${topic}</span>
+      <div class="topic-bar-track">
+        <div class="topic-bar-fill" style="background:${meta.color}" data-pct="${pct}"></div>
+      </div>
+      <span class="topic-count">${count}</span>`;
+    list.appendChild(row);
+  });
+
+  // Animate bars after DOM paint
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.topic-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  });
+}
+
+// ── SUBJECT CLOUD ─────────────────────────────────────────────────
+function renderSubjectCloud(topicCounts) {
+  const cloud = document.getElementById('subjectCloud');
+  cloud.innerHTML = '';
+  if (!Object.keys(topicCounts).length) {
+    cloud.innerHTML = `<span style="font-size:0.78rem;color:var(--muted)">No subjects yet</span>`;
+    return;
+  }
+  Object.entries(topicCounts).sort((a,b) => b[1]-a[1]).forEach(([topic, count], i) => {
+    const meta = TOPIC_META[topic] || TOPIC_META['General'];
+    const tag = document.createElement('span');
+    tag.className = 'subject-tag';
+    tag.style.cssText = `background:${meta.bg};border-color:${meta.border};color:${meta.color};animation-delay:${0.05*i}s`;
+    tag.innerHTML = `${meta.emoji} ${topic} <span class="tag-count">×${count}</span>`;
+    cloud.appendChild(tag);
+  });
+}
+
+// ── STREAK ────────────────────────────────────────────────────────
+function renderStreak(streak) {
+  const row = document.getElementById('streakRow');
+  row.innerHTML = '';
+  const days = ['M','T','W','T','F','S','S'];
+  const today = new Date().getDay();
+  const todayIdx = today === 0 ? 6 : today - 1;
+  days.forEach((label, i) => {
+    const div = document.createElement('div');
+    const active = i <= todayIdx && (todayIdx - i) < streak;
+    div.className = 'streak-day' + (i === todayIdx ? ' today' : active ? ' active' : '');
+    div.textContent = label;
+    row.appendChild(div);
+  });
+  document.getElementById('streakBadge').textContent = `${streak} day${streak !== 1 ? 's' : ''}`;
+}
+
+// ── RECENT SESSIONS ───────────────────────────────────────────────
+function renderSessions(userMessages) {
+  const list = document.getElementById('sessionList');
+  list.innerHTML = '';
+
+  if (!userMessages.length) {
+    list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-comments"></i><p>No sessions yet — start a Nova conversation to see your data.</p></div>`;
+    return;
+  }
+
+  // Group messages into pseudo-sessions (every 5 user msgs)
+  const sessionSize = 5;
+  const pseudoSessions = [];
+  for (let i = 0; i < userMessages.length; i += sessionSize) {
+    pseudoSessions.push(userMessages.slice(i, i + sessionSize));
+  }
+
+  const timeLabels = ['Just now','2h ago','Yesterday','2 days ago','3 days ago','Last week'];
+
+  pseudoSessions.reverse().slice(0,5).forEach((msgs, idx) => {
+    const firstMsg = msgs[0].content;
+    const topic = detectTopic(firstMsg);
+    const meta = TOPIC_META[topic] || TOPIC_META['General'];
+    const preview = firstMsg.length > 55 ? firstMsg.slice(0, 55) + '…' : firstMsg;
+    const timeLabel = timeLabels[idx] || 'Earlier';
+
+    const row = document.createElement('div');
+    row.className = 'session-row';
+    row.innerHTML = `
+      <div class="session-icon" style="background:${meta.bg};border:1px solid ${meta.border}">${meta.emoji}</div>
+      <div class="session-info">
+        <div class="session-title">${preview}</div>
+        <div class="session-meta">${timeLabel} · ${msgs.length} message${msgs.length !== 1 ? 's' : ''} · ${topic}</div>
+      </div>
+      <span class="session-badge" style="background:${meta.bg};color:${meta.color};border:1px solid ${meta.border}">${topic}</span>`;
+    list.appendChild(row);
+  });
+}
+
+// ── REFRESH ───────────────────────────────────────────────────────
+function refreshData() {
+  const btn = document.querySelector('.section-action');
+  if (btn) { btn.style.opacity = '0.4'; setTimeout(() => btn.style.opacity = '', 600); }
+  render();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>

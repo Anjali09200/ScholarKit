@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Tools — ScholarKit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg fixed-top" id="scholarNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="logo.svg" alt="ScholarKit" width="160" height="55">
+      </a>
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="coding.html"><i class="fa-solid fa-code"></i> Coding Tools</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="research.html"><i class="fa-solid fa-book-open"></i> Research</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="engineering.html"><i class="fa-solid fa-gears"></i> Engineering</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="codegame.html"><i class="fa-solid fa-gamepad"></i> Code Game</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+ 
+ 
+  <div class="container">
+ 
+   
+    <a href="index.html" class="back-btn mt-4 d-inline-flex">
+      <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
+ 
+    <div class="page-hero">
+      <div class="page-hero-badge">
+        <i class="fa-solid fa-code"></i> Coding Tools
+      </div>
+      <h1>Code Smarter, <span>Build Faster</span></h1>
+      <p>Everything you need to write, test, debug and ship code — all in one place.</p>
+ 
+      <div class="tools-search-wrap">
+        <input type="text" id="toolSearch" placeholder="Search coding tools...">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+ 
+      <!-- FILTER TABS -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">All Tools</button>
+        <button class="filter-tab" data-filter="compiler">Compiler & Editor</button>
+        <button class="filter-tab" data-filter="docs">Docs & Reference</button>
+        <button class="filter-tab" data-filter="practice">Practice & DSA</button>
+        <button class="filter-tab" data-filter="playground">Playground</button>
+      </div>
+    </div>
+ 
+    <!-- GAME BANNER -->
+    <div class="game-banner">
+      <div class="game-banner-text">
+        <h3><i class="fa-solid fa-gamepad" style="color:#93c5fd;margin-right:8px;"></i>Code Combat — Test Your Skills!</h3>
+        <p>Answer coding questions to attack monsters. Wrong answers hurt you. Can you clear all rounds?</p>
+      </div>
+      <a href="codegame.html" class="game-banner-btn">
+        <i class="fa-solid fa-sword"></i> Play Now
+      </a>
+    </div>
+ 
+    <!-- TOOLS GRID -->
+    <div class="tools-grid" id="toolsGrid">
+ 
+      <!-- Online Compiler -->
+      <div class="tool-card" data-category="compiler" data-name="online compiler">
+        <div class="tool-card-icon" style="background:rgba(34,197,94,0.15);color:#4ade80;">
+          <i class="fa-solid fa-terminal"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(34,197,94,0.12);color:#4ade80;">Compiler</span>
+          <h3>Online Compiler</h3>
+          <p>Run code in 60+ languages instantly. No setup, no install — just write and execute.</p>
+        </div>
+        <a href="https://onecompiler.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- Code Formatter -->
+      <div class="tool-card" data-category="compiler" data-name="code formatter prettier">
+        <div class="tool-card-icon" style="background:rgba(168,85,247,0.15);color:#c084fc;">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(168,85,247,0.12);color:#c084fc;">Formatter</span>
+          <h3>Code Formatter</h3>
+          <p>Instantly beautify and format messy code with Prettier. Supports JS, CSS, HTML and more.</p>
+        </div>
+        <a href="https://prettier.io/playground" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- RegEx Tester -->
+      <div class="tool-card" data-category="compiler" data-name="regex tester">
+        <div class="tool-card-icon" style="background:rgba(245,158,11,0.15);color:#fbbf24;">
+          <i class="fa-solid fa-filter"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(245,158,11,0.12);color:#fbbf24;">Utility</span>
+          <h3>RegEx Tester</h3>
+          <p>Test and debug regular expressions in real time with match highlights and explanations.</p>
+        </div>
+        <a href="https://regex101.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- DevDocs -->
+      <div class="tool-card" data-category="docs" data-name="devdocs documentation">
+        <div class="tool-card-icon" style="background:rgba(14,165,233,0.15);color:#38bdf8;">
+          <i class="fa-solid fa-file-code"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(14,165,233,0.12);color:#38bdf8;">Docs</span>
+          <h3>DevDocs</h3>
+          <p>Fast, searchable API documentation for 100+ languages and frameworks — all in one place.</p>
+        </div>
+        <a href="https://devdocs.io" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- Stack Overflow -->
+      <div class="tool-card" data-category="docs" data-name="stack overflow questions answers">
+        <div class="tool-card-icon" style="background:rgba(249,115,22,0.15);color:#fb923c;">
+          <i class="fa-brands fa-stack-overflow"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(249,115,22,0.12);color:#fb923c;">Community</span>
+          <h3>Stack Overflow</h3>
+          <p>The world's largest developer community. Find answers to almost any coding question.</p>
+        </div>
+        <a href="https://stackoverflow.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- W3Schools -->
+      <div class="tool-card" data-category="docs" data-name="w3schools html css javascript tutorial">
+        <div class="tool-card-icon" style="background:rgba(34,197,94,0.15);color:#4ade80;">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(34,197,94,0.12);color:#4ade80;">Tutorial</span>
+          <h3>W3Schools</h3>
+          <p>Beginner-friendly tutorials for HTML, CSS, JavaScript, Python and more with live examples.</p>
+        </div>
+        <a href="https://www.w3schools.com/" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- MDN Docs -->
+      <div class="tool-card" data-category="docs" data-name="mdn mozilla developer documentation web">
+        <div class="tool-card-icon" style="background:rgba(99,102,241,0.15);color:#818cf8;">
+          <i class="fa-solid fa-book"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(99,102,241,0.12);color:#818cf8;">Reference</span>
+          <h3>MDN Docs</h3>
+          <p>Mozilla's official web developer reference for HTML, CSS, JavaScript APIs and browser support.</p>
+        </div>
+        <a href="https://developer.mozilla.org/en-US/" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- GitHub -->
+      <div class="tool-card" data-category="playground" data-name="github version control repository">
+        <div class="tool-card-icon" style="background:rgba(255,255,255,0.08);color:#e2e8f0;">
+          <i class="fa-brands fa-github"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(255,255,255,0.08);color:#cbd5e1;">Version Control</span>
+          <h3>GitHub</h3>
+          <p>Host, manage and collaborate on code with the world's largest code hosting platform.</p>
+        </div>
+        <a href="https://github.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- CodePen -->
+      <div class="tool-card" data-category="playground" data-name="codepen frontend html css js playground">
+        <div class="tool-card-icon" style="background:rgba(20,184,166,0.15);color:#2dd4bf;">
+          <i class="fa-solid fa-pen-nib"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(20,184,166,0.12);color:#2dd4bf;">Playground</span>
+          <h3>CodePen</h3>
+          <p>Build and share front-end snippets with live HTML, CSS and JS editing in your browser.</p>
+        </div>
+        <a href="https://codepen.io" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- JSFiddle -->
+      <div class="tool-card" data-category="playground" data-name="jsfiddle javascript playground">
+        <div class="tool-card-icon" style="background:rgba(234,179,8,0.15);color:#facc15;">
+          <i class="fa-brands fa-js"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(234,179,8,0.12);color:#facc15;">Playground</span>
+          <h3>JSFiddle</h3>
+          <p>Quick JS, HTML and CSS prototyping tool — great for testing small ideas and sharing code.</p>
+        </div>
+        <a href="https://jsfiddle.net" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- CodeSandbox -->
+      <div class="tool-card" data-category="playground" data-name="codesandbox react project online ide">
+        <div class="tool-card-icon" style="background:rgba(99,102,241,0.15);color:#818cf8;">
+          <i class="fa-solid fa-box"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(99,102,241,0.12);color:#818cf8;">Online IDE</span>
+          <h3>CodeSandbox</h3>
+          <p>Full online IDE for React, Vue, Angular and Node projects. Instant setup, zero config.</p>
+        </div>
+        <a href="https://codesandbox.io/" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- Glitch -->
+      <div class="tool-card" data-category="playground" data-name="glitch node project deploy">
+        <div class="tool-card-icon" style="background:rgba(236,72,153,0.15);color:#f472b6;">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(236,72,153,0.12);color:#f472b6;">Deploy</span>
+          <h3>Glitch</h3>
+          <p>Build and instantly deploy full-stack Node.js apps online with collaborative editing.</p>
+        </div>
+        <a href="https://glitch.com/" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- LeetCode -->
+      <div class="tool-card" data-category="practice" data-name="leetcode dsa interview problems">
+        <div class="tool-card-icon" style="background:rgba(245,158,11,0.15);color:#fbbf24;">
+          <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(245,158,11,0.12);color:#fbbf24;">DSA Practice</span>
+          <h3>LeetCode</h3>
+          <p>Practice 2000+ coding interview problems. Essential for placements and competitive programming.</p>
+        </div>
+        <a href="https://leetcode.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- HackerRank -->
+      <div class="tool-card" data-category="practice" data-name="hackerrank challenges certifications">
+        <div class="tool-card-icon" style="background:rgba(34,197,94,0.15);color:#4ade80;">
+          <i class="fa-solid fa-ranking-star"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(34,197,94,0.12);color:#4ade80;">Practice</span>
+          <h3>HackerRank</h3>
+          <p>Earn certifications, solve challenges and get noticed by top companies through coding contests.</p>
+        </div>
+        <a href="https://www.hackerrank.com" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+      <!-- CodeForces -->
+      <div class="tool-card" data-category="practice" data-name="codeforces competitive programming contests">
+        <div class="tool-card-icon" style="background:rgba(239,68,68,0.15);color:#f87171;">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div class="tool-card-body">
+          <span class="tool-card-tag" style="background:rgba(239,68,68,0.12);color:#f87171;">Competitive</span>
+          <h3>CodeForces</h3>
+          <p>Join competitive programming contests and climb the global leaderboard. Ideal for CP enthusiasts.</p>
+        </div>
+        <a href="https://codeforces.com/" class="tool-card-btn">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Tool
+        </a>
+      </div>
+ 
+    </div>
+  </div>
+ 
+
+
+  <!-- ══ AI CODE DEBUGGER ══ -->
+  <section id="ai-debugger">
+    <div class="container">
+
+      <div class="dbg-section-label">AI Tools</div>
+      <h2 class="dbg-section-title">Live Code Debugger</h2>
+      <p class="dbg-section-sub">Paste your buggy code — AI finds errors, explains them, and returns a clean fixed version instantly.</p>
+
+      <!-- HOW IT WORKS -->
+      <div class="dbg-howto">
+        <div class="dbg-howto-step">
+          <div class="dbg-howto-num">1</div>
+          <div>
+            <div class="dbg-howto-title">Paste your code</div>
+            <div class="dbg-howto-desc">Choose the language and paste the code with the bug.</div>
+          </div>
+        </div>
+        <div class="dbg-howto-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="dbg-howto-step">
+          <div class="dbg-howto-num">2</div>
+          <div>
+            <div class="dbg-howto-title">Get instant results</div>
+            <div class="dbg-howto-desc">AI explains every bug and returns a clean fixed version.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dbg-card">
+
+        <!-- EDITOR ROW -->
+        <div class="dbg-editor-row">
+          <!-- LEFT: input -->
+          <div class="dbg-pane">
+            <div class="dbg-pane-header">
+              <span class="dbg-pane-title"><i class="fa-solid fa-bug"></i> Your Code</span>
+              <select class="dbg-lang-select" id="dbgLang">
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="Java">Java</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="Go">Go</option>
+                <option value="Rust">Rust</option>
+                <option value="PHP">PHP</option>
+                <option value="Ruby">Ruby</option>
+                <option value="Swift">Swift</option>
+                <option value="Kotlin">Kotlin</option>
+                <option value="HTML/CSS">HTML/CSS</option>
+                <option value="SQL">SQL</option>
+              </select>
+            </div>
+            <textarea class="dbg-editor" id="dbgCodeInput" placeholder="# Paste your buggy code here…"></textarea>
+            <div class="dbg-editor-footer">
+              <div class="dbg-example-tabs">
+                <span class="dbg-ex-label">Try example:</span>
+                <button class="dbg-ex-tab" onclick="dbgLoadExample('python')">Python</button>
+                <button class="dbg-ex-tab" onclick="dbgLoadExample('js')">JavaScript</button>
+                <button class="dbg-ex-tab" onclick="dbgLoadExample('java')">Java</button>
+              </div>
+              <button class="dbg-btn-debug" id="dbgRunBtn" onclick="dbgRun()">
+                <i class="fa-solid fa-bug"></i> Debug Code
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: output -->
+          <div class="dbg-pane">
+            <div class="dbg-pane-header">
+              <span class="dbg-pane-title"><i class="fa-solid fa-circle-check"></i> Analysis &amp; Fix</span>
+              <button class="dbg-copy-btn" id="dbgCopyBtn" onclick="dbgCopy()" style="display:none;"><i class="fa-solid fa-copy"></i> Copy Fix</button>
+            </div>
+            <div class="dbg-output" id="dbgOutput">
+              <div class="dbg-placeholder">
+                <i class="fa-solid fa-wand-magic-sparkles" style="font-size:28px;color:#334155;margin-bottom:10px;"></i>
+                <div style="color:#475569;font-size:13px;">Debug results will appear here</div>
+              </div>
+            </div>
+            <div class="dbg-output-footer"></div>
+          </div>
+        </div>
+
+        <!-- ERROR AREA -->
+        <div class="dbg-error" id="dbgError" style="display:none;"></div>
+
+      </div>
+    </div>
+  </section>
+
+  <style>
+    #ai-debugger { padding: 5rem 0 4rem; }
+    .dbg-section-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #93c5fd; margin-bottom: .4rem; }
+    .dbg-section-title { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; color: #e2e8f0; margin-bottom: .4rem; }
+    .dbg-section-sub { font-size: .95rem; color: #64748b; margin-bottom: 2rem; }
+    .dbg-howto { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; background: rgba(24,95,165,0.07); border: 1px solid rgba(24,95,165,0.18); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+    .dbg-howto-step { display: flex; gap: 12px; align-items: flex-start; flex: 1; min-width: 160px; }
+    .dbg-howto-num { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#185FA5,#1D9E75); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .dbg-howto-title { font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
+    .dbg-howto-desc { font-size: 12px; color: #64748b; line-height: 1.55; }
+    .dbg-howto-desc a { color: #93c5fd; text-decoration: none; }
+    .dbg-howto-desc a:hover { text-decoration: underline; }
+    .dbg-howto-arrow { color: #334155; font-size: 12px; margin-top: 8px; flex-shrink: 0; }
+    .dbg-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 1.75rem; }
+    .dbg-apikey-row { margin-bottom: .75rem; }
+    .dbg-apikey-label-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .dbg-key-label { font-size: 12px; font-weight: 600; color: #93c5fd; letter-spacing: .05em; text-transform: uppercase; }
+    .dbg-key-status { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+    .dbg-key-status.set { background: rgba(29,158,117,0.15); color: #1D9E75; border: 1px solid rgba(29,158,117,0.3); }
+    .dbg-key-status.missing { background: rgba(226,75,74,0.12); color: #E24B4A; border: 1px solid rgba(226,75,74,0.25); }
+    .dbg-input-row { display: flex; gap: 10px; align-items: stretch; }
+    .dbg-input { flex: 1; padding: 10px 15px; font-size: 13px; font-family: 'Poppins', sans-serif; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; background: rgba(255,255,255,0.05); color: #e2e8f0; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .dbg-input::placeholder { color: #475569; }
+    .dbg-input:focus { border-color: #185FA5; box-shadow: 0 0 0 3px rgba(24,95,165,0.2); }
+    .dbg-btn-key { padding: 10px 16px; font-size: 12px; font-family: 'Poppins', sans-serif; font-weight: 600; border: 1px solid rgba(29,158,117,0.4); border-radius: 10px; background: rgba(29,158,117,0.1); color: #1D9E75; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all .15s; }
+    .dbg-btn-key:hover { background: rgba(29,158,117,0.2); }
+    .dbg-key-hint { font-size: 11px; color: #475569; margin: .5rem 0 0; }
+    .dbg-key-hint a { color: #93c5fd; text-decoration: none; }
+    .dbg-key-hint a:hover { text-decoration: underline; }
+    .dbg-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 1rem 0 1.25rem; }
+    .dbg-editor-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 768px) { .dbg-editor-row { grid-template-columns: 1fr; } }
+    .dbg-pane { display: flex; flex-direction: column; }
+    .dbg-pane-header { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-bottom: none; border-radius: 10px 10px 0 0; padding: 8px 14px; }
+    .dbg-pane-title { font-size: 12px; font-weight: 600; color: #94a3b8; display: flex; align-items: center; gap: 7px; }
+    .dbg-lang-select { font-size: 12px; font-family: 'Poppins', sans-serif; font-weight: 500; background: rgba(24,95,165,0.15); color: #93c5fd; border: 1px solid rgba(24,95,165,0.3); border-radius: 6px; padding: 3px 8px; outline: none; cursor: pointer; }
+    .dbg-editor { flex: 1; min-height: 280px; resize: vertical; padding: 14px 16px; font-size: 13px; font-family: 'Courier New', Courier, monospace; line-height: 1.7; color: #e2e8f0; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-bottom: none; outline: none; transition: border-color .2s; }
+    .dbg-editor:focus { border-color: #185FA5; }
+    .dbg-editor::placeholder { color: #334155; }
+    .dbg-editor-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-top: none; border-radius: 0 0 10px 10px; padding: 10px 14px; }
+    .dbg-example-tabs { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .dbg-ex-label { font-size: 11px; color: #475569; }
+    .dbg-ex-tab { font-size: 11px; font-family: 'Poppins', sans-serif; font-weight: 500; padding: 3px 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #64748b; cursor: pointer; transition: all .15s; }
+    .dbg-ex-tab:hover { background: rgba(24,95,165,0.2); border-color: #185FA5; color: #93c5fd; }
+    .dbg-btn-debug { padding: 8px 18px; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 600; border: none; border-radius: 8px; background: linear-gradient(135deg, #185FA5, #1D9E75); color: #fff; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: opacity .2s, transform .15s; white-space: nowrap; }
+    .dbg-btn-debug:hover { opacity: .88; }
+    .dbg-btn-debug:active { transform: scale(.97); }
+    .dbg-btn-debug:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+    .dbg-output { flex: 1; min-height: 280px; overflow-y: auto; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-bottom: none; padding: 14px 16px; font-size: 13px; line-height: 1.75; color: #cbd5e1; }
+    .dbg-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 200px; }
+    .dbg-output-footer { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-top: none; border-radius: 0 0 10px 10px; padding: 10px 14px; min-height: 43px; }
+    .dbg-copy-btn { font-size: 11px; font-family: 'Poppins', sans-serif; font-weight: 600; padding: 3px 12px; border-radius: 6px; border: 1px solid rgba(29,158,117,0.35); background: rgba(29,158,117,0.1); color: #1D9E75; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
+    .dbg-copy-btn:hover { background: rgba(29,158,117,0.2); }
+    .dbg-output h4 { font-size: 13px; font-weight: 700; color: #e2e8f0; margin: 1rem 0 .4rem; display: flex; align-items: center; gap: 7px; }
+    .dbg-output h4:first-child { margin-top: 0; }
+    .dbg-bug-item { background: rgba(226,75,74,0.08); border: 1px solid rgba(226,75,74,0.2); border-radius: 8px; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .dbg-bug-line { font-size: 11px; font-weight: 700; color: #f87171; margin-bottom: 3px; }
+    .dbg-bug-desc { font-size: 12.5px; color: #fca5a5; line-height: 1.65; }
+    .dbg-bug-fix-hint { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+    .dbg-fixed-code { background: rgba(0,0,0,0.4); border: 1px solid rgba(29,158,117,0.25); border-radius: 8px; padding: 1rem; overflow-x: auto; font-family: 'Courier New', Courier, monospace; font-size: 12.5px; color: #a7f3d0; line-height: 1.75; white-space: pre; }
+    .dbg-explanation { font-size: 13px; color: #94a3b8; line-height: 1.8; }
+    .dbg-badge-ok { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 2px 10px; border-radius: 999px; background: rgba(29,158,117,0.15); color: #1D9E75; font-weight: 600; border: 1px solid rgba(29,158,117,0.25); }
+    .dbg-badge-err { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 2px 10px; border-radius: 999px; background: rgba(226,75,74,0.12); color: #f87171; font-weight: 600; border: 1px solid rgba(226,75,74,0.25); }
+    .dbg-spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.25); border-top-color: #fff; border-radius: 50%; animation: dbgSpin .7s linear infinite; }
+    @keyframes dbgSpin { to { transform: rotate(360deg); } }
+    .dbg-error { font-size: 13px; color: #fca5a5; padding: .85rem 1.1rem; background: rgba(226,75,74,0.1); border-radius: 10px; border: 1px solid rgba(226,75,74,0.25); margin-top: 1rem; }
+  </style>
+
+  <script>
+  (function () {
+    function getKey() { return 'proxy'; } // proxy handles auth
+
+    var EXAMPLES = {
+      python: "def calculate_average(numbers)\n    total = 0\n    for num in numbers:\n        total += num\n    return total / len(numbers)\n\nscores = [85, 92, 78, 90, 88]\nresult = calculate_average(scores)\nprint(\"Average score: \" + result)",
+      js: "function fetchUserData(userId) {\n  const response = fetch('/api/users/' + userId);\n  const data = response.json();\n  console.log('User: ' data.name);\n  return data;\n}\n\nfetchUserData(42);",
+      java: "public class HelloWorld {\n    public static void main(String[] args) {\n        int[] nums = {1, 2, 3, 4, 5};\n        int sum = 0;\n        for (int i = 0; i <= nums.length; i++) {\n            sum =+ nums[i];\n        }\n        System.out.println(\"Sum: \" + sum)\n    }\n}"
+    };
+
+    window.dbgLoadExample = function (lang) {
+      document.getElementById('dbgCodeInput').value = EXAMPLES[lang] || '';
+      var map = { python: 'Python', js: 'JavaScript', java: 'Java' };
+      document.getElementById('dbgLang').value = map[lang] || 'Python';
+    };
+
+    var lastFixedCode = '';
+    window.dbgCopy = function () {
+      if (!lastFixedCode) return;
+      navigator.clipboard.writeText(lastFixedCode).then(function () {
+        var btn = document.getElementById('dbgCopyBtn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        setTimeout(function () { btn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Fix'; }, 2000);
+      });
+    };
+
+    window.dbgRun = async function () {
+      var code = (document.getElementById('dbgCodeInput').value || '').trim();
+      var lang = document.getElementById('dbgLang').value;
+      var apiKey = getKey();
+      if (!code) { dbgShowError('Please paste some code first.'); return; }
+
+      dbgHideError();
+      dbgSetLoading(true);
+      lastFixedCode = '';
+      document.getElementById('dbgCopyBtn').style.display = 'none';
+      var outputEl = document.getElementById('dbgOutput');
+      outputEl.innerHTML = '<div class="dbg-placeholder"><div class="dbg-spinner"></div></div>';
+
+      var systemPrompt = "You are an expert code debugger. Analyse the user's " + lang + " code, find ALL bugs (syntax errors, logic errors, runtime errors, missing imports, type errors, off-by-one errors, etc.), and return ONLY a JSON object with no markdown fences, no extra text:\n{\n  \"has_bugs\": true|false,\n  \"bug_count\": <number>,\n  \"bugs\": [\n    { \"line\": \"line number or range, e.g. '3' or '3-5' or 'N/A'\", \"type\": \"Syntax Error|Logic Error|Runtime Error|Type Error|etc\", \"description\": \"clear explanation\", \"fix_hint\": \"brief hint\" }\n  ],\n  \"fixed_code\": \"the complete corrected code\",\n  \"explanation\": \"2-3 sentence plain English summary\"\n}";
+
+      try {
+        var res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system: systemPrompt,
+            messages: [{ role: 'user', content: 'Debug this ' + lang + ' code:\n\n' + code }],
+            max_tokens: 2000
+          })
+        });
+
+        if (!res.ok) {
+          var err = await res.json().catch(function () { return {}; });
+          throw new Error((err.error && err.error.message) || 'API error ' + res.status);
+        }
+
+        var data = await res.json();
+        var raw = (data.content || []).filter(function (b) { return b.type === 'text'; }).map(function (b) { return b.text; }).join('').trim();
+
+        var parsed;
+        try {
+          var clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+          parsed = JSON.parse(clean);
+        } catch (e) {
+          var m = raw.match(/\{[\s\S]+\}/);
+          if (m) { try { parsed = JSON.parse(m[0]); } catch(e2) {} }
+        }
+
+        if (!parsed) throw new Error('Could not parse response. Try again.');
+        dbgRenderResult(parsed);
+
+      } catch (e) {
+        dbgShowError(e.message || 'Something went wrong. Please try again.');
+        outputEl.innerHTML = '<div class="dbg-placeholder"><i class="fa-solid fa-triangle-exclamation" style="font-size:28px;color:#475569;margin-bottom:10px;"></i><div style="color:#475569;font-size:13px;">Debug failed</div></div>';
+      } finally {
+        dbgSetLoading(false);
+      }
+    };
+
+    function dbgRenderResult(r) {
+      lastFixedCode = r.fixed_code || '';
+      var outputEl = document.getElementById('dbgOutput');
+      var html = '';
+      if (!r.has_bugs) {
+        html += '<div style="margin-bottom:1rem;"><span class="dbg-badge-ok"><i class="fa-solid fa-circle-check"></i> No bugs found</span></div>';
+        html += '<div class="dbg-explanation">' + esc(r.explanation || 'Code looks clean!') + '</div>';
+      } else {
+        html += '<div style="margin-bottom:.85rem;"><span class="dbg-badge-err"><i class="fa-solid fa-circle-xmark"></i> ' + (r.bug_count || (r.bugs && r.bugs.length) || '?') + ' bug' + ((r.bug_count || (r.bugs && r.bugs.length) || 0) !== 1 ? 's' : '') + ' found</span></div>';
+        html += '<h4><i class="fa-solid fa-list-ul" style="color:#f87171;"></i> Issues Found</h4>';
+        (r.bugs || []).forEach(function (b) {
+          html += '<div class="dbg-bug-item"><div class="dbg-bug-line">' + esc(b.type || 'Error') + (b.line && b.line !== 'N/A' ? ' · Line ' + esc(b.line) : '') + '</div><div class="dbg-bug-desc">' + esc(b.description || '') + '</div>' + (b.fix_hint ? '<div class="dbg-bug-fix-hint"><i class="fa-solid fa-lightbulb" style="color:#fbbf24;font-size:10px;"></i> ' + esc(b.fix_hint) + '</div>' : '') + '</div>';
+        });
+        if (r.fixed_code) {
+          html += '<h4 style="margin-top:1.25rem;"><i class="fa-solid fa-code" style="color:#4ade80;"></i> Fixed Code</h4>';
+          html += '<div class="dbg-fixed-code">' + esc(r.fixed_code) + '</div>';
+          document.getElementById('dbgCopyBtn').style.display = 'flex';
+        }
+        if (r.explanation) {
+          html += '<h4 style="margin-top:1rem;"><i class="fa-solid fa-circle-info" style="color:#93c5fd;"></i> Summary</h4>';
+          html += '<div class="dbg-explanation">' + esc(r.explanation) + '</div>';
+        }
+      }
+      outputEl.innerHTML = html;
+    }
+
+    function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function dbgSetLoading(on) {
+      var btn = document.getElementById('dbgRunBtn');
+      btn.disabled = on;
+      btn.innerHTML = on ? '<span class="dbg-spinner"></span> Analysing…' : '<i class="fa-solid fa-bug"></i> Debug Code';
+    }
+    function dbgShowError(msg) { var el = document.getElementById('dbgError'); el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+    function dbgHideError() { document.getElementById('dbgError').style.display = 'none'; }
+  })();
+  </script>
+
+  <!-- ══ AI CODE EXPLAINER ══ -->
+  <section id="ai-explainer">
+    <div class="container">
+
+      <div class="dbg-section-label"><i class="fa-solid fa-lightbulb" style="margin-right:5px;"></i>AI Tools</div>
+      <h2 class="dbg-section-title">Code Explainer</h2>
+      <p class="dbg-section-sub">Paste any code snippet — AI breaks it down line by line, explains the logic, and teaches you what it does.</p>
+
+      <!-- MODE TABS -->
+      <div class="exp-mode-tabs">
+        <button class="exp-mode-tab active" data-mode="explain">
+          <i class="fa-solid fa-book-open"></i><span>Line-by-Line</span>
+        </button>
+        <button class="exp-mode-tab" data-mode="summary">
+          <i class="fa-solid fa-align-left"></i><span>Summary</span>
+        </button>
+        <button class="exp-mode-tab" data-mode="complexity">
+          <i class="fa-solid fa-chart-bar"></i><span>Complexity</span>
+        </button>
+        <button class="exp-mode-tab" data-mode="improve">
+          <i class="fa-solid fa-wand-magic-sparkles"></i><span>Improve</span>
+        </button>
+        <button class="exp-mode-tab" data-mode="concept">
+          <i class="fa-solid fa-graduation-cap"></i><span>Concepts</span>
+        </button>
+      </div>
+
+      <div class="dbg-card">
+
+        <!-- EDITOR ROW -->
+        <div class="dbg-editor-row">
+
+          <!-- LEFT: Code Input -->
+          <div class="dbg-pane">
+            <div class="dbg-pane-header">
+              <span class="dbg-pane-title"><i class="fa-solid fa-code"></i> Your Code</span>
+              <select class="dbg-lang-select" id="expLang">
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="Java">Java</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="Go">Go</option>
+                <option value="Rust">Rust</option>
+                <option value="PHP">PHP</option>
+                <option value="Ruby">Ruby</option>
+                <option value="Swift">Swift</option>
+                <option value="Kotlin">Kotlin</option>
+                <option value="HTML/CSS">HTML/CSS</option>
+                <option value="SQL">SQL</option>
+              </select>
+            </div>
+            <textarea class="dbg-editor" id="expCodeInput" placeholder="# Paste any code you want explained…"></textarea>
+            <div class="dbg-editor-footer">
+              <div class="dbg-example-tabs">
+                <span class="dbg-ex-label">Examples:</span>
+                <button class="dbg-ex-tab" onclick="expLoadExample('bsort')">Bubble Sort</button>
+                <button class="dbg-ex-tab" onclick="expLoadExample('closure')">JS Closure</button>
+                <button class="dbg-ex-tab" onclick="expLoadExample('recursion')">Recursion</button>
+                <button class="dbg-ex-tab" onclick="expLoadExample('sql')">SQL Join</button>
+              </div>
+              <button class="dbg-btn-debug" id="expRunBtn" onclick="expRun()">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span id="expBtnLabel">Explain Code</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Result Output -->
+          <div class="dbg-pane">
+            <div class="dbg-pane-header">
+              <span class="dbg-pane-title" id="expResultTitle"><i class="fa-solid fa-book-open"></i> Explanation</span>
+              <button class="dbg-copy-btn" id="expCopyBtn" onclick="expCopy()" style="display:none;">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+            </div>
+            <div class="dbg-output" id="expOutput">
+              <div class="dbg-placeholder">
+                <i class="fa-solid fa-lightbulb" style="font-size:28px;color:#334155;margin-bottom:10px;"></i>
+                <div style="color:#475569;font-size:13px;">Explanation will appear here</div>
+              </div>
+            </div>
+            <div class="dbg-output-footer" id="expOutputFooter"></div>
+          </div>
+
+        </div><!-- /editor-row -->
+
+        <!-- ERROR -->
+        <div class="dbg-error" id="expError" style="display:none;"></div>
+
+      </div><!-- /dbg-card -->
+    </div>
+  </section>
+
+  <style>
+    #ai-explainer { padding: 0 0 5rem; }
+
+    /* Mode tabs */
+    .exp-mode-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .exp-mode-tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Poppins', sans-serif;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      color: #64748b;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .exp-mode-tab i { font-size: 11px; }
+    .exp-mode-tab:hover { border-color: rgba(24,95,165,0.5); color: #93c5fd; background: rgba(24,95,165,0.08); }
+    .exp-mode-tab.active { border-color: #185FA5; color: #fff; background: linear-gradient(135deg, rgba(24,95,165,0.3), rgba(29,158,117,0.2)); }
+
+    /* Responsive: icon-only on very small screens */
+    @media (max-width: 480px) {
+      .exp-mode-tab span { display: none; }
+      .exp-mode-tab { padding: 8px 12px; }
+      .exp-mode-tab i { font-size: 14px; }
+    }
+
+    /* Line-by-line explanation items */
+    .exp-line-block {
+      margin-bottom: .85rem;
+      border-left: 2px solid rgba(24,95,165,0.4);
+      padding-left: 12px;
+    }
+    .exp-line-code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #a7f3d0;
+      background: rgba(0,0,0,0.35);
+      border-radius: 5px;
+      padding: 4px 8px;
+      margin-bottom: 4px;
+      display: block;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .exp-line-desc { font-size: 12.5px; color: #94a3b8; line-height: 1.65; }
+
+    /* Concept pill */
+    .exp-concept-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      color: #a5b4fc;
+      margin: 3px 3px 3px 0;
+    }
+
+    /* Complexity badge */
+    .exp-complexity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 8px;
+      margin-bottom: .5rem;
+    }
+    .exp-complexity-good  { background: rgba(29,158,117,0.15); border: 1px solid rgba(29,158,117,0.3); color: #6ee7b7; }
+    .exp-complexity-ok    { background: rgba(234,179,8,0.15);   border: 1px solid rgba(234,179,8,0.3);   color: #fde68a; }
+    .exp-complexity-bad   { background: rgba(226,75,74,0.12);   border: 1px solid rgba(226,75,74,0.25);  color: #fca5a5; }
+
+    /* Improvement section */
+    .exp-improve-item {
+      background: rgba(29,158,117,0.07);
+      border: 1px solid rgba(29,158,117,0.18);
+      border-radius: 8px;
+      padding: .7rem .9rem;
+      margin-bottom: .55rem;
+      font-size: 12.5px;
+      color: #a7f3d0;
+      line-height: 1.65;
+    }
+    .exp-improve-item strong { color: #6ee7b7; display: block; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* Section heads inside output */
+    .exp-out-head {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: #475569;
+      margin: 1rem 0 .5rem;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .exp-out-head:first-child { margin-top: 0; }
+    .exp-out-head i { color: #334155; font-size: 10px; }
+  </style>
+
+  <script>
+  (function () {
+    var expMode = 'explain';
+    var expLastText = '';
+
+    /* ── Key management — proxy handles auth, no key needed ── */
+    function getKey() { return 'proxy'; }
+
+    /* ── Mode tab switching ── */
+    var MODE_BTN_LABELS = { explain:'Explain Code', summary:'Summarise', complexity:'Analyse Complexity', improve:'Suggest Improvements', concept:'Identify Concepts' };
+    var MODE_TITLE_HTML = {
+      explain:    '<i class="fa-solid fa-book-open"></i> Line-by-Line',
+      summary:    '<i class="fa-solid fa-align-left"></i> Summary',
+      complexity: '<i class="fa-solid fa-chart-bar"></i> Complexity',
+      improve:    '<i class="fa-solid fa-wand-magic-sparkles"></i> Improvements',
+      concept:    '<i class="fa-solid fa-graduation-cap"></i> Concepts'
+    };
+
+    document.querySelectorAll('.exp-mode-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.exp-mode-tab').forEach(function (t) { t.classList.remove('active'); });
+        this.classList.add('active');
+        expMode = this.dataset.mode;
+        document.getElementById('expBtnLabel').textContent = MODE_BTN_LABELS[expMode] || 'Explain Code';
+      });
+    });
+
+    /* ── Example snippets ── */
+    var EXAMPLES = {
+      bsort: {
+        lang: 'Python',
+        code: "def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n    return arr\n\nprint(bubble_sort([64, 34, 25, 12, 22, 11, 90]))"
+      },
+      closure: {
+        lang: 'JavaScript',
+        code: "function makeCounter(start = 0) {\n  let count = start;\n  return {\n    increment() { return ++count; },\n    decrement() { return --count; },\n    value()     { return count;   }\n  };\n}\n\nconst counter = makeCounter(10);\nconsole.log(counter.increment()); // 11\nconsole.log(counter.increment()); // 12\nconsole.log(counter.decrement()); // 11"
+      },
+      recursion: {
+        lang: 'Python',
+        code: "def fibonacci(n, memo={}):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)\n    return memo[n]\n\nfor i in range(10):\n    print(f'fib({i}) = {fibonacci(i)}')"
+      },
+      sql: {
+        lang: 'SQL',
+        code: "SELECT\n    u.name,\n    u.email,\n    COUNT(o.id)   AS total_orders,\n    SUM(o.amount) AS total_spent\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nWHERE u.created_at >= '2024-01-01'\nGROUP BY u.id, u.name, u.email\nHAVING COUNT(o.id) > 0\nORDER BY total_spent DESC\nLIMIT 20;"
+      }
+    };
+
+    window.expLoadExample = function (key) {
+      var ex = EXAMPLES[key];
+      if (!ex) return;
+      document.getElementById('expCodeInput').value = ex.code;
+      document.getElementById('expLang').value = ex.lang;
+    };
+
+    /* ── Build prompts ── */
+    function buildPrompt(code, lang, mode) {
+      var base = 'You are an expert ' + lang + ' tutor. The user wants you to ' +
+        (mode === 'explain'
+          ? 'explain the following ' + lang + ' code line by line (or block by block for longer code). Respond ONLY with a JSON object — no markdown fences, no extra text:\n{"lines":[{"code":"the line or short block","explanation":"plain English explanation"},...],"overview":"1-2 sentence overall summary"}'
+        : mode === 'summary'
+          ? 'write a clear plain-English summary of what this ' + lang + ' code does. Respond ONLY with JSON:\n{"title":"short descriptive title","purpose":"2-3 sentence what it does","inputs":"what it takes as input (or N/A)","outputs":"what it returns/outputs (or N/A)","side_effects":"any side effects like I/O, mutations (or None)"}'
+        : mode === 'complexity'
+          ? 'analyse the time and space complexity of this ' + lang + ' code. Respond ONLY with JSON:\n{"time_complexity":"e.g. O(n²)","space_complexity":"e.g. O(n)","time_rating":"good|ok|bad","space_rating":"good|ok|bad","time_explanation":"why this time complexity in 1-2 sentences","space_explanation":"why this space complexity in 1-2 sentences","bottleneck":"the main performance bottleneck if any, or null","optimisation_hint":"one concrete hint to improve performance"}'
+        : mode === 'improve'
+          ? 'suggest code improvements for this ' + lang + ' snippet. Respond ONLY with JSON:\n{"improvements":[{"category":"Readability|Performance|Security|Best Practice|Error Handling|etc","suggestion":"concrete improvement description","example":"short before/after code snippet if helpful, or null"}],"improved_code":"complete rewritten version with all improvements applied"}'
+        : /* concept */
+          'identify the key programming concepts, patterns and techniques used in this ' + lang + ' code. Respond ONLY with JSON:\n{"concepts":[{"name":"concept name","description":"1-2 sentence explanation of what it is and how it\'s used here"}],"difficulty":"Beginner|Intermediate|Advanced","learning_resources":["short suggestion 1","short suggestion 2"]}') +
+        '\n\n' + lang + ' code:\n' + code;
+      return base;
+    }
+
+    /* ── Main run ── */
+    window.expRun = async function () {
+      var code = (document.getElementById('expCodeInput').value || '').trim();
+      var lang = document.getElementById('expLang').value;
+      var apiKey = getKey();
+
+      expHideError();
+      if (!code)   { expShowError('Please paste some code first.'); return; }
+      if (code.length < 5) { expShowError('Code is too short to explain.'); return; }
+
+
+      expSetLoading(true);
+      expLastText = '';
+      document.getElementById('expCopyBtn').style.display = 'none';
+      document.getElementById('expResultTitle').innerHTML = MODE_TITLE_HTML[expMode] || MODE_TITLE_HTML.explain;
+
+      var outputEl = document.getElementById('expOutput');
+      outputEl.innerHTML = '<div class="dbg-placeholder"><div class="dbg-spinner"></div><div style="color:#475569;font-size:12px;margin-top:8px;">Nova is reading your code…</div></div>';
+
+      try {
+        var res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system: 'You are an expert code tutor. Always respond with valid JSON only, no markdown fences.',
+            messages: [{ role: 'user', content: buildPrompt(code, lang, expMode) }],
+            max_tokens: 1000
+          })
+        });
+
+        if (!res.ok) {
+          var err = await res.json().catch(function () { return {}; });
+          throw new Error((err.error && err.error.message) || 'API error ' + res.status);
+        }
+
+        var data = await res.json();
+        var raw = (data.content || []).filter(function (b) { return b.type === 'text'; }).map(function (b) { return b.text; }).join('').trim();
+
+        var parsed;
+        try {
+          var clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+          parsed = JSON.parse(clean);
+        } catch (e) {
+          var m = raw.match(/\{[\s\S]+\}/);
+          if (m) { try { parsed = JSON.parse(m[0]); } catch (e2) {} }
+        }
+        if (!parsed) throw new Error('Could not parse response. Please try again.');
+
+        expRender(parsed, expMode);
+
+      } catch (e) {
+        expShowError(e.message || 'Something went wrong.');
+        outputEl.innerHTML = '<div class="dbg-placeholder"><i class="fa-solid fa-triangle-exclamation" style="font-size:28px;color:#475569;margin-bottom:10px;"></i><div style="color:#475569;font-size:13px;">Explanation failed</div></div>';
+      } finally {
+        expSetLoading(false);
+      }
+    };
+
+    /* ── Render per mode ── */
+    function expRender(d, mode) {
+      var outputEl = document.getElementById('expOutput');
+      var footer   = document.getElementById('expOutputFooter');
+      var html = '';
+
+      if (mode === 'explain') {
+        if (d.overview) {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-circle-info"></i> Overview</div>';
+          html += '<div class="dbg-explanation" style="margin-bottom:1rem;">' + esc(d.overview) + '</div>';
+        }
+        html += '<div class="exp-out-head"><i class="fa-solid fa-list-ol"></i> Line by Line</div>';
+        (d.lines || []).forEach(function (l) {
+          html += '<div class="exp-line-block"><code class="exp-line-code">' + esc(l.code || '') + '</code><div class="exp-line-desc">' + esc(l.explanation || '') + '</div></div>';
+        });
+        expLastText = (d.overview || '') + '\n\n' + (d.lines || []).map(function (l) { return l.code + '\n→ ' + l.explanation; }).join('\n\n');
+
+      } else if (mode === 'summary') {
+        if (d.title) {
+          html += '<div style="margin-bottom:.75rem;"><span class="dbg-badge-ok" style="font-size:13px;padding:4px 14px;">' + esc(d.title) + '</span></div>';
+        }
+        html += '<div class="exp-out-head"><i class="fa-solid fa-bullseye"></i> Purpose</div>';
+        html += '<div class="dbg-explanation">' + esc(d.purpose || '') + '</div>';
+        if (d.inputs && d.inputs !== 'N/A') {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-arrow-right-to-bracket"></i> Inputs</div>';
+          html += '<div class="dbg-explanation">' + esc(d.inputs) + '</div>';
+        }
+        if (d.outputs && d.outputs !== 'N/A') {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-arrow-right-from-bracket"></i> Outputs</div>';
+          html += '<div class="dbg-explanation">' + esc(d.outputs) + '</div>';
+        }
+        if (d.side_effects && d.side_effects !== 'None') {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-arrows-spin"></i> Side Effects</div>';
+          html += '<div class="dbg-explanation">' + esc(d.side_effects) + '</div>';
+        }
+        expLastText = [d.title, d.purpose, d.inputs, d.outputs, d.side_effects].filter(Boolean).join('\n\n');
+
+      } else if (mode === 'complexity') {
+        var tCls = d.time_rating === 'good' ? 'exp-complexity-good' : d.time_rating === 'ok' ? 'exp-complexity-ok' : 'exp-complexity-bad';
+        var sCls = d.space_rating === 'good' ? 'exp-complexity-good' : d.space_rating === 'ok' ? 'exp-complexity-ok' : 'exp-complexity-bad';
+        html += '<div class="exp-out-head"><i class="fa-solid fa-clock"></i> Time Complexity</div>';
+        html += '<span class="exp-complexity-badge ' + tCls + '">' + esc(d.time_complexity || 'N/A') + '</span>';
+        html += '<div class="dbg-explanation" style="margin-bottom:1rem;">' + esc(d.time_explanation || '') + '</div>';
+        html += '<div class="exp-out-head"><i class="fa-solid fa-memory"></i> Space Complexity</div>';
+        html += '<span class="exp-complexity-badge ' + sCls + '">' + esc(d.space_complexity || 'N/A') + '</span>';
+        html += '<div class="dbg-explanation" style="margin-bottom:1rem;">' + esc(d.space_explanation || '') + '</div>';
+        if (d.bottleneck) {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-triangle-exclamation"></i> Bottleneck</div>';
+          html += '<div class="dbg-bug-item"><div class="dbg-bug-desc">' + esc(d.bottleneck) + '</div>' + (d.optimisation_hint ? '<div class="dbg-bug-fix-hint"><i class="fa-solid fa-lightbulb" style="color:#fbbf24;font-size:10px;"></i> ' + esc(d.optimisation_hint) + '</div>' : '') + '</div>';
+        }
+        expLastText = 'Time: ' + d.time_complexity + '\n' + d.time_explanation + '\n\nSpace: ' + d.space_complexity + '\n' + d.space_explanation;
+
+      } else if (mode === 'improve') {
+        (d.improvements || []).forEach(function (imp) {
+          html += '<div class="exp-improve-item"><strong>' + esc(imp.category || '') + '</strong>' + esc(imp.suggestion || '') + (imp.example ? '<br><code style="font-size:11px;color:#6ee7b7;background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;display:inline-block;margin-top:5px;">' + esc(imp.example) + '</code>' : '') + '</div>';
+        });
+        if (d.improved_code) {
+          html += '<div class="exp-out-head" style="margin-top:1rem;"><i class="fa-solid fa-code"></i> Improved Version</div>';
+          html += '<div class="dbg-fixed-code">' + esc(d.improved_code) + '</div>';
+          expLastText = d.improved_code;
+        }
+
+      } else if (mode === 'concept') {
+        html += '<div class="exp-out-head"><i class="fa-solid fa-tag"></i> Difficulty</div>';
+        var diffColor = d.difficulty === 'Beginner' ? '#4ade80' : d.difficulty === 'Advanced' ? '#f87171' : '#fbbf24';
+        html += '<div style="margin-bottom:1rem;"><span class="dbg-badge-ok" style="background:rgba(0,0,0,0.2);border-color:' + diffColor + ';color:' + diffColor + ';">' + esc(d.difficulty || '') + '</span></div>';
+        html += '<div class="exp-out-head"><i class="fa-solid fa-puzzle-piece"></i> Concepts Used</div>';
+        (d.concepts || []).forEach(function (c) {
+          html += '<div style="margin-bottom:.7rem;"><span class="exp-concept-pill"><i class="fa-solid fa-circle-dot" style="font-size:9px;"></i>' + esc(c.name || '') + '</span><div class="exp-line-desc" style="margin-top:4px;">' + esc(c.description || '') + '</div></div>';
+        });
+        if (d.learning_resources && d.learning_resources.length) {
+          html += '<div class="exp-out-head"><i class="fa-solid fa-graduation-cap"></i> Learn More</div>';
+          d.learning_resources.forEach(function (r) {
+            html += '<div class="dbg-explanation" style="margin-bottom:.35rem;">• ' + esc(r) + '</div>';
+          });
+        }
+        expLastText = (d.concepts || []).map(function (c) { return c.name + ': ' + c.description; }).join('\n\n');
+      }
+
+      outputEl.innerHTML = html;
+      if (expLastText) document.getElementById('expCopyBtn').style.display = 'flex';
+    }
+
+    /* ── Copy ── */
+    window.expCopy = function () {
+      if (!expLastText) return;
+      navigator.clipboard.writeText(expLastText).then(function () {
+        var btn = document.getElementById('expCopyBtn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        setTimeout(function () { btn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy'; }, 2000);
+      });
+    };
+
+    /* ── Helpers ── */
+    function expSetLoading(on) {
+      var btn = document.getElementById('expRunBtn');
+      btn.disabled = on;
+      if (on) {
+        btn.innerHTML = '<span class="dbg-spinner"></span> Analysing…';
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-lightbulb"></i> <span id="expBtnLabel">' + (MODE_BTN_LABELS[expMode] || 'Explain Code') + '</span>';
+      }
+    }
+    function expShowError(msg) { var el = document.getElementById('expError'); el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+    function expHideError() { document.getElementById('expError').style.display = 'none'; }
+    function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="coding.js"></script>
+</body>
+</html>

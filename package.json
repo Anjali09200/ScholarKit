@@ -1,0 +1,29 @@
+{
+  "name": "scholarkit",
+  "version": "1.0.0",
+  "description": "AI-powered student productivity platform — Nova AI assistant, Team Study Planner, Insights Dashboard & Code Combat. Powered by Azure AI & GPT-4o Mini.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ai",
+    "education",
+    "azure",
+    "gpt4",
+    "study-planner",
+    "nodejs",
+    "bootstrap",
+    "edtech",
+    "student-tools",
+    "nova-ai",
+    "microsoft-build",
+    "hackerearth"
+  ],
+  "author": "ScholarKit Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}

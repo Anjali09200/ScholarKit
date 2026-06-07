@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reflex Grid — Retention Training | ScholarKit</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="gamestyle.css"/>
+</head>
+<body>
+<div id="particles-bg"></div>
+ 
+<div class="game-wrapper">
+ 
+  <a href="ai-assistant.html" class="back-link">
+    <i class="fa-solid fa-arrow-left"></i> Back to Nova
+  </a>
+ 
+  <header class="game-header">
+    <div class="game-eyebrow">SCHOLARKIT · RETENTION TRAINING</div>
+    <h1 class="game-title">REFLEX<span class="title-accent">GRID</span></h1>
+    <p class="game-subtitle">Train your working memory — the same skill Nova sessions build.</p>
+  </header>
+
+  <!-- Learning loop framing -->
+  <div style="
+    background: linear-gradient(90deg, rgba(167,139,250,0.10), rgba(45,212,191,0.08));
+    border: 1px solid rgba(167,139,250,0.22);
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  ">
+    <span style="font-size:1rem;margin-top:1px;flex-shrink:0;">🐱</span>
+    <span>
+      <strong style="color:rgba(167,139,250,0.9);">Nova tip —</strong>
+      Test your retention after a Nova session. Reflex Grid trains the same working memory you use when learning new concepts — the more you play after studying, the better it sticks.
+      <a href="ai-assistant.html" style="color:#2dd4bf;text-decoration:none;margin-left:4px;white-space:nowrap;">Start a Nova session →</a>
+    </span>
+  </div>
+ 
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-chip">
+      <div class="hud-val" id="scoreVal">0</div>
+      <div class="hud-lbl">SCORE</div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-chip">
+      <div class="hud-val" id="levelVal">1</div>
+      <div class="hud-lbl">LEVEL</div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-chip">
+      <div class="hud-val" id="streakVal">0</div>
+      <div class="hud-lbl">STREAK</div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-chip">
+      <div class="hud-val" id="bestVal">0</div>
+      <div class="hud-lbl">BEST</div>
+    </div>
+  </div>
+ 
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="status-text" id="statusText">— PRESS START —</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+ 
+  <!-- Grid -->
+  <div class="grid-container" id="gridContainer"></div>
+ 
+  <!-- Controls -->
+  <div class="action-row">
+    <button class="btn-main" id="mainBtn">START</button>
+    <button class="btn-how" id="howBtn" title="How to play">
+      <i class="fa-solid fa-circle-question"></i> How to play
+    </button>
+  </div>
+ 
+  <!-- Quick legend always visible below grid -->
+  <div class="quick-legend">
+    <div class="ql-item">
+      <div class="ql-dot watching"></div>
+      <span>Tiles flash = Watch carefully</span>
+    </div>
+    <div class="ql-item">
+      <div class="ql-dot your-turn"></div>
+      <span>Yellow bar = Your turn to tap</span>
+    </div>
+    <div class="ql-item">
+      <div class="ql-dot correct"></div>
+      <span>Green = Correct tap</span>
+    </div>
+    <div class="ql-item">
+      <div class="ql-dot wrong"></div>
+      <span>Red = Wrong tap</span>
+    </div>
+  </div>
+ 
+</div><!-- /.game-wrapper -->
+ 
+<!-- ══ TUTORIAL OVERLAY (shown first time) ══ -->
+<div class="overlay" id="overlayTutorial">
+  <div class="overlay-card tutorial-card">
+ 
+    <!-- Step dots -->
+    <div class="tut-dots">
+      <div class="tut-dot active" data-step="0"></div>
+      <div class="tut-dot" data-step="1"></div>
+      <div class="tut-dot" data-step="2"></div>
+    </div>
+ 
+    <!-- Steps -->
+    <div class="tut-steps">
+ 
+      <!-- Step 0 -->
+      <div class="tut-step active" id="tutStep0">
+        <div class="tut-icon">👁️</div>
+        <div class="tut-title">STEP 1 — WATCH</div>
+        <div class="tut-body">
+          Tiles on the grid will light up one by one in a sequence.<br/>
+          <strong>Pay close attention</strong> — you need to remember the exact order!
+        </div>
+        <div class="tut-demo">
+          <div class="demo-grid">
+            <div class="demo-tile" id="dTile0"></div>
+            <div class="demo-tile" id="dTile1"></div>
+            <div class="demo-tile" id="dTile2"></div>
+            <div class="demo-tile" id="dTile3"></div>
+          </div>
+          <div class="demo-caption" id="demoCap0">Watch the flashing sequence ↑</div>
+        </div>
+      </div>
+ 
+      <!-- Step 1 -->
+      <div class="tut-step" id="tutStep1">
+        <div class="tut-icon">👆</div>
+        <div class="tut-title">STEP 2 — REPEAT</div>
+        <div class="tut-body">
+          After the sequence plays, the progress bar turns <span class="hl-yellow">yellow</span>.<br/>
+          That means it's <strong>your turn</strong> — tap the tiles in the <strong>same order</strong> you saw them flash.
+        </div>
+        <div class="tut-visual">
+          <div class="tv-row">
+            <div class="tv-chip watching">👁️ BLUE BAR = Watch</div>
+            <div class="tv-chip your-turn">⚡ YELLOW BAR = Tap now!</div>
+          </div>
+          <div class="tv-timer-bar">
+            <div class="tv-timer-fill"></div>
+          </div>
+          <div class="tut-body" style="margin-top:10px; font-size:.78rem;">
+            The bar drains as time passes — tap before it empties!
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Step 2 -->
+      <div class="tut-step" id="tutStep2">
+        <div class="tut-icon">🏆</div>
+        <div class="tut-title">STEP 3 — LEVEL UP</div>
+        <div class="tut-body">
+          Complete the sequence correctly → <span class="hl-green">you level up!</span><br/>
+          Each level <strong>adds more tiles</strong> to the sequence and <strong>speeds up</strong> the flashes.<br/>
+          Miss a tile or run out of time → Game Over.
+        </div>
+        <div class="tut-scoring">
+          <div class="ts-row"><span class="ts-key">Base</span><span class="ts-val">Sequence length × 100</span></div>
+          <div class="ts-row"><span class="ts-key">Speed bonus</span><span class="ts-val">Tap faster = more points</span></div>
+          <div class="ts-row"><span class="ts-key">3× streak</span><span class="ts-val">2× point multiplier</span></div>
+          <div class="ts-row"><span class="ts-key">5× streak</span><span class="ts-val">3× point multiplier</span></div>
+        </div>
+      </div>
+ 
+    </div><!-- /.tut-steps -->
+ 
+    <div class="tut-actions">
+      <button class="btn-tut-prev" id="tutPrev" style="visibility:hidden">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+      <button class="btn-main" id="tutNext">Next →</button>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- ══ GAME OVER OVERLAY ══ -->
+<div class="overlay hidden" id="overlayGame">
+  <div class="overlay-card">
+    <div class="overlay-emoji" id="overlayEmoji">⚡</div>
+    <div class="overlay-title" id="overlayTitle">GAME OVER</div>
+    <div class="overlay-sub" id="overlaySub"></div>
+    <div class="overlay-stats" id="overlayStats">
+      <div class="ostat"><span id="oScore">0</span><small>SCORE</small></div>
+      <div class="ostat"><span id="oLevel">1</span><small>LEVEL</small></div>
+      <div class="ostat"><span id="oBest">0</span><small>BEST</small></div>
+    </div>
+    <button class="btn-main" id="overlayBtn">PLAY AGAIN</button>
+    <a href="nova_insights.html" style="
+      display:block;text-align:center;margin-top:10px;
+      font-family:'Space Mono',monospace;font-size:0.7rem;
+      color:rgba(45,212,191,0.75);text-decoration:none;letter-spacing:0.05em;
+    ">
+      <i class="fa-solid fa-chart-line"></i> See how this session added to your learning streak →
+    </a>
+    <a href="ai-assistant.html" class="btn-back-overlay">
+      <i class="fa-solid fa-robot"></i> Back to Nova
+    </a>
+  </div>
+</div>
+ 
+<!-- ══ HOW TO PLAY (re-open) ══ -->
+<div class="overlay hidden" id="overlayHow">
+  <div class="overlay-card how-card">
+    <div class="overlay-title" style="font-size:1.4rem">HOW TO PLAY</div>
+    <div class="how-steps">
+      <div class="how-row">
+        <div class="how-num">1</div>
+        <div class="how-text"><strong>Watch</strong> — tiles flash a sequence. Memorise the order. Best played right after a Nova study session.</div>
+      </div>
+      <div class="how-row">
+        <div class="how-num">2</div>
+        <div class="how-text"><strong>Tap</strong> — when the bar turns yellow, repeat the sequence by clicking tiles.</div>
+      </div>
+      <div class="how-row">
+        <div class="how-num">3</div>
+        <div class="how-text"><strong>Level up</strong> — each correct round adds tiles and speeds up flashes.</div>
+      </div>
+      <div class="how-row">
+        <div class="how-num">4</div>
+        <div class="how-text"><strong>Streak</strong> — 3 correct in a row = 2× score. 5 in a row = 3×!</div>
+      </div>
+    </div>
+    <button class="btn-main" id="closeHow">GOT IT</button>
+  </div>
+</div>
+<script src="app.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
