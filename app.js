@@ -60,7 +60,7 @@ allNavLinks.forEach(function(link) {
 })();
  
 // ── AI BACKEND — routes through server.js proxy (token stays server-side) ──
-const NOVA_API_URL = '/api/chat'; // server.js handles auth — no token in browser
+const NOVA_API_URL = 'https://scholarkit-api.onrender.com/api/chat'; // server.js handles auth — no token in browser
  
 // ── VOICE ──
 let sentences = [];
