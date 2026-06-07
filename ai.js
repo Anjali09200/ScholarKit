@@ -5,7 +5,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 // ── API CONFIG — all calls go through server.js proxy ────────────
-const NOVA_API_URL = '/api/chat'; // server.js handles the token
+const NOVA_API_URL = 'https://scholarkit-api.onrender.com/api/chat'; // Render backend proxy
 
 // ── KEY HELPERS — stubs so existing code doesn't break ───────────
 function getApiKey() { return 'proxy'; } // always truthy — proxy handles auth
@@ -171,7 +171,7 @@ function updateWebSearchPill() {
 // ── BROWSE ENGINE ─────────────────────────────────────────────────
 // Fetches a URL via /api/browse and returns clean text + source url
 async function fetchBrowsedContent(targetUrl) {
-  const res = await fetch('/api/browse', {
+  const res = await fetch('https://scholarkit-api.onrender.com/api/browse', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ url: targetUrl })
