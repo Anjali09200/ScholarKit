@@ -14,7 +14,7 @@ const url   = require('url');
 require('dotenv').config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const MIME = {
   '.html': 'text/html',
