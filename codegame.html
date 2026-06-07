@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Code Combat | ScholarKit</title>
+ 
+  <!-- Icons & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+ 
+  <!-- Your shared base styles (from ScholarKit) -->
+  <!-- <link rel="stylesheet" href="style3.css"/> -->
+ 
+  <!-- Game-specific styles -->
+  <link rel="stylesheet" href="codestyle.css"/>
+</head>
+<body>
+ 
+<div class="game-bg"></div>
+ 
+<div class="cg-wrapper">
+ 
+  <!-- TOP BAR -->
+  <div class="cg-topbar">
+    <a href="coding.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i> Coding Tools
+    </a>
+    <div class="cg-title">Code Combat</div>
+    <div style="width:130px;"></div>
+  </div>
+ 
+  <!-- HUD -->
+  <div class="cg-hud">
+    <div class="hud-chip">
+      <i class="fa-solid fa-shield-halved"></i>
+      <div>
+        <div style="font-size:.7rem;color:#64748b;margin-bottom:3px;">HERO HP</div>
+        <div class="hp-bar-wrap"><div class="hp-bar green" id="heroHpBar" style="width:100%"></div></div>
+      </div>
+      <span id="heroHpVal">100</span>
+    </div>
+    <div class="hud-chip">
+      <i class="fa-solid fa-layer-group"></i> Round <span id="roundVal">1</span>
+    </div>
+    <div class="hud-chip">
+      <i class="fa-solid fa-star"></i> Score <span id="scoreVal">0</span>
+    </div>
+    <div class="hud-chip">
+      <i class="fa-solid fa-skull"></i>
+      <div>
+        <div style="font-size:.7rem;color:#64748b;margin-bottom:3px;">MONSTER HP</div>
+        <div class="hp-bar-wrap"><div class="hp-bar" id="monHpBar" style="width:100%"></div></div>
+      </div>
+      <span id="monHpVal">60</span>
+    </div>
+  </div>
+ 
+  <!-- ROUND PROGRESS DOTS -->
+  <div class="round-progress" id="roundDots"></div>
+ 
+  <!-- ARENA CANVAS -->
+  <div class="cg-arena">
+    <canvas id="arenaCanvas" width="860" height="260"></canvas>
+ 
+    <!-- Start overlay -->
+    <div class="cg-overlay" id="ovStart">
+      <div class="ov-emoji">⚔️</div>
+      <div class="ov-title">Code Combat</div>
+      <div class="ov-sub">Answer coding questions correctly to attack monsters. Wrong answers hurt you. Clear all rounds to win!</div>
+      <div class="difficulty-row" id="diffRow">
+        <button class="diff-btn active" data-rounds="3" data-qcount="3">Easy</button>
+        <button class="diff-btn"        data-rounds="4" data-qcount="4">Normal</button>
+        <button class="diff-btn"        data-rounds="5" data-qcount="5">Hard</button>
+      </div>
+      <button class="btn-game btn-game-primary start-cta" id="startBtn">
+        <i class="fa-solid fa-play"></i> Start Battle
+      </button>
+    </div>
+ 
+    <!-- Round clear overlay -->
+    <div class="cg-overlay hidden" id="ovRound">
+      <div class="ov-emoji" id="ovRoundEmoji">🏆</div>
+      <div class="ov-title" id="ovRoundTitle">Round Clear!</div>
+      <div class="ov-sub"   id="ovRoundSub">Monster defeated. Prepare for the next round!</div>
+      <button class="btn-game btn-game-primary" id="nextRoundBtn">
+        <i class="fa-solid fa-forward"></i> Next Round
+      </button>
+    </div>
+ 
+    <!-- Game over overlay -->
+    <div class="cg-overlay hidden" id="ovOver">
+      <div class="ov-emoji">💀</div>
+      <div class="ov-title">Defeated!</div>
+      <div class="ov-sub">The monster was too strong this time. Study up and try again!</div>
+      <div class="ov-stats">
+        <div class="ov-stat"><span class="v" id="ovScore">0</span><span class="l">Score</span></div>
+        <div class="ov-stat"><span class="v" id="ovRound">1</span><span class="l">Round</span></div>
+      </div>
+      <button class="btn-game btn-game-primary" id="retryBtn">
+        <i class="fa-solid fa-rotate-right"></i> Try Again
+      </button>
+    </div>
+ 
+    <!-- Victory overlay -->
+    <div class="cg-overlay hidden" id="ovWin">
+      <div class="ov-emoji">🎉</div>
+      <div class="ov-title">Victory!</div>
+      <div class="ov-sub">You defeated all monsters! Your coding skills are legendary!</div>
+      <div class="ov-stats">
+        <div class="ov-stat"><span class="v" id="ovWinScore">0</span><span class="l">Score</span></div>
+        <div class="ov-stat"><span class="v" id="ovWinBest">0</span> <span class="l">Best</span></div>
+      </div>
+      <button class="btn-game btn-game-primary" id="winRetryBtn">
+        <i class="fa-solid fa-rotate-right"></i> Play Again
+      </button>
+    </div>
+  </div><!-- /.cg-arena -->
+ 
+  <!-- QUESTION PANEL -->
+  <div class="cg-question" id="questionPanel" style="display:none;">
+    <div class="q-meta">
+      <span class="q-badge easy" id="qDiff">Easy</span>
+      <div class="q-timer" id="qTimer">
+        <i class="fa-regular fa-clock"></i>
+        <span id="qTimerVal">15</span>s
+      </div>
+    </div>
+    <div class="q-text" id="qText">Question loads here</div>
+    <div class="q-code" id="qCode" style="display:none;"></div>
+    <div class="q-options" id="qOptions"></div>
+  </div>
+ 
+  <!-- FEEDBACK BAR -->
+  <div class="cg-feedback hidden" id="cgFeedback"></div>
+ 
+</div><!-- /.cg-wrapper -->
+ 
+<!-- Game logic (external) -->
+<script src="codegame.js"></script>
+ 
+</body>
+</html>
