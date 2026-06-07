@@ -249,10 +249,5 @@ server.listen(PORT, () => {
   }
 
   console.log('\nPress Ctrl+C to stop.\n');
-
-  const url2 = `http://localhost:${PORT}/index.html`;
-  const cmd = process.platform === 'darwin' ? 'open'
-            : process.platform === 'win32'  ? 'start'
-            : 'xdg-open';
-  require('child_process').exec(`${cmd} ${url2}`);
+  
 });
