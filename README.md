@@ -21,7 +21,7 @@
 
 <br/>
 
-[🚀 Live Demo](https://aesthetic-baklava-bb456c.netlify.app) · [🤖 Try Nova](https://aesthetic-baklava-bb456c.netlify.app/ai-assistant.html) · [📊 View Insights](https://aesthetic-baklava-bb456c.netlify.app/nova_insights.html) · [⚔️ Code Combat](https://aesthetic-baklava-bb456c.netlify.app/codegame.html)
+[🚀 Live Demo](https://scholarkit1.netlify.app) · [🤖 Try Nova](https://scholarkit1.netlify.app/ai-assistant.html) · [📊 View Insights](https://scholarkit1.netlify.app/nova_insights.html) · [⚔️ Code Combat](https://scholarkit1.netlify.app/codegame.html)
 
 </div>
 
@@ -599,6 +599,6 @@ MIT License — feel free to use, modify, and distribute with attribution.
 
 *The teammate that never sleeps, never panics, and always has a plan.*
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Now-2DD4BF?style=for-the-badge)](https://aesthetic-baklava-bb456c.netlify.app)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Now-2DD4BF?style=for-the-badge)](https://scholarkit1.netlify.app)
 
 </div>
